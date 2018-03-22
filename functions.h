@@ -23,7 +23,7 @@ public:
     void fft(double *,double *,int);
     void fft2d(double **,double **,int,int);
     void sort(double **,int,int);
-    void makeFFT2D(data2d *,data2d *);
+    void makeFFT2D(data2d *,data2d *,data2d *);
     int doubleToInt(double);
     void toCircle(double *,double *,double,double);
     void average(data2d *,double,double,double,double,double,double,

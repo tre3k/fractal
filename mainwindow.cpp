@@ -9,10 +9,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     plot_input = new iCasePlot2D();
     plot_fft = new iCasePlot2D();
+    plot_fft_phase = new iCasePlot2D();
     plot_input->plot2D->ColorMap->setGradient(QCPColorGradient::gpGrayscale);
 
     ui->layoutPlotIn->addWidget(plot_input);
     ui->layoutPlotFFT->addWidget(plot_fft);
+    ui->layoutPlotFFT_phase->addWidget(plot_fft_phase);
 
     winPlot = new windowPlot;
 
@@ -99,12 +101,14 @@ void MainWindow::on_action_Open_triggered()
     n2 = (int)(log(input_size_y)/log(2));
     fft_size_y = pow(2,n2);
     data_fft = new data2d(fft_size_x,fft_size_y);
+    data_fft_phase = new data2d(fft_size_x,fft_size_y);
 
     int i=0,j=0;
 
     while(!txtStream.atEnd()){
         txtStream >> tmp;
         data_input->data[i][j] = QString(tmp).toInt();
+        //data_input->data[i][j] = cos(2*M_PI*0.12*i)+cos(2*M_PI*0.13*j)+cos(2*M_PI*(0.12*i+0.13*j));
         i++;
         if(i>=data_input->size_x){
             i=0; j++;
@@ -117,13 +121,17 @@ void MainWindow::on_action_Open_triggered()
     plotData(plot_input,data_input);
 
     functions *funcs = new functions;
-    funcs->makeFFT2D(data_input,data_fft);
+    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
     delete funcs;
     preProcess();
 }
 
 void MainWindow::preProcess(){
     plotData(plot_fft,data_fft);
+    plotData(plot_fft_phase,data_fft_phase);
+    plot_fft_phase->plot2D->ColorScale->axis()->setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
+    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
+    plot_fft_phase->plot2D->replot();
 
     double c_x=0,c_y=0,S=0;
 
@@ -219,6 +227,9 @@ void MainWindow::on_actionScale_triggered()
     plot_fft->plot2D->replot();
     plot_input->plot2D->rescaleAxes();
     plot_input->plot2D->replot();
+    plot_fft_phase->plot2D->rescaleAxes();
+    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
+    plot_fft_phase->plot2D->replot();
 }
 
 void MainWindow::on_actionOpenMatrix_triggered()

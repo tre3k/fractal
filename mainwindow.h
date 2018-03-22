@@ -43,9 +43,11 @@ private:
 
     data2d *data_input;
     data2d *data_fft;
+    data2d *data_fft_phase;
 
     iCasePlot2D *plot_input;
     iCasePlot2D *plot_fft;
+    iCasePlot2D *plot_fft_phase;
 
     windowPlot *winPlot;
 
