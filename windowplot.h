@@ -1,0 +1,44 @@
+#ifndef WINDOWPLOT_H
+#define WINDOWPLOT_H
+
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QMenu>
+#include <QVector>
+
+#include "iqcustomplot.h"
+
+struct windowPlotValues{
+    QVector<double> *x,*y,*err;
+};
+
+class windowPlot : public QMainWindow
+{
+    Q_OBJECT
+public:
+    explicit windowPlot(QWidget *parent = nullptr);
+
+    QMenuBar *menuBar;
+    QMenu *menuFile;
+    QAction *actionSaveTxt;
+    QMenu *menuScale;
+    QAction *actionLogX;
+    QAction *actionLogY;
+    QAction *actionAutoscale;
+
+    iQCustomPlot *plot;
+
+    windowPlotValues globalVal;
+
+signals:
+
+public slots:
+    void slot_plot(windowPlotValues);
+    void slot_saveTxt();
+    void slot_logX(bool);
+    void slot_logY(bool);
+    void slot_autoscale();
+
+};
+
+#endif // WINDOWPLOT_H
