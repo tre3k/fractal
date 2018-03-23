@@ -107,8 +107,8 @@ void MainWindow::on_action_Open_triggered()
 
     while(!txtStream.atEnd()){
         txtStream >> tmp;
-        data_input->data[i][j] = QString(tmp).toInt();
-        //data_input->data[i][j] = cos(2*M_PI*0.12*i)+cos(2*M_PI*0.13*j)+cos(2*M_PI*(0.12*i+0.13*j));
+        data_input->data[i][j] = QString(tmp).toInt()+(double)(rand()%100)/100;
+        //data_input->data[i][j] = cos(2*M_PI*(0.12*i+0.13*j));
         i++;
         if(i>=data_input->size_x){
             i=0; j++;
