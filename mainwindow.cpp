@@ -188,8 +188,6 @@ void MainWindow::preProcess(){
 
 void MainWindow::on_action_Close_triggered()
 {
-    data_input->remove();
-    delete data_input;
     QApplication::exit(0);
 }
 
