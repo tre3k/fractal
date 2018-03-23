@@ -76,12 +76,9 @@ void MainWindow::slot_changeSpinBoxs(double val){
     ui->spinBox_radius_in->setMaximum(ui->spinBox_radius_our->value());
 }
 
-
 void MainWindow::on_action_Open_triggered()
 {
     int input_size_x,input_size_y;
-    int fft_size_x,fft_size_y;
-    int n2;
     QString tmp;
     QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
     if(filename=="") return;
@@ -96,21 +93,15 @@ void MainWindow::on_action_Open_triggered()
     input_size_y = QString(tmp).toInt();
 
     data_input = new data2d(input_size_x,input_size_y);
-    n2 = (int)(log(input_size_x)/log(2));
-    fft_size_x = pow(2,n2);
-    n2 = (int)(log(input_size_y)/log(2));
-    fft_size_y = pow(2,n2);
-    data_fft = new data2d(fft_size_x,fft_size_y);
-    data_fft_phase = new data2d(fft_size_x,fft_size_y);
 
     int i=0,j=0;
 
     while(!txtStream.atEnd()){
         txtStream >> tmp;
-        //data_input->data[i][j] = QString(tmp).toInt();//+(double)(rand()%100)/100;
+        data_input->data[i][j] = QString(tmp).toInt();//+(double)(rand()%100)/100;
         //data_input->data[i][j] = cos(2*M_PI*(0.12*i+0.13*j));
-        if(cos(2*M_PI*(0.143*i+0.143*j))>0) data_input->data[i][j] = 1;
-        if(cos(2*M_PI*(0.143*i+0.143*j))<=0) data_input->data[i][j] = 0;
+        //if(cos(2*M_PI*(0.143*i+0.143*j))>0) data_input->data[i][j] = 1;
+        //if(cos(2*M_PI*(0.143*i+0.143*j))<=0) data_input->data[i][j] = 0;
         i++;
         if(i>=data_input->size_x){
             i=0; j++;
@@ -123,8 +114,44 @@ void MainWindow::on_action_Open_triggered()
     plotData(plot_input,data_input);
 
     functions *funcs = new functions;
+    data_fft = new data2d;
+    data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
     delete funcs;
+    preProcess();
+}
+
+void MainWindow::on_action_openFFT_triggered()
+{
+    QString tmp;
+    int input_size_x,input_size_y;
+    QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
+    if(filename=="") return;
+    QFile f(filename);
+    f.open(QIODevice::ReadOnly);
+    QTextStream txtStream(&f);
+
+    txtStream >> tmp;
+    input_size_x = QString(tmp).toInt();
+    txtStream >> tmp;
+    input_size_y = QString(tmp).toInt();
+
+    data_fft = new data2d(input_size_x,input_size_y);
+
+    int i=0,j=0;
+
+    while(!txtStream.atEnd()){
+        txtStream >> tmp;
+        data_fft->data[i][j] = QString(tmp).toInt();
+        i++;
+        if(i>=data_fft->size_x){
+            i=0; j++;
+            if(j>=data_fft->size_y) break;
+        }
+    }
+
+    f.close();
+    data_fft_phase = new data2d;
     preProcess();
 }
 
@@ -166,8 +193,6 @@ void MainWindow::on_action_Close_triggered()
     QApplication::exit(0);
 }
 
-
-
 void MainWindow::on_pushButtonIntegrate_clicked()
 {
     averX->clear();
@@ -190,39 +215,6 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     winPlot->show();
 }
 
-void MainWindow::on_action_openFFT_triggered()
-{
-    QString tmp;
-    int input_size_x,input_size_y;
-    QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
-    if(filename=="") return;
-    QFile f(filename);
-    f.open(QIODevice::ReadOnly);
-    QTextStream txtStream(&f);
-
-    txtStream >> tmp;
-    input_size_x = QString(tmp).toInt();
-    txtStream >> tmp;
-    input_size_y = QString(tmp).toInt();
-
-    data_fft = new data2d(input_size_x,input_size_y);
-
-    int i=0,j=0;
-
-    while(!txtStream.atEnd()){
-        txtStream >> tmp;
-        data_fft->data[i][j] = QString(tmp).toInt();
-        i++;
-        if(i>=data_fft->size_x){
-            i=0; j++;
-            if(j>=data_fft->size_y) break;
-        }
-    }
-
-    f.close();
-    preProcess();
-}
-
 void MainWindow::on_actionScale_triggered()
 {
     plot_fft->plot2D->rescaleAxes();
@@ -234,23 +226,77 @@ void MainWindow::on_actionScale_triggered()
     plot_fft_phase->plot2D->replot();
 }
 
-void MainWindow::on_actionOpenMatrix_triggered()
-{
-    QString tmp;
-    int input_size_x,input_size_y;
-    QString filename = QFileDialog::getOpenFileName(this,"Matrix","","*.txt");
-    if(filename=="") return;
-    QFile f(filename);
-    f.open(QIODevice::ReadOnly);
-    QTextStream txtStream(&f);
 
+void MainWindow::openImage(QString filename,data2d *indata){
+    int sx,sy;
+    QImage *img = new QImage(filename);
+    sx = img->width();
+    sy = img->height();
 
-    int i=0;
-    while(!txtStream.atEnd()){
-        txtStream >> tmp;
-        qDebug() << i << tmp;
-        i++;
+    indata->reinit(sx,sy);
+    int tmp;
+
+    for(int i=0;i<sx;i++){
+        for(int j=0;j<sy;j++){
+
+            tmp = img->pixel(i,j) & 0x00000000ff;            //B
+            tmp += img->pixel(i,j) & 0x000000ff00;           //G
+            tmp += img->pixel(i,j) & 0x0000ff0000;           //R
+            tmp /= 3;
+
+            indata->data[sx-i-1][sy-j-1] = (double) tmp;
+        }
     }
 
+    delete img;
 
+    return;
+}
+
+void MainWindow::on_actionOpenImage_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
+                                                                      "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
+                                                                      "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
+                                                                      "BMP (*.bmp *.BMP);;"
+                                                                      "GIF (*.gif *.GIF);;"
+                                                                      "PNG (*.png *.PNG);;"
+                                                                      "PBM (*.pbm *.PBM);;"
+                                                                      "PGM (*.pgm *.PGM);;"
+                                                                      "PPM (*.ppm *.PPM);;"
+                                                                      "XBM (*.xbm *.XBM);;"
+                                                                      "XPM (*.xpm *.XPM)");
+
+    if(filename == "") return;
+    data_input = new data2d;
+    openImage(filename,data_input);
+    plotData(plot_input,data_input);
+
+    functions *funcs = new functions;
+    data_fft = new data2d;
+    data_fft_phase = new data2d;
+    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
+    preProcess();
+}
+
+void MainWindow::on_actionOpenImageFFT_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
+                                                                      "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
+                                                                      "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
+                                                                      "BMP (*.bmp *.BMP);;"
+                                                                      "GIF (*.gif *.GIF);;"
+                                                                      "PNG (*.png *.PNG);;"
+                                                                      "PBM (*.pbm *.PBM);;"
+                                                                      "PGM (*.pgm *.PGM);;"
+                                                                      "PPM (*.ppm *.PPM);;"
+                                                                      "XBM (*.xbm *.XBM);;"
+                                                                      "XPM (*.xpm *.XPM)");
+
+    if(filename == "") return;
+    data_fft = new data2d;
+    openImage(filename,data_fft);
+    plotData(plot_fft,data_fft);
+    data_fft_phase = new data2d;
+    preProcess();
 }

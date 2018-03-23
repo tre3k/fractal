@@ -4,6 +4,8 @@
 #include <math.h>
 
 #include <QMainWindow>
+#include <QImage>
+#include <QRgb>
 
 #include "iqcustomplot.h"
 #include "functions.h"
@@ -36,7 +38,11 @@ private slots:
 
     void on_actionScale_triggered();
 
-    void on_actionOpenMatrix_triggered();
+    void openImage(QString,data2d *);
+
+    void on_actionOpenImage_triggered();
+
+    void on_actionOpenImageFFT_triggered();
 
 private:
     Ui::MainWindow *ui;

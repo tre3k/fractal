@@ -201,6 +201,8 @@
     <addaction name="separator"/>
     <addaction name="action_Open"/>
     <addaction name="action_openFFT"/>
+    <addaction name="actionOpenImage"/>
+    <addaction name="actionOpenImageFFT"/>
     <addaction name="separator"/>
     <addaction name="action_Close"/>
    </widget>
@@ -214,7 +216,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_Open"/>
+   <addaction name="actionOpenImage"/>
    <addaction name="action_openFFT"/>
+   <addaction name="actionOpenImageFFT"/>
    <addaction name="actionScale"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -235,7 +239,17 @@
   </action>
   <action name="actionScale">
    <property name="text">
-    <string>Перемасштабировать</string>
+    <string>авт. масштаб</string>
+   </property>
+  </action>
+  <action name="actionOpenImage">
+   <property name="text">
+    <string>Открыть фотку</string>
+   </property>
+  </action>
+  <action name="actionOpenImageFFT">
+   <property name="text">
+    <string>Открыть фотку Фурье</string>
    </property>
   </action>
  </widget>

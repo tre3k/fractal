@@ -1,8 +1,8 @@
 #include "functions.h"
 
-data2d::data2d(int x,int y){
-    size_x = x;
-    size_y = y;
+data2d::data2d(int sx,int sy){
+    size_x = sx;
+    size_y = sy;
     data = new double * [size_x];
     for(int i=0;i<size_x;i++) data[i] = new double [size_y];
 }
@@ -10,6 +10,14 @@ data2d::data2d(int x,int y){
 void data2d::remove(){
     for(int i=0;i<size_x;i++) delete [] data[i];
     delete [] *data;
+}
+
+void data2d::reinit(int sx, int sy){
+    size_x = sx;
+    size_y = sy;
+    data = new double * [size_x];
+    for(int i=0;i<size_x;i++) data[i] = new double [size_y];
+    return;
 }
 
 functions::functions(){
@@ -144,8 +152,30 @@ void functions::sort(double **mass,int a,int b){
 void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_phase){
     double **real;
     double **imgn;
-    const int sx = data_out->size_x;
-    const int sy = data_out->size_y;
+    const int isx = data_in->size_x;
+    const int isy = data_in->size_y;
+
+    int nx = 100*log(isx)/log(2);
+    int ny = 100*log(isy)/log(2);
+    int anx,any;
+
+
+    if(nx%100!=0){
+        anx = (int) nx/100+1;
+    }else{
+        anx = (int) nx/100;
+    }
+    if(ny%100!=0){
+        any = (int) ny/100+1;
+    }else{
+        any = (int) ny/100;
+    }
+
+    int sx = pow(2,anx);
+    int sy = pow(2,any);
+
+    data_out->reinit(sx,sy);
+    data_out_phase->reinit(sx,sy);
 
     real = new double * [sx];
     imgn = new double * [sx];
@@ -156,7 +186,11 @@ void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_ph
 
     for(int i=0;i<sx;i++){
         for(int j=0;j<sy;j++){
-            real[i][j] = data_in->data[i][j];
+            if(i<isx && j<isy){
+                real[i][j] = data_in->data[i][j];
+            }else{
+                real[i][j] = 0.0;
+            }
             imgn[i][j] = 0.0;
         }
     }
@@ -180,7 +214,6 @@ void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_ph
     }
     delete [] real;
     delete [] imgn;
-
 }
 
 int functions::doubleToInt(double val){
