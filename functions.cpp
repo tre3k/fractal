@@ -199,12 +199,8 @@ void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_ph
 
     for(int i=0;i<sx;i++){
         for(int j=0;j<sy;j++){
-            //data_out->data[i][j] = sqrt(real[i][j]*real[i][j]+imgn[i][j]*imgn[i][j]);
-                                   //sqrt(2*M_PI*sx)/sqrt(2*M_PI*sy);
             data_out->data[i][j] = 4*(real[i][j]*real[i][j]+imgn[i][j]*imgn[i][j])/sx/sx/sy/sy;
-                                   //sqrt(2*M_PI*sx)/sqrt(2*M_PI*sy);
             data_out_phase->data[i][j] = atan(imgn[i][j]/real[i][j]);
-
         }
     }
 

@@ -62,8 +62,8 @@ void windowPlot::slot_plot(windowPlotValues val){
                   2,Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
     }
 
-    slot_logX(true);
-    slot_logY(true);
+    slot_logX(actionLogX->isChecked());
+    slot_logY(actionLogY->isChecked());
     plot->rescaleAxes(true);
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
