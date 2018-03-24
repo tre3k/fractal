@@ -14,7 +14,7 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     actionLogX->setCheckable(true);
     actionLogY = new QAction("Лог. по у",this);
     actionLogY->setCheckable(true);
-    actionAutoscale = new QAction("авт.");
+    actionAutoscale = new QAction("авт.",this);
 
     menuFile->addAction(actionSaveTxt);
 
