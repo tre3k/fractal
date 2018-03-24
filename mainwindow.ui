@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Fractal</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="horizontalLayoutWidget">
@@ -57,7 +61,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>интенсивность</string>
+     <string>усреднение интенсивности</string>
     </property>
     <widget class="QCheckBox" name="checkBox_CKO">
      <property name="geometry">
