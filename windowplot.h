@@ -10,6 +10,7 @@
 
 struct windowPlotValues{
     QVector<double> *x,*y,*err;
+    bool showError;
 };
 
 class windowPlot : public QMainWindow
@@ -21,10 +22,12 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QAction *actionSaveTxt;
+    QAction *actionHideWindow;
     QMenu *menuScale;
     QAction *actionLogX;
     QAction *actionLogY;
     QAction *actionAutoscale;
+
 
     iQCustomPlot *plot;
 
@@ -38,6 +41,7 @@ public slots:
     void slot_logX(bool);
     void slot_logY(bool);
     void slot_autoscale();
+    void slot_close();
 
 };
 

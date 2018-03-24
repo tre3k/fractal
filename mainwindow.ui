@@ -62,8 +62,8 @@
     <widget class="QCheckBox" name="checkBox_CKO">
      <property name="geometry">
       <rect>
-       <x>251</x>
-       <y>30</y>
+       <x>253</x>
+       <y>58</y>
        <width>101</width>
        <height>31</height>
       </rect>
@@ -181,6 +181,20 @@
      </property>
      <property name="text">
       <string>Внешний радиус:</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_Err">
+     <property name="geometry">
+      <rect>
+       <x>252</x>
+       <y>26</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Выводить
+ошибку</string>
      </property>
     </widget>
    </widget>

@@ -209,6 +209,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     wPlotValues.err = averErr;
     wPlotValues.x = averX;
     wPlotValues.y = averY;
+    wPlotValues.showError = ui->checkBox_Err->isChecked();
 
     emit signal_plot(wPlotValues);
     winPlot->show();

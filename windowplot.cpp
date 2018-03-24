@@ -12,11 +12,16 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     menuScale = new QMenu("Масштаб");
     actionLogX = new QAction("Лог. по х",this);
     actionLogX->setCheckable(true);
+    actionLogX->setChecked(true);
     actionLogY = new QAction("Лог. по у",this);
     actionLogY->setCheckable(true);
+    actionLogY->setChecked(true);
     actionAutoscale = new QAction("авт.",this);
+    actionHideWindow = new QAction("Закрыть", this);
 
     menuFile->addAction(actionSaveTxt);
+    menuFile->addSeparator();
+    menuFile->addAction(actionHideWindow);
 
     menuScale->addAction(actionLogX);
     menuScale->addAction(actionLogY);
@@ -38,6 +43,8 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
             this,SLOT(slot_saveTxt()));
     connect(actionAutoscale,SIGNAL(triggered(bool)),
             this,SLOT(slot_autoscale()));
+    connect(actionHideWindow,SIGNAL(triggered(bool)),
+            this,SLOT(slot_close()));
 }
 
 
@@ -45,14 +52,18 @@ void windowPlot::slot_plot(windowPlotValues val){
     globalVal = val;
     plot->clearGraphs();
     plot->addCurve(val.x,val.y,true,"black","average");
-    QCPErrorBars *errorBar = new QCPErrorBars(plot->xAxis,plot->yAxis);
-    errorBar->removeFromLegend();
-    errorBar->setPen(QColor("black"));
-    errorBar->addData(*val.err);
-    errorBar->setDataPlottable(plot->graph(0));
-    errorBar->selectionDecorator()->setPen(QPen(QColor("black"),
-              2,Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+    if(val.showError){
+        QCPErrorBars *errorBar = new QCPErrorBars(plot->xAxis,plot->yAxis);
+        errorBar->removeFromLegend();
+        errorBar->setPen(QColor("black"));
+        errorBar->addData(*val.err);
+        errorBar->setDataPlottable(plot->graph(0));
+        errorBar->selectionDecorator()->setPen(QPen(QColor("black"),
+                  2,Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+    }
 
+    slot_logX(true);
+    slot_logY(true);
     plot->rescaleAxes(true);
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
@@ -91,9 +102,14 @@ void windowPlot::slot_saveTxt(){
 
     stream << "# x [pix]\ty\terr\n";
     for(int i=0;i<globalVal.x->size();i++){
-        stream << globalVal.x->at(i) << "\t"
-               << globalVal.y->at(i) << "\t\n";
-               //<< globalVal.err->at(i) << "\n";
+        if(globalVal.showError){
+            stream << globalVal.x->at(i) << "\t"
+                   << globalVal.y->at(i) << "\t"
+                   << globalVal.err->at(i) << "\n";
+        }else{
+            stream << globalVal.x->at(i) << "\t"
+                   << globalVal.y->at(i) << "\n";
+        }
     }
 
     f.close();
@@ -104,4 +120,8 @@ void windowPlot::slot_autoscale(){
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
     plot->replot();
+}
+
+void windowPlot::slot_close(){
+    this->hide();
 }
