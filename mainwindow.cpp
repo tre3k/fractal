@@ -237,9 +237,9 @@ void MainWindow::openImage(QString filename,data2d *indata){
     for(int i=0;i<sx;i++){
         for(int j=0;j<sy;j++){
 
-            tmp = img->pixel(i,j) & 0x00000000ff;            //B
-            tmp += img->pixel(i,j) & 0x000000ff00;           //G
-            tmp += img->pixel(i,j) & 0x0000ff0000;           //R
+            tmp = img->pixel(i,j) & 0x00000000ff;                    //B
+            tmp += (img->pixel(i,j) & 0x000000ff00)>>8;              //G
+            tmp += (img->pixel(i,j) & 0x0000ff0000)>>16;             //R
             tmp /= 3;
 
             indata->data[i][sy-j-1] = (double) tmp;
