@@ -51,7 +51,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
+      <y>370</y>
       <width>361</width>
       <height>121</height>
      </rect>
@@ -183,6 +183,58 @@
       <string>Внешний радиус:</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_invertData">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>инвер. данные</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_invertFFT">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>340</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>инвер. образ</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonCentre">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>340</y>
+      <width>80</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>центр масс</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_FFT">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>340</y>
+      <width>31</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>FFT</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

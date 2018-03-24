@@ -295,3 +295,20 @@ void functions::average(data2d *data,
 
     return;
 }
+
+void functions::inverteData(data2d *idata){
+    if(idata->size_x==0 || idata->size_y==0) return;
+    double max=idata->data[0][0];
+    for(int i=0;i<idata->size_x;i++){
+        for(int j=0;j<idata->size_y;j++){
+            if(max<idata->data[i][j]) max = idata->data[i][j];
+        }
+    }
+
+    for(int i=0;i<idata->size_x;i++){
+        for(int j=0;j<idata->size_y;j++){
+            idata->data[i][j] = max-idata->data[i][j];
+        }
+    }
+    return;
+}

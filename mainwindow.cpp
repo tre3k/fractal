@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     averY = new QVector<double>;
     averErr = new QVector<double>;
 
+    funcs = new functions;
+
     connect(ui->spinBox_center_x,SIGNAL(valueChanged(double)),
             this,SLOT(slot_changeSpinBoxs(double)));
     connect(ui->spinBox_center_y,SIGNAL(valueChanged(double)),
@@ -113,11 +115,9 @@ void MainWindow::on_action_Open_triggered()
 
     plotData(plot_input,data_input);
 
-    functions *funcs = new functions;
     data_fft = new data2d;
     data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
-    delete funcs;
     preProcess();
 }
 
@@ -156,8 +156,11 @@ void MainWindow::on_action_openFFT_triggered()
 }
 
 void MainWindow::preProcess(){
+    if(data_fft->size_x==0 || data_fft->size_y==0) return;
     plotData(plot_fft,data_fft);
-    plotData(plot_fft_phase,data_fft_phase);
+    if(data_fft_phase->size_x!=0 && data_fft_phase->size_y!=0){
+        plotData(plot_fft_phase,data_fft_phase);
+    }
     plot_fft_phase->plot2D->ColorScale->axis()->setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
     plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
     plot_fft_phase->plot2D->replot();
@@ -197,11 +200,9 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     averY->clear();
     averErr->clear();
 
-    functions *funcs = new functions;
     funcs->average(data_fft,ui->spinBox_center_x->value(),ui->spinBox_center_y->value(),
                  0.0,360.0,ui->spinBox_radius_in->value(),ui->spinBox_radius_our->value(),
                  averX,averY,averErr,ui->checkBox_CKO->isChecked(),0);
-    delete funcs;
 
     windowPlotValues wPlotValues;
 
@@ -270,7 +271,7 @@ void MainWindow::on_actionOpenImage_triggered()
     openImage(filename,data_input);
     plotData(plot_input,data_input);
 
-    functions *funcs = new functions;
+
     data_fft = new data2d;
     data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
@@ -296,5 +297,31 @@ void MainWindow::on_actionOpenImageFFT_triggered()
     openImage(filename,data_fft);
     plotData(plot_fft,data_fft);
     data_fft_phase = new data2d;
+    preProcess();
+}
+
+void MainWindow::on_pushButton_invertData_clicked()
+{
+    funcs->inverteData(data_input);
+    plotData(plot_input,data_input);
+}
+
+void MainWindow::on_pushButton_invertFFT_clicked()
+{
+    funcs->inverteData(data_fft);
+    //funcs->inverteData(data_fft_phase);
+    preProcess();
+}
+
+void MainWindow::on_pushButtonCentre_clicked()
+{
+    preProcess();
+}
+
+void MainWindow::on_pushButton_FFT_clicked()
+{
+    data_fft = new data2d;
+    data_fft_phase = new data2d;
+    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
     preProcess();
 }

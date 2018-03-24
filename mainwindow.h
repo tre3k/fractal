@@ -44,6 +44,14 @@ private slots:
 
     void on_actionOpenImageFFT_triggered();
 
+    void on_pushButton_invertData_clicked();
+
+    void on_pushButton_invertFFT_clicked();
+
+    void on_pushButtonCentre_clicked();
+
+    void on_pushButton_FFT_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -56,6 +64,7 @@ private:
     iCasePlot2D *plot_fft_phase;
 
     windowPlot *winPlot;
+    functions *funcs;
 
     QVector<double> *averX,*averY,*averErr;
 
