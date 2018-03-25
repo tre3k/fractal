@@ -64,6 +64,7 @@ void windowPlot::slot_plot(windowPlotValues val){
 
     slot_logX(actionLogX->isChecked());
     slot_logY(actionLogY->isChecked());
+    approximate();
     plot->rescaleAxes(true);
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
@@ -124,4 +125,141 @@ void windowPlot::slot_autoscale(){
 
 void windowPlot::slot_close(){
     this->hide();
+}
+
+void windowPlot::approximate(){
+    double xMax,xMin,yMax,yMin;
+    QVector<double> aX,aY;
+    double daX;
+
+    double pA,pD,pB;  //Amplitude step and background pA*x^-pD+pB
+
+    xMin = globalVal.x->at(0);
+    xMax = xMin;
+    yMin = globalVal.y->at(0);
+    yMax = yMin;
+
+    for(int i=0;i<globalVal.x->size();i++){
+        if(globalVal.x->at(i) < xMin) xMin = globalVal.x->at(i);
+        if(globalVal.x->at(i) > xMax) xMax = globalVal.x->at(i);
+        if(globalVal.y->at(i) < yMin) yMin = globalVal.y->at(i);
+        if(globalVal.y->at(i) > yMax) yMax = globalVal.y->at(i);
+    }
+
+    pD = 1.0;
+    pB = yMin;
+    pA = globalVal.y->at(2);
+
+    for(int i=0;i<100;i++){
+        //qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
+        linear_approx(&pA,&pD,&pB,2,(globalVal.x->size()-1)/2,globalVal.x->size()-2);
+    }
+    qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
+
+    daX = (xMax-xMin)/3/globalVal.x->size();
+
+    for(int i=0;i<globalVal.x->size()*3;i++){
+        aX.append(daX*i);
+        aY.append(linear_func(pA,pD,pB,daX*i));
+    }
+    plot->clearItems();
+    QCPItemText *paramText = new QCPItemText(plot);
+    paramText->setColor("red");
+    paramText->position->setCoords(aX.at((aX.size()-1)/2),aY.at(2));
+    paramText->setText("D = "+QString::number(pD)+
+                       "\nA = "+QString::number(pA)+
+                       "\nb = "+QString::number(pB));
+    plot->addCurve(&aX,&aY,false,"red","approximate");
+}
+
+double windowPlot::linear_func(double A, double D, double B,double x){
+    return A*pow(x,-D)+B;
+}
+
+void windowPlot::linear_approx(double *A, double *D, double *B, int i1,int i2,int i3){
+    double pA = *A;
+    double pD = *D;
+    double pB = *B;
+
+    double eps = 0.001;
+
+    double x1,x2,x3,y1,y2,y3;
+    double f1,f2,f3;
+    double df11,df12,df13,df21,df22,df23,df31,df32,df33;
+    double m11,m12,m13,m21,m22,m23,m31,m32,m33;
+    double v1,v2,v3;
+    double det,tmp;
+
+    x1 = globalVal.x->at(i1); y1 = globalVal.y->at(i1);
+    x2 = globalVal.x->at(i2); y2 = globalVal.y->at(i2);
+    x3 = globalVal.x->at(i3); y3 = globalVal.y->at(i3);
+
+    //значения функции с подставленными значениями
+    f1 = linear_func(pA,pD,pB,x1)-y1;
+    f2 = linear_func(pA,pD,pB,x2)-y2;
+    f3 = linear_func(pA,pD,pB,x3)-y3;
+
+    //qDebug () << "f1: " << f1 << " f2: " << f2 << " f3: " << f3;
+
+    // матрица производных
+    df11 = (linear_func(pA+eps,pD,pB,x1)-linear_func(pA,pD,pB,x1))/eps;
+    df12 = (linear_func(pA,pD+eps,pB,x1)-linear_func(pA,pD,pB,x1))/eps;
+    df13 = (linear_func(pA,pD,pB+eps,x1)-linear_func(pA,pD,pB,x1))/eps;
+    df21 = (linear_func(pA+eps,pD,pB,x2)-linear_func(pA,pD,pB,x2))/eps;
+    df22 = (linear_func(pA,pD+eps,pB,x2)-linear_func(pA,pD,pB,x2))/eps;
+    df23 = (linear_func(pA,pD,pB+eps,x2)-linear_func(pA,pD,pB,x2))/eps;
+    df31 = (linear_func(pA+eps,pD,pB,x3)-linear_func(pA,pD,pB,x3))/eps;
+    df32 = (linear_func(pA,pD+eps,pB,x3)-linear_func(pA,pD,pB,x3))/eps;
+    df33 = (linear_func(pA,pD,pB+eps,x3)-linear_func(pA,pD,pB,x3))/eps;
+
+    // опредилитель матрицы
+    det = df11*(df22*df33-df23*df32) +
+          df12*(df23*df31-df21*df33) +
+          df13*(df21*df32-df22*df31);
+
+    //qDebug () << "det: " << det;
+    if(det == 0) return;
+
+    // траспорирование
+    tmp = df12; df12 = df21; df21 = tmp;
+    tmp = df31; df31 = df13; df13 = tmp;
+    tmp = df32; df32 = df23; df23 = tmp;
+
+    // матрица кофакторов
+    m11 =  (df22*df33-df23*df32);
+    m12 = -(df21*df33-df23*df31);
+    m13 =  (df21*df32-df22*df31);
+
+    m21 = -(df12*df33-df13*df32);
+    m22 =  (df11*df33-df13*df31);
+    m23 = -(df11*df32-df12*df31);
+
+    m31 =  (df12*df23-df13*df22);
+    m32 = -(df11*df23-df13*df21);
+    m33 =  (df11*df22-df12*df21);
+
+    //обратная матрица
+    m11 /= det; m12 /= det; m13 /= det;
+    m21 /= det; m22 /= det; m23 /= det;
+    m31 /= det; m32 /= det; m33 /= det;
+
+    /*
+    qDebug () << m11 << " " <<  m12 << " " << m13;
+    qDebug () << m21 << " " <<  m22 << " " << m23;
+    qDebug () << m31 << " " <<  m32 << " " << m33;
+    */
+
+    v1 = (f1*m11+f2*m12+f3*m13);
+    v2 = (f1*m21+f2*m22+f3*m23);
+    v3 = (f1*m31+f2*m32+f3*m33);
+
+    qDebug () << "v1: " << v1 << " v2: " << v2 << " v3: " << v3;
+    pA -= v1;
+    pD -= v2;
+    pB -= v3;
+
+    *A = pA;
+    *D = pD;
+    *B = pB;
+    return;
 }

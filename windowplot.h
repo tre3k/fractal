@@ -33,6 +33,10 @@ public:
 
     windowPlotValues globalVal;
 
+    void approximate();
+    void linear_approx(double *,double *,double *,int,int,int);
+    double linear_func(double,double,double,double);
+
 signals:
 
 public slots:
