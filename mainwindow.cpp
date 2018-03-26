@@ -244,7 +244,7 @@ void MainWindow::openImage(QString filename,data2d *indata){
             tmp += (img->pixel(i,j) & 0x0000ff0000)>>16;             //R
             tmp /= 3;
 
-            indata->data[i][sy-j-1] = (double) tmp;
+            indata->data[i][sy-j-1] = (double)(tmp)/255;
         }
     }
 

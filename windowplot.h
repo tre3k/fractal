@@ -27,6 +27,8 @@ public:
     QAction *actionLogX;
     QAction *actionLogY;
     QAction *actionAutoscale;
+    QMenu *menuApproximation;
+    QAction *actionLinearApprox;
 
 
     iQCustomPlot *plot;
@@ -34,7 +36,7 @@ public:
     windowPlotValues globalVal;
 
     void approximate();
-    void linear_approx(double *,double *,double *,int,int,int);
+    void linear_approx(double *,double *,double *,int,int,int,QVector<double> *,QVector<double> *);
     double linear_func(double,double,double,double);
 
 signals:
@@ -44,6 +46,7 @@ public slots:
     void slot_saveTxt();
     void slot_logX(bool);
     void slot_logY(bool);
+    void slot_linearApprox(bool);
     void slot_autoscale();
     void slot_close();
 

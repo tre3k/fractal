@@ -2,18 +2,21 @@
 
 X=512
 Y=512
-N = 7
+N = 3
 
 data = [0]*X
 for i in range(X):
     data[i] = [0]*Y
 
 def printData():
-    print(X)
-    print(Y)
+    fw = open("fractal_serpinsky"+str(X)+"x"+str(Y)+"_"+str(N)+".txt",'w')
+    print(X,"x",Y)
+    print("N =",N)
+    print("to file:","fractal_serpinsky"+str(X)+"x"+str(Y)+"_"+str(N)+".txt")
+    fw.write(str(X)+'\n'+str(Y)+'\n')
     for i in range(0,X):
         for j in range(0,Y):
-            print(data[i][j])
+            fw.write(str(data[i][j])+'\n')
     return 
 
 def paintRect(x1,y1,x2,y2):
@@ -40,11 +43,7 @@ def serp(x1,y1,x2,y2,n):
     return
 
 def main():
-    #paintRect(X/3,Y/3,2*X/3,2*Y/3)
-    #serp(X/3,Y/3,2*X/3,2*Y/3,3)
     serp(0,0,X,Y,N)
-    #for j in range(22,401):
-    #    data[256][j] = 1
     printData();
     return
 

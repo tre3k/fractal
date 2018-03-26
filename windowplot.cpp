@@ -19,6 +19,11 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     actionAutoscale = new QAction("авт.",this);
     actionHideWindow = new QAction("Закрыть", this);
 
+    menuApproximation = new QMenu("Апроксим.",this);
+    actionLinearApprox = new QAction("Степенная",this);
+    actionLinearApprox->setCheckable(true);
+
+
     menuFile->addAction(actionSaveTxt);
     menuFile->addSeparator();
     menuFile->addAction(actionHideWindow);
@@ -27,8 +32,11 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     menuScale->addAction(actionLogY);
     menuScale->addAction(actionAutoscale);
 
+    menuApproximation->addAction(actionLinearApprox);
+
     menuBar->addMenu(menuFile);
     menuBar->addMenu(menuScale);
+    menuBar->addMenu(menuApproximation);
 
     this->setMenuBar(menuBar);
 
@@ -45,6 +53,8 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
             this,SLOT(slot_autoscale()));
     connect(actionHideWindow,SIGNAL(triggered(bool)),
             this,SLOT(slot_close()));
+    connect(actionLinearApprox,SIGNAL(toggled(bool)),
+            this,SLOT(slot_linearApprox(bool)));
 }
 
 
@@ -64,7 +74,7 @@ void windowPlot::slot_plot(windowPlotValues val){
 
     slot_logX(actionLogX->isChecked());
     slot_logY(actionLogY->isChecked());
-    approximate();
+    if(actionLinearApprox->isChecked()) approximate();
     plot->rescaleAxes(true);
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
@@ -123,6 +133,15 @@ void windowPlot::slot_autoscale(){
     plot->replot();
 }
 
+void windowPlot::slot_linearApprox(bool val){
+    if(!val){
+        plot->clearItems();
+        slot_plot(globalVal);
+    }else{
+        approximate();
+    }
+}
+
 void windowPlot::slot_close(){
     this->hide();
 }
@@ -130,13 +149,28 @@ void windowPlot::slot_close(){
 void windowPlot::approximate(){
     double xMax,xMin,yMax,yMin;
     QVector<double> aX,aY;
+    //QVector<double> medialX,medialY;
+    //double wind = 4,S=0;
     double daX;
 
     double pA,pD,pB;  //Amplitude step and background pA*x^-pD+pB
 
+    /*
+    for(int i=0;i<globalVal.x->size()-wind;i++){
+        S=0;
+        for(int j=0;j<wind;j++){
+            S+=globalVal.y->at(i+j)/wind;
+        }
+        medialY.append(S);
+        medialX.append(globalVal.x->at(i+wind/2));
+    }
+    */
+
     xMin = globalVal.x->at(0);
+    //xMin = medialX.at(0);
     xMax = xMin;
     yMin = globalVal.y->at(0);
+    //xMin = medialY.at(0);
     yMax = yMin;
 
     for(int i=0;i<globalVal.x->size();i++){
@@ -146,19 +180,35 @@ void windowPlot::approximate(){
         if(globalVal.y->at(i) > yMax) yMax = globalVal.y->at(i);
     }
 
-    pD = 1.0;
-    pB = yMin;
-    pA = globalVal.y->at(2);
-
-    for(int i=0;i<100;i++){
-        //qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
-        linear_approx(&pA,&pD,&pB,2,(globalVal.x->size()-1)/2,globalVal.x->size()-2);
+    /*
+    for(int i=0;i<globalVal.x->size();i++){
+        if(medialX.at(i) < xMin) xMin = medialX.at(i);
+        if(medialX.at(i) > xMax) xMax = medialX.at(i);
+        if(medialY.at(i) < yMin) yMin = medialY.at(i);
+        if(medialY.at(i) > yMax) yMax = medialY.at(i);
     }
+    */
+
+    pD = 1.0;
+    //pB = yMin;
+    pB = 0;
+    //pA = globalVal.y->at(2);
+    pA = 0.115;
+    //pA = medialX.at(2);
+
+    for(int i=0;i<5;i++){
+        //qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
+        linear_approx(&pA,&pD,&pB,2,(globalVal.x->size()-1)/2,globalVal.x->size()-2,
+                      globalVal.x,globalVal.y);
+        //linear_approx(&pA,&pD,&pB,2,(medialX.size()-1)/2,medialX.size()-2,
+        //              &medialX,&medialY);
+    }
+
     qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
 
-    daX = (xMax-xMin)/3/globalVal.x->size();
+    daX = (xMax-xMin)/5/globalVal.x->size();
 
-    for(int i=0;i<globalVal.x->size()*3;i++){
+    for(int i=0;i<globalVal.x->size()*5;i++){
         aX.append(daX*i);
         aY.append(linear_func(pA,pD,pB,daX*i));
     }
@@ -169,6 +219,7 @@ void windowPlot::approximate(){
     paramText->setText("D = "+QString::number(pD)+
                        "\nA = "+QString::number(pA)+
                        "\nb = "+QString::number(pB));
+    //plot->addCurve(&medialX,&medialY,true,"red","medial");
     plot->addCurve(&aX,&aY,false,"red","approximate");
 }
 
@@ -176,7 +227,8 @@ double windowPlot::linear_func(double A, double D, double B,double x){
     return A*pow(x,-D)+B;
 }
 
-void windowPlot::linear_approx(double *A, double *D, double *B, int i1,int i2,int i3){
+void windowPlot::linear_approx(double *A, double *D, double *B, int i1,int i2,int i3,
+                               QVector<double> *vX,QVector<double> *vY){
     double pA = *A;
     double pD = *D;
     double pB = *B;
@@ -190,9 +242,16 @@ void windowPlot::linear_approx(double *A, double *D, double *B, int i1,int i2,in
     double v1,v2,v3;
     double det,tmp;
 
+    /*
     x1 = globalVal.x->at(i1); y1 = globalVal.y->at(i1);
     x2 = globalVal.x->at(i2); y2 = globalVal.y->at(i2);
     x3 = globalVal.x->at(i3); y3 = globalVal.y->at(i3);
+    */
+
+    x1 = vX->at(i1); y1 = vY->at(i1);
+    x2 = vX->at(i2); y2 = vY->at(i2);
+    x3 = vX->at(i3); y3 = vY->at(i3);
+
 
     //значения функции с подставленными значениями
     f1 = linear_func(pA,pD,pB,x1)-y1;
@@ -253,7 +312,7 @@ void windowPlot::linear_approx(double *A, double *D, double *B, int i1,int i2,in
     v2 = (f1*m21+f2*m22+f3*m23);
     v3 = (f1*m31+f2*m32+f3*m33);
 
-    qDebug () << "v1: " << v1 << " v2: " << v2 << " v3: " << v3;
+    //qDebug () << "v1: " << v1 << " v2: " << v2 << " v3: " << v3;
     pA -= v1;
     pD -= v2;
     pB -= v3;
