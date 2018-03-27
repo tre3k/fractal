@@ -94,6 +94,7 @@ void MainWindow::on_action_Open_triggered()
     txtStream >> tmp;
     input_size_y = QString(tmp).toInt();
 
+    delete data_input;
     data_input = new data2d(input_size_x,input_size_y);
 
     int i=0,j=0;
@@ -101,9 +102,6 @@ void MainWindow::on_action_Open_triggered()
     while(!txtStream.atEnd()){
         txtStream >> tmp;
         data_input->data[i][j] = QString(tmp).toDouble();//+(double)(rand()%100)/100;
-        //data_input->data[i][j] = cos(2*M_PI*(0.12*i+0.13*j));
-        //if(cos(2*M_PI*(0.143*i+0.143*j))>0) data_input->data[i][j] = 1;
-        //if(cos(2*M_PI*(0.143*i+0.143*j))<=0) data_input->data[i][j] = 0;
         i++;
         if(i>=data_input->size_x){
             i=0; j++;
@@ -136,6 +134,7 @@ void MainWindow::on_action_openFFT_triggered()
     txtStream >> tmp;
     input_size_y = QString(tmp).toInt();
 
+    delete data_fft;
     data_fft = new data2d(input_size_x,input_size_y);
 
     int i=0,j=0;
@@ -209,6 +208,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     wPlotValues.err = averErr;
     wPlotValues.x = averX;
     wPlotValues.y = averY;
+
     wPlotValues.showError = ui->checkBox_Err->isChecked();
 
     emit signal_plot(wPlotValues);
@@ -271,7 +271,6 @@ void MainWindow::on_actionOpenImage_triggered()
     data_input = new data2d;
     openImage(filename,data_input);
     plotData(plot_input,data_input);
-
 
     data_fft = new data2d;
     data_fft_phase = new data2d;
