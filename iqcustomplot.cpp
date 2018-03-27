@@ -21,7 +21,6 @@ iQCustomPlot::iQCustomPlot(QWidget *parent) : QCustomPlot(parent)
             this,SLOT(slot_full_drag_zoom(QMouseEvent*)));
     connect(this,SIGNAL(selectionChangedByUser()),
             this,SLOT(slot_selectionChanged()));
-
     return;
 }
 
@@ -129,6 +128,7 @@ iCasePlot2D::iCasePlot2D(QWidget *parent) : QWidget(parent)
 
     connect(checkBoxLog,SIGNAL(clicked(bool)),this,SLOT(slot_log(bool)));
     connect(checkBoxManual,SIGNAL(clicked(bool)),this,SLOT(slot_manual(bool)));
+
     return;
 }
 

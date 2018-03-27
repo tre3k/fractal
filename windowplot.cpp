@@ -193,13 +193,10 @@ void windowPlot::approximate(){
     pB = yMin;
     pA = globalVal.y->at(2);
 
-
     for(int i=0;i<30;i++){
         //qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;
         linear_approx(&pA,&pD,&pB,1,(globalVal.x->size()-1)/2,globalVal.x->size()-2,
                       globalVal.x,globalVal.y);
-        //linear_approx(&pA,&pD,&pB,2,(medialX.size()-1)/2,medialX.size()-2,
-        //              &medialX,&medialY);
     }
 
     qDebug () << "A = " << pA << "; D = " << pD << "; b = " << pB;

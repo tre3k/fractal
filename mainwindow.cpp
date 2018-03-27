@@ -94,7 +94,6 @@ void MainWindow::on_action_Open_triggered()
     txtStream >> tmp;
     input_size_y = QString(tmp).toInt();
 
-    delete data_input;
     data_input = new data2d(input_size_x,input_size_y);
 
     int i=0,j=0;
@@ -134,7 +133,6 @@ void MainWindow::on_action_openFFT_triggered()
     txtStream >> tmp;
     input_size_y = QString(tmp).toInt();
 
-    delete data_fft;
     data_fft = new data2d(input_size_x,input_size_y);
 
     int i=0,j=0;
@@ -208,7 +206,6 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     wPlotValues.err = averErr;
     wPlotValues.x = averX;
     wPlotValues.y = averY;
-
     wPlotValues.showError = ui->checkBox_Err->isChecked();
 
     emit signal_plot(wPlotValues);
@@ -271,6 +268,7 @@ void MainWindow::on_actionOpenImage_triggered()
     data_input = new data2d;
     openImage(filename,data_input);
     plotData(plot_input,data_input);
+
 
     data_fft = new data2d;
     data_fft_phase = new data2d;
