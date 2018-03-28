@@ -11,6 +11,7 @@
 struct windowPlotValues{
     QVector<double> *x,*y,*err;
     bool showError;
+    bool logScale;
 };
 
 class windowPlot : public QMainWindow
@@ -24,6 +25,7 @@ public:
     QAction *actionSaveTxt;
     QAction *actionHideWindow;
     QMenu *menuScale;
+    QAction *actionDoubleLog;
     QAction *actionLogX;
     QAction *actionLogY;
     QAction *actionAutoscale;
@@ -44,6 +46,7 @@ signals:
 public slots:
     void slot_plot(windowPlotValues);
     void slot_saveTxt();
+    void slot_doubleLog(bool);
     void slot_logX(bool);
     void slot_logY(bool);
     void slot_linearApprox(bool);

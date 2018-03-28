@@ -255,6 +255,7 @@ void functions::average(data2d *data,
     }
 
     for(r=offset;r<len;r+=dr){
+        dphi = atan(1.0/r);
         for(phi=angle-oangle/2;phi<angle+oangle/2;phi+=dphi){
             toCircle(&x,&y,r,phi);
 

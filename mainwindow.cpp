@@ -203,6 +203,19 @@ void MainWindow::on_pushButtonIntegrate_clicked()
 
     windowPlotValues wPlotValues;
 
+    wPlotValues.logScale = true;
+    if(ui->checkBoxLog->isChecked()){
+        for(int i=0;i<averX->size();i++){
+            if(averX->at(i)==0) averX->remove(i);
+            if(averY->at(i)==0) averY->remove(i);
+        }
+        for(int i=0;i<averX->size();i++){
+            (*(averX))[i] = log(averX->at(i));
+            (*(averY))[i] = log(averY->at(i));
+        }
+        wPlotValues.logScale = false;
+    }
+
     wPlotValues.err = averErr;
     wPlotValues.x = averX;
     wPlotValues.y = averY;
@@ -215,9 +228,13 @@ void MainWindow::on_pushButtonIntegrate_clicked()
 void MainWindow::on_actionScale_triggered()
 {
     plot_fft->plot2D->rescaleAxes();
+    plot_fft->plot2D->ColorScale->rescaleDataRange(true);
     plot_fft->plot2D->replot();
+
     plot_input->plot2D->rescaleAxes();
+    plot_input->plot2D->ColorScale->rescaleDataRange(true);
     plot_input->plot2D->replot();
+
     plot_fft_phase->plot2D->rescaleAxes();
     plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
     plot_fft_phase->plot2D->replot();

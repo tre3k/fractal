@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-X=512
-Y=512
-N = 3
+X=9
+Y=9
+N = 1
 
 data = [0]*X
 for i in range(X):

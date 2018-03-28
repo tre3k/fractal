@@ -10,6 +10,9 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     actionSaveTxt = new QAction("Экспорт в txt",this);
 
     menuScale = new QMenu("Масштаб");
+    actionDoubleLog = new QAction("двойной лог.",this);
+    actionDoubleLog->setCheckable(true);
+    actionDoubleLog->setChecked(true);
     actionLogX = new QAction("Лог. по х",this);
     actionLogX->setCheckable(true);
     actionLogX->setChecked(true);
@@ -28,6 +31,7 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     menuFile->addSeparator();
     menuFile->addAction(actionHideWindow);
 
+    menuScale->addAction(actionDoubleLog);
     menuScale->addAction(actionLogX);
     menuScale->addAction(actionLogY);
     menuScale->addAction(actionAutoscale);
@@ -55,6 +59,8 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
             this,SLOT(slot_close()));
     connect(actionLinearApprox,SIGNAL(toggled(bool)),
             this,SLOT(slot_linearApprox(bool)));
+    connect(actionDoubleLog,SIGNAL(toggled(bool)),
+            this,SLOT(slot_doubleLog(bool)));
 }
 
 
@@ -72,6 +78,7 @@ void windowPlot::slot_plot(windowPlotValues val){
                   2,Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
     }
 
+
     slot_logX(actionLogX->isChecked());
     slot_logY(actionLogY->isChecked());
     if(actionLinearApprox->isChecked()) approximate();
@@ -79,6 +86,15 @@ void windowPlot::slot_plot(windowPlotValues val){
     plot->xAxis->scaleRange(1.2);
     plot->yAxis->scaleRange(1.2);
     plot->replot();
+}
+
+void windowPlot::slot_doubleLog(bool val){
+    actionLogX->setChecked(val);
+    actionLogY->setChecked(val);
+    slot_logX(val);
+    slot_logY(val);
+    slot_autoscale();
+    return;
 }
 
 void windowPlot::slot_logX(bool val){
