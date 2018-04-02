@@ -57,6 +57,8 @@ void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
 }
 
 void MainWindow::paintCircles(iCasePlot2D *plot,double x, double y, double r_in, double r_our){
+    x+=0.5;
+    y+=0.5;
     plot->plot2D->clearItems();
     QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
     our->setPen(QPen(Qt::white));
