@@ -66,9 +66,9 @@
     <widget class="QCheckBox" name="checkBox_CKO">
      <property name="geometry">
       <rect>
-       <x>251</x>
+       <x>249</x>
        <y>58</y>
-       <width>101</width>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
@@ -86,6 +86,9 @@
        <height>24</height>
       </rect>
      </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
      <property name="maximum">
       <double>999999.000000000000000</double>
      </property>
@@ -99,6 +102,9 @@
        <height>24</height>
       </rect>
      </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
      <property name="maximum">
       <double>999999.000000000000000</double>
      </property>
@@ -111,6 +117,12 @@
        <width>66</width>
        <height>24</height>
       </rect>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="minimum">
+      <double>-999999.000000000000000</double>
      </property>
      <property name="maximum">
       <double>999999.000000000000000</double>
@@ -135,9 +147,9 @@
     <widget class="QPushButton" name="pushButtonIntegrate">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>250</x>
        <y>90</y>
-       <width>91</width>
+       <width>101</width>
        <height>23</height>
       </rect>
      </property>
@@ -153,6 +165,12 @@
        <width>66</width>
        <height>24</height>
       </rect>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="minimum">
+      <double>-999999.000000000000000</double>
      </property>
      <property name="maximum">
       <double>999999.000000000000000</double>
@@ -190,7 +208,7 @@
     <widget class="QCheckBox" name="checkBox_Err">
      <property name="geometry">
       <rect>
-       <x>252</x>
+       <x>250</x>
        <y>26</y>
        <width>101</width>
        <height>31</height>
@@ -204,8 +222,8 @@
     <widget class="QCheckBox" name="checkBoxLog">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>0</y>
+       <x>201</x>
+       <y>-1</y>
        <width>141</width>
        <height>21</height>
       </rect>
@@ -246,7 +264,7 @@
      <rect>
       <x>290</x>
       <y>340</y>
-      <width>80</width>
+      <width>91</width>
       <height>23</height>
      </rect>
     </property>
@@ -267,6 +285,47 @@
      <string>FFT</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="checkBoxSizeOfPixel">
+    <property name="geometry">
+     <rect>
+      <x>177</x>
+      <y>500</y>
+      <width>201</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>размер на пиксель
+(м,мм, да чего хочешь,
+в обратном будет он же,
+только обратный =))</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>517</y>
+      <width>151</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="decimals">
+     <number>6</number>
+    </property>
+    <property name="minimum">
+     <double>0.000001000000000</double>
+    </property>
+    <property name="maximum">
+     <double>999999.000000000000000</double>
+    </property>
+    <property name="singleStep">
+     <double>0.010000000000000</double>
+    </property>
+    <property name="value">
+     <double>1.000000000000000</double>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -274,7 +333,7 @@
      <x>0</x>
      <y>0</y>
      <width>780</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

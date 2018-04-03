@@ -34,6 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
             this,SLOT(slot_changeSpinBoxs(double)));
     connect(this,SIGNAL(signal_plot(windowPlotValues)),
             winPlot,SLOT(slot_plot(windowPlotValues)));
+    connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
+            this,SLOT(slotChangeRangeFFT()));
+    connect(ui->SpinBoxSizeOfPixel,SIGNAL(valueChanged(double)),
+            this,SLOT(slotChangeRangeFFT()));
+    connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
+            this,SLOT(on_pushButtonCentre_clicked()));
 }
 
 MainWindow::~MainWindow()
@@ -43,22 +49,28 @@ MainWindow::~MainWindow()
 
 void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
     int i,j;
-    plot->plot2D->ColorMap->data()->setRange(QCPRange(0,dat->size_x),QCPRange(0,dat->size_y));
+
+    //plot->plot2D->ColorMap->data()->setRange(QCPRange(0,dat->size_x),QCPRange(0,dat->size_y));
     plot->plot2D->ColorMap->data()->setSize(dat->size_x,dat->size_y);
     for(i=0;i<dat->size_x;i++){
         for(j=0;j<dat->size_y;j++){
             plot->plot2D->ColorMap->data()->setCell(i,j,dat->data[i][j]);
         }
     }
+    slotChangeRangeFFT();
+    /*
     plot->plot2D->ColorMap->rescaleDataRange(true);
     plot->plot2D->rescaleAxes();
     plot->plot2D->replot();
+    */
     return;
 }
 
 void MainWindow::paintCircles(iCasePlot2D *plot,double x, double y, double r_in, double r_our){
-    x+=0.5;
-    y+=0.5;
+    if(!ui->checkBoxSizeOfPixel->isChecked()){
+        x+=0.5;
+        y+=0.5;
+    }
     plot->plot2D->clearItems();
     QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
     our->setPen(QPen(Qt::white));
@@ -151,6 +163,7 @@ void MainWindow::on_action_openFFT_triggered()
 
     f.close();
     data_fft_phase = new data2d;
+    data_input = new data2d;
     preProcess();
 }
 
@@ -180,12 +193,22 @@ void MainWindow::preProcess(){
     ui->spinBox_center_y->setValue(c_y);
     ui->spinBox_radius_in->setValue(0.0);
     double ourRadius_default;
+
+
     if(data_fft->size_x<=data_fft->size_y){
         ourRadius_default=(double)(data_fft->size_x-1)/2;
     }else{
         ourRadius_default=(double)(data_fft->size_y-1)/2;
     }
     ui->spinBox_radius_our->setValue(ourRadius_default);
+
+
+    if(ui->checkBoxSizeOfPixel->isChecked()){
+        ui->spinBox_center_x->setValue(toImpulse*(c_x-data_fft->size_x/2));
+        ui->spinBox_center_y->setValue(toImpulse*(c_y-data_fft->size_y/2));
+        ui->spinBox_radius_our->setValue(ourRadius_default*toImpulse/2);
+    }
+
 }
 
 void MainWindow::on_action_Close_triggered()
@@ -199,13 +222,30 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     averY->clear();
     averErr->clear();
 
-    funcs->average(data_fft,ui->spinBox_center_x->value(),ui->spinBox_center_y->value(),
-                 0.0,360.0,ui->spinBox_radius_in->value(),ui->spinBox_radius_our->value(),
+    double px_center_x = ui->spinBox_center_x->value();
+    double px_center_y = ui->spinBox_center_y->value();
+    double px_radius_in = ui->spinBox_radius_in->value();
+    double px_radius_our = ui->spinBox_radius_our->value();
+
+    if(ui->checkBoxSizeOfPixel->isChecked()){
+        px_center_x = ui->spinBox_center_x->value()/toImpulse + data_fft->size_x/2;
+        px_center_y = ui->spinBox_center_y->value()/toImpulse + data_fft->size_y/2;
+        px_radius_in = ui->spinBox_radius_in->value()/toImpulse;
+        px_radius_our = ui->spinBox_radius_our->value()/toImpulse;
+    }
+
+    funcs->average(data_fft,px_center_x,px_center_y,
+                 0.0,360.0,px_radius_in,px_radius_our,
                  averX,averY,averErr,ui->checkBox_CKO->isChecked(),0);
 
     windowPlotValues wPlotValues;
 
     wPlotValues.logScale = true;
+    if(ui->checkBoxSizeOfPixel->isChecked()){
+        for(int i=0;i<averX->size();i++){
+            (*(averX))[i] = toImpulse*averX->at(i);
+        }
+    }
     if(ui->checkBoxLog->isChecked()){
         for(int i=0;i<averX->size();i++){
             if(averX->at(i)==0) averX->remove(i);
@@ -314,6 +354,7 @@ void MainWindow::on_actionOpenImageFFT_triggered()
     openImage(filename,data_fft);
     plotData(plot_fft,data_fft);
     data_fft_phase = new data2d;
+    data_input = new data2d;
     preProcess();
 }
 
@@ -341,4 +382,44 @@ void MainWindow::on_pushButton_FFT_clicked()
     data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
     preProcess();
+}
+
+void MainWindow::slotChangeRangeFFT(){
+    if((data_fft == NULL) || (data_input == NULL) || (data_fft_phase == NULL)) return;
+    if(!ui->checkBoxSizeOfPixel->isChecked()){
+        plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(0,data_fft->size_x),QCPRange(0,data_fft->size_y));
+        plot_fft->plot2D->ColorMap->rescaleDataRange(true);
+        plot_fft->plot2D->rescaleAxes();
+        plot_fft->plot2D->replot();
+
+        plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x),QCPRange(0,data_input->size_y));
+        plot_input->plot2D->ColorMap->rescaleDataRange(true);
+        plot_input->plot2D->rescaleAxes();
+        plot_input->plot2D->replot();
+        toImpulse = 1;
+        return;
+    }
+
+    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x*ui->SpinBoxSizeOfPixel->value()),
+                                                   QCPRange(0,data_input->size_y*ui->SpinBoxSizeOfPixel->value()));
+    plot_input->plot2D->ColorMap->rescaleDataRange(true);
+    plot_input->plot2D->rescaleAxes();
+    plot_input->plot2D->replot();
+
+    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft->plot2D->ColorMap->rescaleDataRange(true);
+    plot_fft->plot2D->rescaleAxes();
+    plot_fft->plot2D->replot();
+    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
+    plot_fft_phase->plot2D->rescaleAxes();
+    plot_fft_phase->plot2D->replot();
+    toImpulse = 4*M_PI/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
+    return;
 }

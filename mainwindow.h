@@ -26,6 +26,7 @@ public:
 
 private slots:
     void slot_changeSpinBoxs(double);
+    void slotChangeRangeFFT();
 
 
     void on_action_Open_triggered();
@@ -65,6 +66,8 @@ private:
 
     windowPlot *winPlot;
     functions *funcs;
+
+    double toImpulse = 1;
 
     QVector<double> *averX,*averY,*averErr;
 
