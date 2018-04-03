@@ -231,7 +231,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
         px_center_x = ui->spinBox_center_x->value()/toImpulse + data_fft->size_x/2;
         px_center_y = ui->spinBox_center_y->value()/toImpulse + data_fft->size_y/2;
         px_radius_in = ui->spinBox_radius_in->value()/toImpulse;
-        px_radius_our = ui->spinBox_radius_our->value()/toImpulse;
+        px_radius_our = 2*ui->spinBox_radius_our->value()/toImpulse;
     }
 
     funcs->average(data_fft,px_center_x,px_center_y,
@@ -243,7 +243,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     wPlotValues.logScale = true;
     if(ui->checkBoxSizeOfPixel->isChecked()){
         for(int i=0;i<averX->size();i++){
-            (*(averX))[i] = toImpulse*averX->at(i);
+            (*(averX))[i] = toImpulse*averX->at(i)/2;
         }
     }
     if(ui->checkBoxLog->isChecked()){

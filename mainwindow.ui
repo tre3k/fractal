@@ -296,9 +296,7 @@
     </property>
     <property name="text">
      <string>размер на пиксель
-(м,мм, да чего хочешь,
-в обратном будет он же,
-только обратный =))</string>
+ в прямом пр-ве (м, мм, ...)</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
@@ -333,7 +331,7 @@
      <x>0</x>
      <y>0</y>
      <width>780</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
