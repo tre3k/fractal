@@ -392,6 +392,11 @@ void MainWindow::slotChangeRangeFFT(){
         plot_fft->plot2D->rescaleAxes();
         plot_fft->plot2D->replot();
 
+        plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(0,data_fft->size_x),QCPRange(0,data_fft->size_y));
+        plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
+        plot_fft_phase->plot2D->rescaleAxes();
+        plot_fft_phase->plot2D->replot();
+
         plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x),QCPRange(0,data_input->size_y));
         plot_input->plot2D->ColorMap->rescaleDataRange(true);
         plot_input->plot2D->rescaleAxes();
