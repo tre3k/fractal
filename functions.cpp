@@ -174,6 +174,9 @@ void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_ph
     int sx = pow(2,anx);
     int sy = pow(2,any);
 
+    if(sx>sy) sy=sx;
+    if(sy>sx) sx=sy;
+
     data_out->reinit(sx,sy);
     data_out_phase->reinit(sx,sy);
 

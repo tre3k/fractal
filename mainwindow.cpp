@@ -405,26 +405,46 @@ void MainWindow::slotChangeRangeFFT(){
         return;
     }
 
+    /*
     plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x*ui->SpinBoxSizeOfPixel->value()),
                                                    QCPRange(0,data_input->size_y*ui->SpinBoxSizeOfPixel->value()));
+    */
+    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,ui->SpinBoxSizeOfPixel->value()),
+                                                   QCPRange(0,ui->SpinBoxSizeOfPixel->value()));
     plot_input->plot2D->ColorMap->rescaleDataRange(true);
     plot_input->plot2D->rescaleAxes();
     plot_input->plot2D->replot();
 
+    /*
     plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
                                                           0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
                                                  QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
                                                           0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+     */
+
+    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft->size_y/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft->size_y/ui->SpinBoxSizeOfPixel->value()));
+
     plot_fft->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft->plot2D->rescaleAxes();
     plot_fft->plot2D->replot();
+    /*
     plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
                                                           0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
                                                  QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
                                                           0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+                                                          */
+    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_phase->size_x/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft_phase->size_x/ui->SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft_phase->size_y/ui->SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft_phase->size_y/ui->SpinBoxSizeOfPixel->value()));
+
     plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft_phase->plot2D->rescaleAxes();
     plot_fft_phase->plot2D->replot();
-    toImpulse = 4*M_PI/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
+    //toImpulse = 4*M_PI/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
+    toImpulse = 4*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
     return;
 }

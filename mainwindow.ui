@@ -295,8 +295,8 @@
      </rect>
     </property>
     <property name="text">
-     <string>размер на пиксель
- в прямом пр-ве (м, мм, ...)</string>
+     <string>Размер изображения
+в прямом пр-ве</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
