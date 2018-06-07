@@ -71,6 +71,8 @@ private:
 
     QVector<double> *averX,*averY,*averErr;
 
+    bool imageLoaded = false;
+
     void preProcess();
     void plotData(iCasePlot2D *,data2d *);
     void paintCircles(iCasePlot2D *,double,double,double,double);

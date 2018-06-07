@@ -129,6 +129,7 @@ void MainWindow::on_action_Open_triggered()
     data_fft = new data2d;
     data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
+    imageLoaded=true;
     preProcess();
 }
 
@@ -168,6 +169,7 @@ void MainWindow::on_action_openFFT_triggered()
 }
 
 void MainWindow::preProcess(){
+    if(imageLoaded!=true) return;
     if(data_fft->size_x==0 || data_fft->size_y==0) return;
     plotData(plot_fft,data_fft);
     if(data_fft_phase->size_x!=0 && data_fft_phase->size_y!=0){
@@ -332,6 +334,7 @@ void MainWindow::on_actionOpenImage_triggered()
     data_fft = new data2d;
     data_fft_phase = new data2d;
     funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
+    imageLoaded=true;
     preProcess();
 }
 
