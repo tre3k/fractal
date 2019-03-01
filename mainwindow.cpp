@@ -176,7 +176,7 @@ void MainWindow::preProcess(){
         plotData(plot_fft_phase,data_fft_phase);
     }
     plot_fft_phase->plot2D->ColorScale->axis()->setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
-    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
+    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
     plot_fft_phase->plot2D->replot();
 
     double c_x=0,c_y=0,S=0;
@@ -373,7 +373,7 @@ void MainWindow::on_pushButton_invertFFT_clicked()
     //funcs->inverteData(data_fft_phase);
     preProcess();
 }
-
+    
 void MainWindow::on_pushButtonCentre_clicked()
 {
     preProcess();

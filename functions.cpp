@@ -152,6 +152,7 @@ void functions::sort(double **mass,int a,int b){
 void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_phase){
     double **real;
     double **imgn;
+    double dphi = 0.0;
     const int isx = data_in->size_x;
     const int isy = data_in->size_y;
 
@@ -203,7 +204,18 @@ void functions::makeFFT2D(data2d *data_in, data2d *data_out, data2d *data_out_ph
     for(int i=0;i<sx;i++){
         for(int j=0;j<sy;j++){
             data_out->data[i][j] = 4*(real[i][j]*real[i][j]+imgn[i][j]*imgn[i][j])/sx/sx/sy/sy;
-            data_out_phase->data[i][j] = atan(imgn[i][j]/real[i][j]);
+
+
+            dphi = 0.0;
+            if((real[i][j] < 0) && (imgn[i][j] > 0)) dphi = M_PI;
+            if((real[i][j] < 0) && (imgn[i][j] < 0)) dphi = -M_PI;
+
+            if(real[i][j] != 0.0){
+                data_out_phase->data[i][j] = atan(imgn[i][j]/real[i][j]) + dphi;
+            }else{
+                data_out_phase->data[i][j] = M_PI/2 + dphi;
+            }
+
         }
     }
 
