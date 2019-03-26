@@ -6,24 +6,24 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     this->setMinimumHeight(350);
 
     menuBar = new QMenuBar;
-    menuFile = new QMenu("&Файл");
-    actionSaveTxt = new QAction("Экспорт в txt",this);
+    menuFile = new QMenu("&file");
+    actionSaveTxt = new QAction("export to txt",this);
 
-    menuScale = new QMenu("Масштаб");
-    actionDoubleLog = new QAction("двойной лог.",this);
+    menuScale = new QMenu("scale");
+    actionDoubleLog = new QAction("double log.",this);
     actionDoubleLog->setCheckable(true);
     actionDoubleLog->setChecked(true);
-    actionLogX = new QAction("Лог. по х",this);
+    actionLogX = new QAction("log. х",this);
     actionLogX->setCheckable(true);
     actionLogX->setChecked(true);
-    actionLogY = new QAction("Лог. по у",this);
+    actionLogY = new QAction("log. у",this);
     actionLogY->setCheckable(true);
     actionLogY->setChecked(true);
-    actionAutoscale = new QAction("авт.",this);
-    actionHideWindow = new QAction("Закрыть", this);
+    actionAutoscale = new QAction("autoscale.",this);
+    actionHideWindow = new QAction("close", this);
 
-    menuApproximation = new QMenu("Апроксим.",this);
-    actionLinearApprox = new QAction("Степенная",this);
+    menuApproximation = new QMenu("approximate (experemental)",this);
+    actionLinearApprox = new QAction("power approximation",this);
     actionLinearApprox->setCheckable(true);
 
 
