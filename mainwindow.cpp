@@ -238,7 +238,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
 
     funcs->average(data_fft,px_center_x,px_center_y,
                  0.0,360.0,px_radius_in,px_radius_our,
-                 averX,averY,averErr,ui->checkBox_CKO->isChecked(),0);
+                 averX,averY,averErr,false,0);
 
     windowPlotValues wPlotValues;
 
@@ -263,7 +263,7 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     wPlotValues.err = averErr;
     wPlotValues.x = averX;
     wPlotValues.y = averY;
-    wPlotValues.showError = ui->checkBox_Err->isChecked();
+    wPlotValues.showError = false;
 
     emit signal_plot(wPlotValues);
     winPlot->show();

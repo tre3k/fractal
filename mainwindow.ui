@@ -10,6 +10,18 @@
     <height>742</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>780</width>
+    <height>742</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>780</width>
+    <height>742</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Fractal</string>
   </property>
@@ -61,22 +73,8 @@
      </rect>
     </property>
     <property name="title">
-     <string>усреднение интенсивности</string>
+     <string>average</string>
     </property>
-    <widget class="QCheckBox" name="checkBox_CKO">
-     <property name="geometry">
-      <rect>
-       <x>249</x>
-       <y>58</y>
-       <width>111</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ошибка СКО
-или корень</string>
-     </property>
-    </widget>
     <widget class="QDoubleSpinBox" name="spinBox_radius_in">
      <property name="geometry">
       <rect>
@@ -141,7 +139,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Внутренний радиус:</string>
+      <string>inner radius:</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButtonIntegrate">
@@ -154,7 +152,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Интегралить</string>
+      <string>average</string>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="spinBox_center_y">
@@ -189,7 +187,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Центр:</string>
+      <string>center:</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -202,34 +200,20 @@
       </rect>
      </property>
      <property name="text">
-      <string>Внешний радиус:</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_Err">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>26</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Выводить
-ошибку</string>
+      <string>outer radius:</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="checkBoxLog">
      <property name="geometry">
       <rect>
-       <x>201</x>
+       <x>250</x>
        <y>-1</y>
-       <width>141</width>
+       <width>111</width>
        <height>21</height>
       </rect>
      </property>
      <property name="text">
-      <string>сразу в логарифм</string>
+      <string>averege to log</string>
      </property>
     </widget>
    </widget>
@@ -243,7 +227,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>инвер. данные</string>
+     <string>inverse data</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_invertFFT">
@@ -256,7 +240,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>инвер. образ</string>
+     <string>inverse fourie</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonCentre">
@@ -269,7 +253,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>центр масс</string>
+     <string>centr. of mass </string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_FFT">
@@ -295,8 +279,9 @@
      </rect>
     </property>
     <property name="text">
-     <string>Размер изображения
-в прямом пр-ве</string>
+     <string>size of image
+in direct space
+Just phisical size (m,cm,m)</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
@@ -336,7 +321,7 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>&amp;Файл</string>
+     <string>File</string>
     </property>
     <addaction name="separator"/>
     <addaction name="action_Open"/>
@@ -364,32 +349,44 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open">
    <property name="text">
-    <string>&amp;Открыть</string>
+    <string>&amp;Open (txt)</string>
+   </property>
+   <property name="toolTip">
+    <string>Open</string>
    </property>
   </action>
   <action name="action_Close">
    <property name="text">
-    <string>Вы&amp;ход</string>
+    <string>E&amp;xit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit</string>
    </property>
   </action>
   <action name="action_openFFT">
    <property name="text">
-    <string>Открыть Фурье</string>
+    <string>Open to fourie (txt) </string>
    </property>
   </action>
   <action name="actionScale">
    <property name="text">
-    <string>авт. масштаб</string>
+    <string>auto scale</string>
    </property>
   </action>
   <action name="actionOpenImage">
    <property name="text">
-    <string>Открыть фотку</string>
+    <string>Open (image)</string>
+   </property>
+   <property name="toolTip">
+    <string>Open image</string>
    </property>
   </action>
   <action name="actionOpenImageFFT">
    <property name="text">
-    <string>Открыть фотку Фурье</string>
+    <string>Open to fourie (image)</string>
+   </property>
+   <property name="toolTip">
+    <string>Open to fourie (image)</string>
    </property>
   </action>
  </widget>
