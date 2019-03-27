@@ -281,7 +281,7 @@
     <property name="text">
      <string>size of image
 in direct space
-Just physical size (m,cm,m)</string>
+Just physical size (m,cm,mm)</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">

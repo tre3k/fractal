@@ -280,7 +280,7 @@ void MainWindow::on_actionScale_triggered()
     plot_input->plot2D->replot();
 
     plot_fft_phase->plot2D->rescaleAxes();
-    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI/2,M_PI/2));
+    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
     plot_fft_phase->plot2D->replot();
 }
 
