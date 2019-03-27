@@ -40,6 +40,10 @@ MainWindow::MainWindow(QWidget *parent) :
             this,SLOT(slotChangeRangeFFT()));
     connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
             this,SLOT(on_pushButtonCentre_clicked()));
+
+    plot_fft->checkBoxLog->setChecked(true);
+    plot_fft->slot_log(plot_fft->checkBoxLog->isChecked());
+
 }
 
 MainWindow::~MainWindow()
@@ -73,11 +77,13 @@ void MainWindow::paintCircles(iCasePlot2D *plot,double x, double y, double r_in,
     }
     plot->plot2D->clearItems();
     QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
-    our->setPen(QPen(Qt::white));
+    //our->setPen(QPen(Qt::white));
+    our->setPen(QPen(Qt::black));
     our->topLeft->setCoords(x+r_our,y+r_our);
     our->bottomRight->setCoords(x-r_our,y-r_our);
     QCPItemEllipse *in = new QCPItemEllipse(plot->plot2D);
-    in->setPen(QPen(Qt::white));
+    //in->setPen(QPen(Qt::white));
+    in->setPen(QPen(Qt::black));
     in->topLeft->setCoords(x+r_in,y+r_in);
     in->bottomRight->setCoords(x-r_in,y-r_in);
     plot->plot2D->replot();

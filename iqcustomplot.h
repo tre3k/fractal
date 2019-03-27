@@ -39,7 +39,7 @@ public:
     QVBoxLayout *vLayout;
     QHBoxLayout *hLayout;
 
-private slots:
+public slots:
     void slot_log(bool);
     void slot_manual(bool);
 };
