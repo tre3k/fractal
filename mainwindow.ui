@@ -6,17 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
+    <width>990</width>
     <height>742</height>
    </rect>
   </property>
   <property name="minimumSize">
-   <size>
-    <width>780</width>
-    <height>742</height>
-   </size>
-  </property>
-  <property name="maximumSize">
    <size>
     <width>780</width>
     <height>742</height>
@@ -36,7 +30,7 @@
       <x>10</x>
       <y>0</y>
       <width>381</width>
-      <height>331</height>
+      <height>141</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="layoutPlotIn"/>
@@ -47,7 +41,7 @@
       <x>390</x>
       <y>0</y>
       <width>381</width>
-      <height>331</height>
+      <height>131</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="layoutPlotFFT"/>
@@ -55,259 +49,196 @@
    <widget class="QWidget" name="horizontalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>330</y>
+      <x>500</x>
+      <y>180</y>
       <width>381</width>
-      <height>331</height>
+      <height>111</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="layoutPlotFFT_phase"/>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QWidget" name="horizontalLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>370</y>
-      <width>371</width>
-      <height>121</height>
+      <x>50</x>
+      <y>440</y>
+      <width>372</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="title">
-     <string>average</string>
-    </property>
-    <widget class="QDoubleSpinBox" name="spinBox_radius_in">
-     <property name="geometry">
-      <rect>
-       <x>156</x>
-       <y>60</y>
-       <width>81</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="maximum">
-      <double>999999.000000000000000</double>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="spinBox_radius_our">
-     <property name="geometry">
-      <rect>
-       <x>156</x>
-       <y>30</y>
-       <width>81</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="maximum">
-      <double>999999.000000000000000</double>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="spinBox_center_x">
-     <property name="geometry">
-      <rect>
-       <x>97</x>
-       <y>90</y>
-       <width>66</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="minimum">
-      <double>-999999.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>999999.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>0.500000000000000</double>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>64</y>
-       <width>131</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>inner radius:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonIntegrate">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>90</y>
-       <width>111</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>average</string>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="spinBox_center_y">
-     <property name="geometry">
-      <rect>
-       <x>169</x>
-       <y>90</y>
-       <width>66</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="minimum">
-      <double>-999999.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>999999.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>0.500000000000000</double>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>95</y>
-       <width>59</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>center:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>11</x>
-       <y>34</y>
-       <width>131</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>outer radius:</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBoxLog">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>60</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>averege to log</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_invertFFT">
+       <property name="text">
+        <string>inverse fourie</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_invertData">
+       <property name="text">
+        <string>inverse data</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_FFT">
+       <property name="text">
+        <string>FFT</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCentre">
+       <property name="text">
+        <string>centr. of mass </string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_invertData">
+   <widget class="QWidget" name="horizontalLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>340</y>
-      <width>111</width>
-      <height>23</height>
+      <x>50</x>
+      <y>580</y>
+      <width>337</width>
+      <height>51</height>
      </rect>
     </property>
-    <property name="text">
-     <string>inverse data</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_invertFFT">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>340</y>
-      <width>111</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>inverse fourie</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonCentre">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>340</y>
-      <width>91</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>centr. of mass </string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_FFT">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>340</y>
-      <width>31</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>FFT</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBoxSizeOfPixel">
-    <property name="geometry">
-     <rect>
-      <x>177</x>
-      <y>500</y>
-      <width>201</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>size of image
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
+       <property name="decimals">
+        <number>6</number>
+       </property>
+       <property name="minimum">
+        <double>0.000001000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.010000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxSizeOfPixel">
+       <property name="text">
+        <string>size of image
 in direct space
 Just physical size (m,cm,mm)</string>
-    </property>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <widget class="QDoubleSpinBox" name="SpinBoxSizeOfPixel">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>517</y>
-      <width>151</width>
-      <height>26</height>
+      <x>30</x>
+      <y>480</y>
+      <width>441</width>
+      <height>81</height>
      </rect>
     </property>
-    <property name="decimals">
-     <number>6</number>
-    </property>
-    <property name="minimum">
-     <double>0.000001000000000</double>
-    </property>
-    <property name="maximum">
-     <double>999999.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.010000000000000</double>
-    </property>
-    <property name="value">
-     <double>1.000000000000000</double>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>inner radius:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="spinBox_radius_in">
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>outer radius:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QDoubleSpinBox" name="spinBox_center_y">
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>-999999.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="spinBox_center_x">
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>-999999.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>center:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="spinBox_radius_our">
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QCheckBox" name="checkBoxLog">
+       <property name="text">
+        <string>averege to log</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButtonIntegrate">
+       <property name="text">
+        <string>average</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -315,7 +246,7 @@ Just physical size (m,cm,mm)</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>780</width>
+     <width>990</width>
      <height>20</height>
     </rect>
    </property>

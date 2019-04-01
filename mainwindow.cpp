@@ -44,6 +44,51 @@ MainWindow::MainWindow(QWidget *parent) :
     plot_fft->checkBoxLog->setChecked(true);
     plot_fft->slot_log(plot_fft->checkBoxLog->isChecked());
 
+
+    QWidget *centralWidget = new QWidget();
+    QGridLayout *centralLayout = new QGridLayout();
+
+    centralWidget->setLayout(centralLayout);
+    this->setCentralWidget(centralWidget);
+
+    QVBoxLayout *subLayout = new QVBoxLayout;
+    QHBoxLayout *horizontalLayOutTop = new QHBoxLayout;
+    horizontalLayOutTop->addWidget(ui->pushButton_invertData);
+    horizontalLayOutTop->addWidget(ui->pushButton_invertFFT);
+    horizontalLayOutTop->addWidget(ui->pushButton_FFT);
+    horizontalLayOutTop->addWidget(ui->pushButtonCentre);
+    QGroupBox *groupAverage = new QGroupBox("average");
+
+    QGridLayout *subAverageLayout = new QGridLayout;
+    groupAverage->setLayout(subAverageLayout);
+    subAverageLayout->addWidget(ui->label_2,0,0);
+    subAverageLayout->addWidget(ui->label_3,1,0);
+    subAverageLayout->addWidget(ui->label,2,0);
+
+    subAverageLayout->addWidget(ui->spinBox_radius_our,0,1);
+    subAverageLayout->addWidget(ui->spinBox_radius_in,1,1);
+    QHBoxLayout *centerLayout = new QHBoxLayout;
+    centerLayout->addWidget(ui->spinBox_center_x);
+    centerLayout->addWidget(ui->spinBox_center_y);
+    subAverageLayout->addLayout(centerLayout,2,1);
+
+    subAverageLayout->addWidget(ui->checkBoxLog,1,2);
+    subAverageLayout->addWidget(ui->pushButtonIntegrate,2,2);
+
+    QHBoxLayout *horizontalLayOutBottom = new QHBoxLayout;
+    horizontalLayOutBottom->addWidget(ui->SpinBoxSizeOfPixel);
+    horizontalLayOutBottom->addWidget(ui->checkBoxSizeOfPixel);
+
+    subLayout->addLayout(horizontalLayOutTop);
+    subLayout->addWidget(groupAverage);
+    subLayout->addLayout(horizontalLayOutBottom);
+    subLayout->addSpacing(100);
+
+    centralLayout->addWidget(plot_input,0,0);
+    centralLayout->addWidget(plot_fft,0,1);
+    centralLayout->addLayout(subLayout,1,0);
+    centralLayout->addWidget(plot_fft_phase,1,1);
+
 }
 
 MainWindow::~MainWindow()
