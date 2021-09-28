@@ -26,17 +26,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    iqcustomplot.cpp \
-    qcustomplot.cpp \
-    functions.cpp \
-    windowplot.cpp
+        iqcustomplot.cpp \
+        qcustomplot.cpp \
+        functions.cpp \
+        windowplot.cpp
 
 HEADERS += \
-        mainwindow.h \
-    iqcustomplot.h \
-    qcustomplot.h \
-    functions.h \
-    windowplot.h
+           mainwindow.h \
+           iqcustomplot.h \
+           qcustomplot.h \
+           functions.h \
+           windowplot.h
 
-FORMS += \
-        mainwindow.ui
+FORMS += mainwindow.ui
