@@ -1,3 +1,25 @@
+/*
+ *  Copyright (c) 2018-2021 NRC KI PNPI, Gatchina, LO, 188300 Russia
+ *
+ *  This file is part of fractal.
+ *
+ *  fractal is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  fractal is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with fractal.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     Author: Kirill Pshenichnyi <pshcyrill@mail.ru>
+ */
+
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -226,7 +248,8 @@ void MainWindow::preProcess(){
     if(data_fft_phase->size_x!=0 && data_fft_phase->size_y!=0){
         plotData(plot_fft_phase,data_fft_phase);
     }
-    plot_fft_phase->plot2D->ColorScale->axis()->setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
+    plot_fft_phase->plot2D->ColorScale->axis()->
+    setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
     plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
     plot_fft_phase->plot2D->replot();
 
@@ -364,17 +387,18 @@ void MainWindow::openImage(QString filename,data2d *indata){
 
 void MainWindow::on_actionOpenImage_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
-                                                                      "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
-                                                                      "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
-                                                                      "BMP (*.bmp *.BMP);;"
-                                                                      "GIF (*.gif *.GIF);;"
-                                                                      "PNG (*.png *.PNG);;"
-                                                                      "PBM (*.pbm *.PBM);;"
-                                                                      "PGM (*.pgm *.PGM);;"
-                                                                      "PPM (*.ppm *.PPM);;"
-                                                                      "XBM (*.xbm *.XBM);;"
-                                                                      "XPM (*.xpm *.XPM)");
+    QString filename = QFileDialog::getOpenFileName
+    (this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
+    "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
+    "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
+    "BMP (*.bmp *.BMP);;"
+    "GIF (*.gif *.GIF);;"
+    "PNG (*.png *.PNG);;"
+    "PBM (*.pbm *.PBM);;"
+    "PGM (*.pgm *.PGM);;"
+    "PPM (*.ppm *.PPM);;"
+    "XBM (*.xbm *.XBM);;"
+    "XPM (*.xpm *.XPM)");
 
     if(filename == "") return;
     data_input = new data2d;
@@ -391,17 +415,18 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::on_actionOpenImageFFT_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
-                                                                      "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
-                                                                      "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
-                                                                      "BMP (*.bmp *.BMP);;"
-                                                                      "GIF (*.gif *.GIF);;"
-                                                                      "PNG (*.png *.PNG);;"
-                                                                      "PBM (*.pbm *.PBM);;"
-                                                                      "PGM (*.pgm *.PGM);;"
-                                                                      "PPM (*.ppm *.PPM);;"
-                                                                      "XBM (*.xbm *.XBM);;"
-                                                                      "XPM (*.xpm *.XPM)");
+    QString filename = QFileDialog::getOpenFileName(
+    this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
+    "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
+    "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
+    "BMP (*.bmp *.BMP);;"
+    "GIF (*.gif *.GIF);;"
+    "PNG (*.png *.PNG);;"
+    "PBM (*.pbm *.PBM);;"
+    "PGM (*.pgm *.PGM);;"
+    "PPM (*.ppm *.PPM);;"
+    "XBM (*.xbm *.XBM);;"
+    "XPM (*.xpm *.XPM)");
 
     if(filename == "") return;
     data_fft = new data2d;
