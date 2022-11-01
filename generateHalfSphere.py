@@ -5,12 +5,14 @@ import math as m
 X = 2048
 Y = 2048
 
+radius = 64
+
 data = [0] * X
 for i in range(X):
     data[i] = [0] * Y
 
 def printData():
-    fw = open("half-sphere-"+str(X)+"x"+str(Y)+".txt",'w')
+    fw = open("half-sphere-"+str(X)+"x"+str(Y)+"_r"+str(radius)+".txt",'w')
     print(X,"x",Y)
     print("to file:","half-sphere-"+str(X)+"x"+str(Y)+".txt")
     fw.write(str(X)+'\n'+str(Y)+'\n')
@@ -19,8 +21,6 @@ def printData():
             fw.write(str(data[i][j])+'\n')
     return
 
-
-radius = 512
 
 for i in range(X):
     for j in range(Y):

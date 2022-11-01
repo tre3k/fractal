@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-X=2048
-Y=2048
+X=512
+Y=512
 N = 3
 
 data = [0]*X
