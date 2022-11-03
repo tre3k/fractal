@@ -83,14 +83,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QGridLayout *subAverageLayout = new QGridLayout;
     groupAverage->setLayout(subAverageLayout);
-    subAverageLayout->addWidget(ui->label_4,0,0);
-    subAverageLayout->addWidget(ui->label_2,1,0);
-    subAverageLayout->addWidget(ui->label_3,2,0);
-    subAverageLayout->addWidget(ui->label,3,0);
+    subAverageLayout->addWidget(ui->label_5,0,0);
+    subAverageLayout->addWidget(ui->label_4,1,0);
+    subAverageLayout->addWidget(ui->label_2,2,0);
+    subAverageLayout->addWidget(ui->label_3,3,0);
+    subAverageLayout->addWidget(ui->label,4,0);
 
-    subAverageLayout->addWidget(ui->spinBox_openAngle,0,1);
-    subAverageLayout->addWidget(ui->spinBox_radius_our,1,1);
-    subAverageLayout->addWidget(ui->spinBox_radius_in,2,1);
+    subAverageLayout->addWidget(ui->spinBox_positionAngle,0,1);
+    subAverageLayout->addWidget(ui->spinBox_openAngle,1,1);
+    subAverageLayout->addWidget(ui->spinBox_radius_our,2,1);
+    subAverageLayout->addWidget(ui->spinBox_radius_in,3,1);
+
     QHBoxLayout *centerLayout = new QHBoxLayout;
     centerLayout->addWidget(ui->spinBox_center_x);
     centerLayout->addWidget(ui->spinBox_center_y);
@@ -313,9 +316,17 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     }
 
 
-    funcs->average(data_fft,px_center_x,px_center_y,
-                 0.0, ui->spinBox_openAngle->value(), px_radius_in,px_radius_our,
-                 averX,averY,averErr,false,0);
+    funcs->average(data_fft,
+                   px_center_x,
+                   px_center_y,
+                   ui->spinBox_positionAngle->value(),
+                   ui->spinBox_openAngle->value(),
+                   px_radius_in,px_radius_our,
+                   averX,
+                   averY,
+                   averErr,
+                   false,
+                   0);
 
     windowPlotValues wPlotValues;
 
