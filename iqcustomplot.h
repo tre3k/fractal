@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018-2021 NRC KI PNPI, Gatchina, LO, 188300 Russia
+ *  Copyright (c) 2018-2022 Kirill Pshenichnyi
  *
  *  This file is part of fractal.
  *
