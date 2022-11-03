@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018-2021 NRC KI PNPI, Gatchina, LO, 188300 Russia
+ *  Copyright (c) 2018-2022 Kirill Pshenichnyi
  *
  *  This file is part of fractal.
  *
@@ -97,7 +97,8 @@ private:
 
     void preProcess();
     void plotData(iCasePlot2D *,data2d *);
-    void paintCircles(iCasePlot2D *,double,double,double,double);
+    void toCircle(double *x, double *y, double r, double phi);
+    void paintCircles(iCasePlot2D *,double, double, double, double, double, double);
 };
 
 #endif // MAINWINDOW_H

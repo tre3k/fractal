@@ -46,6 +46,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     funcs = new functions;
 
+    connect(ui->spinBox_openAngle,SIGNAL(valueChanged(double)),
+            this,SLOT(slot_changeSpinBoxs(double)));
+    connect(ui->spinBox_positionAngle,SIGNAL(valueChanged(double)),
+            this,SLOT(slot_changeSpinBoxs(double)));
     connect(ui->spinBox_center_x,SIGNAL(valueChanged(double)),
             this,SLOT(slot_changeSpinBoxs(double)));
     connect(ui->spinBox_center_y,SIGNAL(valueChanged(double)),
@@ -97,7 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QHBoxLayout *centerLayout = new QHBoxLayout;
     centerLayout->addWidget(ui->spinBox_center_x);
     centerLayout->addWidget(ui->spinBox_center_y);
-    subAverageLayout->addLayout(centerLayout,3,1);
+    subAverageLayout->addLayout(centerLayout,4,1);
 
     subAverageLayout->addWidget(ui->checkBoxLog,2,2);
     subAverageLayout->addWidget(ui->pushButtonIntegrate,3,2);
@@ -142,7 +146,20 @@ void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
     return;
 }
 
-void MainWindow::paintCircles(iCasePlot2D *plot,double x, double y, double r_in, double r_our){
+void MainWindow::toCircle(double *x, double *y, double r, double phi){
+        phi = 2*M_PI*phi/360;
+        *x = r*cos(phi);
+        *y = r*sin(phi);
+        return;
+}
+
+void MainWindow::paintCircles(iCasePlot2D *plot,
+                              double x,
+                              double y,
+                              double r_in,
+                              double r_our,
+                              double openAngle,
+                              double posAngle){
     if(!ui->checkBoxSizeOfPixel->isChecked()){
         x+=0.5;
         y+=0.5;
@@ -158,6 +175,24 @@ void MainWindow::paintCircles(iCasePlot2D *plot,double x, double y, double r_in,
     in->setPen(QPen(Qt::black));
     in->topLeft->setCoords(x+r_in,y+r_in);
     in->bottomRight->setCoords(x-r_in,y-r_in);
+
+    double xl, yl;
+    auto line1 = new QCPItemLine(plot->plot2D);
+    line1->setPen(QPen(QColor("black"), 1,
+                       Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+    toCircle(&xl, &yl, r_in ,posAngle + openAngle/2);
+    line1->start->setCoords(xl + x, yl + y);
+    toCircle(&xl, &yl, r_our ,posAngle + openAngle/2);
+    line1->end->setCoords(xl + x, yl + y);
+
+    auto line2 = new QCPItemLine(plot->plot2D);
+    line2->setPen(QPen(QColor("black"), 1,
+                       Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+    toCircle(&xl, &yl, r_in ,posAngle - openAngle/2);
+    line2->start->setCoords(xl + x, yl + y);
+    toCircle(&xl, &yl, r_our ,posAngle - openAngle/2);
+    line2->end->setCoords(xl + x, yl + y);
+
     plot->plot2D->replot();
 }
 
@@ -166,7 +201,9 @@ void MainWindow::slot_changeSpinBoxs(double val){
                  ui->spinBox_center_x->value(),
                  ui->spinBox_center_y->value(),
                  ui->spinBox_radius_in->value(),
-                 ui->spinBox_radius_our->value());
+                 ui->spinBox_radius_our->value(),
+                 ui->spinBox_openAngle->value(),
+                 ui->spinBox_positionAngle->value());
     ui->spinBox_radius_in->setMaximum(ui->spinBox_radius_our->value());
 }
 
