@@ -209,6 +209,8 @@ void MainWindow::initActions() {
 	connect(s_actions_.rescale_axis, &QAction::triggered,
 		this, &MainWindow::slotRescale);
 
+	s_actions_.show_about = new QAction("&about");
+
 }
 
 void MainWindow::buildMenuBar() {
@@ -219,6 +221,8 @@ void MainWindow::buildMenuBar() {
 	menu_bar->addMenu(m_file);
 	auto m_view = new QMenu("&view");
 	menu_bar->addMenu(m_view);
+	auto m_help = new QMenu("&help");
+	menu_bar->addMenu(m_help);
 
 	m_file->addAction(s_actions_.open_text);
 	m_file->addAction(s_actions_.open_image);
@@ -228,6 +232,8 @@ void MainWindow::buildMenuBar() {
 	m_file->addAction(s_actions_.close);
 
 	m_view->addAction(s_actions_.rescale_axis);
+
+	m_help->addAction(s_actions_.show_about);
 
 }
 

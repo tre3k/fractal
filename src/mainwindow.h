@@ -81,6 +81,7 @@ private:
 		QAction *open_image_fft;
 		QAction *rescale_axis;
 		QAction *close;
+		QAction *show_about;
 
 	} s_actions_;
 
