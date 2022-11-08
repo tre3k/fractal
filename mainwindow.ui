@@ -241,10 +241,10 @@ Just physical size (m,cm,mm)</string>
         <string> deg</string>
        </property>
        <property name="maximum">
-        <double>360.000000000000000</double>
+        <double>10.000000000000000</double>
        </property>
        <property name="value">
-        <double>360.000000000000000</double>
+        <double>10.000000000000000</double>
        </property>
       </widget>
      </item>
