@@ -1,41 +1,49 @@
-#-------------------------------------------------
 #
-# Project created by QtCreator 2018-03-20T20:18:00
+# Copyright (c) 2018 - 2022 Kirill Pshenichnyi <pshcyrill@mail.ru>
 #
-#-------------------------------------------------
+# This file is part of fractal.
+#
+# fractal is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# fractal is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 
-QT       += core gui printsupport
+# You should have received a copy of the GNU General Public License
+# along with fractal.  If not, see <https://www.gnu.org/licenses/>.
+#
+#    Author: Kirill Pshenichnyi <pshcyrill@mail.ru>
+#
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets printsupport
+
+QTPLUGIN += qsvg
 
 TARGET = fractal
 TEMPLATE = app
 
-# The following define makes your compiler emit warnings if you use
-# any feature of Qt which has been marked as deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
-
-# You can also make your code fail to compile if you use deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-        iqcustomplot.cpp \
-        qcustomplot.cpp \
-        functions.cpp \
-        windowplot.cpp
+        src/main.cpp \
+        src/mainwindow.cpp \
+        src/iqcustomplot.cpp \
+        src/external/qcustomplot.cpp \
+        src/functions.cpp \
+        src/windowplot.cpp
 
 HEADERS += \
-           mainwindow.h \
-           iqcustomplot.h \
-           qcustomplot.h \
-           functions.h \
-           windowplot.h
+        src/mainwindow.h \
+        src/iqcustomplot.h \
+        src/external/qcustomplot.h \
+        src/functions.h \
+        src/windowplot.h
 
-FORMS += mainwindow.ui
+INCLUDEPATH += \
+        src/ \
+        src/external
+
+RESOURCES += resources.qrc

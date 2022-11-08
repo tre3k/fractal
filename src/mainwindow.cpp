@@ -21,110 +21,125 @@
 
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
+	this->setWindowTitle("Fractal");
 
-    plot_input = new iCasePlot2D();
-    plot_fft = new iCasePlot2D();
-    plot_fft_phase = new iCasePlot2D();
-    plot_input->plot2D->ColorMap->setGradient(QCPColorGradient::gpGrayscale);
+	auto centralLayout = new QVBoxLayout();
+	auto centralWidget = new QWidget();
 
-    ui->layoutPlotIn->addWidget(plot_input);
-    ui->layoutPlotFFT->addWidget(plot_fft);
-    ui->layoutPlotFFT_phase->addWidget(plot_fft_phase);
+	this->setCentralWidget(centralWidget);
 
-    winPlot = new windowPlot;
+	plot_input = new iCasePlot2D();
+	plot_fft = new iCasePlot2D();
+	plot_fft_phase = new iCasePlot2D();
+	plot_input->plot2D->ColorMap->setGradient(QCPColorGradient::gpGrayscale);
 
-    averX = new QVector<double>;
-    averY = new QVector<double>;
-    averErr = new QVector<double>;
+	checkBoxSizeOfPixel    = new QCheckBox();
+	checkBoxLog = new QCheckBox();
 
-    funcs = new functions;
+	spinBox_center_x       = new QDoubleSpinBox();
+	spinBox_center_y       = new QDoubleSpinBox();
+	spinBox_radius_in      = new QDoubleSpinBox();
+	spinBox_radius_our     = new QDoubleSpinBox();
+	spinBox_openAngle      = new QDoubleSpinBox();
+	spinBox_positionAngle  = new QDoubleSpinBox();
+	SpinBoxSizeOfPixel = new QDoubleSpinBox();
 
-    connect(ui->spinBox_openAngle,SIGNAL(valueChanged(double)),
+// ui->layoutPlotIn->addWidget(plot_input);
+    // ui->layoutPlotFFT->addWidget(plot_fft);
+    // ui->layoutPlotFFT_phase->addWidget(plot_fft_phase);
+
+    // winPlot = new windowPlot;
+
+    // averX = new QVector<double>;
+    // averY = new QVector<double>;
+    // averErr = new QVector<double>;
+
+    // funcs = new functions;
+
+    // connect(spinBox_openAngle,SIGNAL(valueChanged(double)),
+    //         this,SLOT(slot_changeSpinBoxs(double)));
+    // connect(spinBox_positionAngle,SIGNAL(valueChanged(double)),
+    //         this,SLOT(slot_changeSpinBoxs(double)));
+    connect(spinBox_center_x, SIGNAL(valueChanged(double)),
             this,SLOT(slot_changeSpinBoxs(double)));
-    connect(ui->spinBox_positionAngle,SIGNAL(valueChanged(double)),
+    connect(spinBox_center_y, SIGNAL(valueChanged(double)),
             this,SLOT(slot_changeSpinBoxs(double)));
-    connect(ui->spinBox_center_x,SIGNAL(valueChanged(double)),
-            this,SLOT(slot_changeSpinBoxs(double)));
-    connect(ui->spinBox_center_y,SIGNAL(valueChanged(double)),
-            this,SLOT(slot_changeSpinBoxs(double)));
-    connect(ui->spinBox_radius_in,SIGNAL(valueChanged(double)),
-            this,SLOT(slot_changeSpinBoxs(double)));
-    connect(ui->spinBox_radius_our,SIGNAL(valueChanged(double)),
-            this,SLOT(slot_changeSpinBoxs(double)));
-    connect(this,SIGNAL(signal_plot(windowPlotValues)),
-            winPlot,SLOT(slot_plot(windowPlotValues)));
-    connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
+    // connect(spinBox_radius_in,SIGNAL(valueChanged(double)),
+    //         this,SLOT(slot_changeSpinBoxs(double)));
+    // connect(spinBox_radius_our,SIGNAL(valueChanged(double)),
+    //         this,SLOT(slot_changeSpinBoxs(double)));
+    // connect(this,SIGNAL(signal_plot(windowPlotValues)),
+    //         winPlot,SLOT(slot_plot(windowPlotValues)));
+    connect(checkBoxSizeOfPixel, SIGNAL(clicked(bool)),
             this,SLOT(slotChangeRangeFFT()));
-    connect(ui->SpinBoxSizeOfPixel,SIGNAL(valueChanged(double)),
+    connect(SpinBoxSizeOfPixel,SIGNAL(valueChanged(double)),
             this,SLOT(slotChangeRangeFFT()));
-    connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
-            this,SLOT(on_pushButtonCentre_clicked()));
+    // connect(ui->checkBoxSizeOfPixel,SIGNAL(clicked(bool)),
+    //         this,SLOT(on_pushButtonCentre_clicked()));
 
-    plot_fft->checkBoxLog->setChecked(true);
-    plot_fft->slot_log(plot_fft->checkBoxLog->isChecked());
+    // plot_fft->checkBoxLog->setChecked(true);
+    // plot_fft->slot_log(plot_fft->checkBoxLog->isChecked());
 
 
-    QWidget *centralWidget = new QWidget();
-    QGridLayout *centralLayout = new QGridLayout();
+    // QWidget *centralWidget = new QWidget();
+    // QGridLayout *centralLayout = new QGridLayout();
 
-    centralWidget->setLayout(centralLayout);
-    this->setCentralWidget(centralWidget);
+    // centralWidget->setLayout(centralLayout);
+    // this->setCentralWidget(centralWidget);
 
-    QVBoxLayout *subLayout = new QVBoxLayout;
-    QHBoxLayout *horizontalLayOutTop = new QHBoxLayout;
-    horizontalLayOutTop->addWidget(ui->pushButton_invertData);
-    horizontalLayOutTop->addWidget(ui->pushButton_invertFFT);
-    horizontalLayOutTop->addWidget(ui->pushButton_FFT);
-    horizontalLayOutTop->addWidget(ui->pushButtonCentre);
-    QGroupBox *groupAverage = new QGroupBox("average");
+    // QVBoxLayout *subLayout = new QVBoxLayout;
+    // QHBoxLayout *horizontalLayOutTop = new QHBoxLayout;
+    // horizontalLayOutTop->addWidget(ui->pushButton_invertData);
+    // horizontalLayOutTop->addWidget(ui->pushButton_invertFFT);
+    // horizontalLayOutTop->addWidget(ui->pushButton_FFT);
+    // horizontalLayOutTop->addWidget(ui->pushButtonCentre);
+    // QGroupBox *groupAverage = new QGroupBox("average");
 
-    QGridLayout *subAverageLayout = new QGridLayout;
-    groupAverage->setLayout(subAverageLayout);
-    subAverageLayout->addWidget(ui->label_5,0,0);
-    subAverageLayout->addWidget(ui->label_4,1,0);
-    subAverageLayout->addWidget(ui->label_2,2,0);
-    subAverageLayout->addWidget(ui->label_3,3,0);
-    subAverageLayout->addWidget(ui->label,4,0);
+    // QGridLayout *subAverageLayout = new QGridLayout;
+    // groupAverage->setLayout(subAverageLayout);
+    // subAverageLayout->addWidget(ui->label_5,0,0);
+    // subAverageLayout->addWidget(ui->label_4,1,0);
+    // subAverageLayout->addWidget(ui->label_2,2,0);
+    // subAverageLayout->addWidget(ui->label_3,3,0);
+    // subAverageLayout->addWidget(ui->label,4,0);
 
-    subAverageLayout->addWidget(ui->spinBox_positionAngle,0,1);
-    subAverageLayout->addWidget(ui->spinBox_openAngle,1,1);
-    subAverageLayout->addWidget(ui->spinBox_radius_our,2,1);
-    subAverageLayout->addWidget(ui->spinBox_radius_in,3,1);
+    // subAverageLayout->addWidget(spinBox_positionAngle,0,1);
+    // subAverageLayout->addWidget(spinBox_openAngle,1,1);
+    // subAverageLayout->addWidget(spinBox_radius_our,2,1);
+    // subAverageLayout->addWidget(spinBox_radius_in,3,1);
 
-    QHBoxLayout *centerLayout = new QHBoxLayout;
-    centerLayout->addWidget(ui->spinBox_center_x);
-    centerLayout->addWidget(ui->spinBox_center_y);
-    subAverageLayout->addLayout(centerLayout,4,1);
+    // QHBoxLayout *centerLayout = new QHBoxLayout;
+    // centerLayout->addWidget(spinBox_center_x);
+    // centerLayout->addWidget(spinBox_center_y);
+    // subAverageLayout->addLayout(centerLayout,4,1);
 
-    subAverageLayout->addWidget(ui->checkBoxLog,2,2);
-    subAverageLayout->addWidget(ui->pushButtonIntegrate,3,2);
+    // subAverageLayout->addWidget(checkBoxLog,2,2);
+    // subAverageLayout->addWidget(ui->pushButtonIntegrate,3,2);
 
-    QHBoxLayout *horizontalLayOutBottom = new QHBoxLayout;
-    horizontalLayOutBottom->addWidget(ui->SpinBoxSizeOfPixel);
-    horizontalLayOutBottom->addWidget(ui->checkBoxSizeOfPixel);
+    // QHBoxLayout *horizontalLayOutBottom = new QHBoxLayout;
+    // horizontalLayOutBottom->addWidget(SpinBoxSizeOfPixel);
+    // horizontalLayOutBottom->addWidget(ui->checkBoxSizeOfPixel);
 
-    subLayout->addLayout(horizontalLayOutTop);
-    subLayout->addWidget(groupAverage);
-    subLayout->addLayout(horizontalLayOutBottom);
-    subLayout->addSpacing(100);
+    // subLayout->addLayout(horizontalLayOutTop);
+    // subLayout->addWidget(groupAverage);
+    // subLayout->addLayout(horizontalLayOutBottom);
+    // subLayout->addSpacing(100);
 
-    centralLayout->addWidget(plot_input,0,0);
-    centralLayout->addWidget(plot_fft,0,1);
-    centralLayout->addLayout(subLayout,1,0);
-    centralLayout->addWidget(plot_fft_phase,1,1);
+    // centralLayout->addWidget(plot_input,0,0);
+    // centralLayout->addWidget(plot_fft,0,1);
+    // centralLayout->addLayout(subLayout,1,0);
+    // centralLayout->addWidget(plot_fft_phase,1,1);
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+
 }
 
 void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
@@ -160,7 +175,7 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
                               double r_our,
                               double openAngle,
                               double posAngle){
-    if(!ui->checkBoxSizeOfPixel->isChecked()){
+    if(checkBoxSizeOfPixel->isChecked()){
         x+=0.5;
         y+=0.5;
     }
@@ -198,13 +213,13 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
 
 void MainWindow::slot_changeSpinBoxs(double val){
     paintCircles(plot_fft,
-                 ui->spinBox_center_x->value(),
-                 ui->spinBox_center_y->value(),
-                 ui->spinBox_radius_in->value(),
-                 ui->spinBox_radius_our->value(),
-                 ui->spinBox_openAngle->value(),
-                 ui->spinBox_positionAngle->value());
-    ui->spinBox_radius_in->setMaximum(ui->spinBox_radius_our->value());
+                 spinBox_center_x->value(),
+                 spinBox_center_y->value(),
+                 spinBox_radius_in->value(),
+                 spinBox_radius_our->value(),
+                 spinBox_openAngle->value(),
+                 spinBox_positionAngle->value());
+    spinBox_radius_in->setMaximum(spinBox_radius_our->value());
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -284,7 +299,7 @@ void MainWindow::on_action_openFFT_triggered()
 }
 
 void MainWindow::preProcess(){
-    if(imageLoaded!=true) return;
+    if(imageLoaded != true) return;
     if(data_fft->size_x==0 || data_fft->size_y==0) return;
     plotData(plot_fft,data_fft);
     if(data_fft_phase->size_x!=0 && data_fft_phase->size_y!=0){
@@ -307,9 +322,9 @@ void MainWindow::preProcess(){
     c_x /= S;
     c_y /= S;
 
-    ui->spinBox_center_x->setValue(c_x);
-    ui->spinBox_center_y->setValue(c_y);
-    ui->spinBox_radius_in->setValue(0.0);
+    spinBox_center_x->setValue(c_x);
+    spinBox_center_y->setValue(c_y);
+    spinBox_radius_in->setValue(0.0);
     double ourRadius_default;
 
 
@@ -318,13 +333,13 @@ void MainWindow::preProcess(){
     }else{
         ourRadius_default=(double)(data_fft->size_y-1)/2;
     }
-    ui->spinBox_radius_our->setValue(ourRadius_default);
+    spinBox_radius_our->setValue(ourRadius_default);
 
 
-    if(ui->checkBoxSizeOfPixel->isChecked()){
-        ui->spinBox_center_x->setValue(toImpulse*(c_x-data_fft->size_x/2));
-        ui->spinBox_center_y->setValue(toImpulse*(c_y-data_fft->size_y/2));
-        ui->spinBox_radius_our->setValue(ourRadius_default*toImpulse/2);
+    if(checkBoxSizeOfPixel->isChecked()){
+        spinBox_center_x->setValue(toImpulse*(c_x-data_fft->size_x/2));
+        spinBox_center_y->setValue(toImpulse*(c_y-data_fft->size_y/2));
+        spinBox_radius_our->setValue(ourRadius_default*toImpulse/2);
     }
 
 }
@@ -340,24 +355,24 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     averY->clear();
     averErr->clear();
 
-    double px_center_x = ui->spinBox_center_x->value();
-    double px_center_y = ui->spinBox_center_y->value();
-    double px_radius_in = ui->spinBox_radius_in->value();
-    double px_radius_our = ui->spinBox_radius_our->value();
+    double px_center_x = spinBox_center_x->value();
+    double px_center_y = spinBox_center_y->value();
+    double px_radius_in = spinBox_radius_in->value();
+    double px_radius_our = spinBox_radius_our->value();
 
-    if(ui->checkBoxSizeOfPixel->isChecked()){
-        px_center_x = ui->spinBox_center_x->value()/toImpulse + data_fft->size_x/2;
-        px_center_y = ui->spinBox_center_y->value()/toImpulse + data_fft->size_y/2;
-        px_radius_in = ui->spinBox_radius_in->value()/toImpulse;
-        px_radius_our = 2*ui->spinBox_radius_our->value()/toImpulse;
+    if(checkBoxSizeOfPixel->isChecked()){
+        px_center_x = spinBox_center_x->value()/toImpulse + data_fft->size_x/2;
+        px_center_y = spinBox_center_y->value()/toImpulse + data_fft->size_y/2;
+        px_radius_in = spinBox_radius_in->value()/toImpulse;
+        px_radius_our = 2*spinBox_radius_our->value()/toImpulse;
     }
 
 
     funcs->average(data_fft,
                    px_center_x,
                    px_center_y,
-                   ui->spinBox_positionAngle->value(),
-                   ui->spinBox_openAngle->value(),
+                   spinBox_positionAngle->value(),
+                   spinBox_openAngle->value(),
                    px_radius_in,px_radius_our,
                    averX,
                    averY,
@@ -368,12 +383,12 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     windowPlotValues wPlotValues;
 
     wPlotValues.logScale = true;
-    if(ui->checkBoxSizeOfPixel->isChecked()){
+    if(checkBoxSizeOfPixel->isChecked()){
         for(int i=0;i<averX->size();i++){
             (*(averX))[i] = toImpulse*averX->at(i)/2;
         }
     }
-    if(ui->checkBoxLog->isChecked()){
+    if(checkBoxLog->isChecked()){
         for(int i=0;i<averX->size();i++){
             if(averX->at(i)==0) averX->remove(i);
             if(averY->at(i)==0) averY->remove(i);
@@ -500,7 +515,7 @@ void MainWindow::on_pushButton_invertFFT_clicked()
     //funcs->inverteData(data_fft_phase);
     preProcess();
 }
-    
+
 void MainWindow::on_pushButtonCentre_clicked()
 {
     preProcess();
@@ -516,7 +531,7 @@ void MainWindow::on_pushButton_FFT_clicked()
 
 void MainWindow::slotChangeRangeFFT(){
     if((data_fft == NULL) || (data_input == NULL) || (data_fft_phase == NULL)) return;
-    if(!ui->checkBoxSizeOfPixel->isChecked()){
+    if(!checkBoxSizeOfPixel->isChecked()){
         plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(0,data_fft->size_x),QCPRange(0,data_fft->size_y));
         plot_fft->plot2D->ColorMap->rescaleDataRange(true);
         plot_fft->plot2D->rescaleAxes();
@@ -536,45 +551,45 @@ void MainWindow::slotChangeRangeFFT(){
     }
 
     /*
-    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x*ui->SpinBoxSizeOfPixel->value()),
-                                                   QCPRange(0,data_input->size_y*ui->SpinBoxSizeOfPixel->value()));
+    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x*SpinBoxSizeOfPixel->value()),
+                                                   QCPRange(0,data_input->size_y*SpinBoxSizeOfPixel->value()));
     */
-    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,ui->SpinBoxSizeOfPixel->value()),
-                                                   QCPRange(0,ui->SpinBoxSizeOfPixel->value()));
+    plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,SpinBoxSizeOfPixel->value()),
+                                                   QCPRange(0,SpinBoxSizeOfPixel->value()));
     plot_input->plot2D->ColorMap->rescaleDataRange(true);
     plot_input->plot2D->rescaleAxes();
     plot_input->plot2D->replot();
 
     /*
-    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
-                                                 QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/SpinBoxSizeOfPixel->value()));
      */
 
-    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value()),
-                                                 QCPRange(-0.5*2*M_PI*data_fft->size_y/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI*data_fft->size_y/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft->size_x/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft->size_x/SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft->size_y/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft->size_y/SpinBoxSizeOfPixel->value()));
 
     plot_fft->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft->plot2D->rescaleAxes();
     plot_fft->plot2D->replot();
     /*
-    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()),
-                                                 QCPRange(-0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI/SpinBoxSizeOfPixel->value()));
                                                           */
-    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_phase->size_x/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI*data_fft_phase->size_x/ui->SpinBoxSizeOfPixel->value()),
-                                                 QCPRange(-0.5*2*M_PI*data_fft_phase->size_y/ui->SpinBoxSizeOfPixel->value(),
-                                                          0.5*2*M_PI*data_fft_phase->size_y/ui->SpinBoxSizeOfPixel->value()));
+    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_phase->size_x/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft_phase->size_x/SpinBoxSizeOfPixel->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft_phase->size_y/SpinBoxSizeOfPixel->value(),
+                                                          0.5*2*M_PI*data_fft_phase->size_y/SpinBoxSizeOfPixel->value()));
 
     plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft_phase->plot2D->rescaleAxes();
     plot_fft_phase->plot2D->replot();
-    //toImpulse = 4*M_PI/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
-    toImpulse = 4*M_PI*data_fft->size_x/ui->SpinBoxSizeOfPixel->value()/data_fft->size_x;
+    //toImpulse = 4*M_PI/SpinBoxSizeOfPixel->value()/data_fft->size_x;
+    toImpulse = 4*M_PI*data_fft->size_x/SpinBoxSizeOfPixel->value()/data_fft->size_x;
     return;
 }

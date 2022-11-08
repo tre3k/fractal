@@ -29,22 +29,38 @@
 #include <QImage>
 #include <QRgb>
 
+#include <QCheckBox>
+#include <QDoubleSpinBox>
+
 #include "iqcustomplot.h"
 #include "functions.h"
 #include "windowplot.h"
 
-namespace Ui {
-class MainWindow;
-}
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
 signals:
     void signal_plot(windowPlotValues);
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private:
+	QCheckBox *checkBoxSizeOfPixel;
+	QCheckBox *checkBoxLog;
+
+	QDoubleSpinBox *spinBox_center_x;
+	QDoubleSpinBox *spinBox_center_y;
+	QDoubleSpinBox *spinBox_radius_in;
+	QDoubleSpinBox *spinBox_radius_our;
+	QDoubleSpinBox *spinBox_openAngle;
+	QDoubleSpinBox *spinBox_positionAngle;
+	QDoubleSpinBox *SpinBoxSizeOfPixel;
+
+
 
 private slots:
     void slot_changeSpinBoxs(double);
@@ -61,7 +77,7 @@ private slots:
 
     void on_actionScale_triggered();
 
-    void openImage(QString,data2d *);
+    void openImage(QString, data2d *);
 
     void on_actionOpenImage_triggered();
 
@@ -76,8 +92,6 @@ private slots:
     void on_pushButton_FFT_clicked();
 
 private:
-    Ui::MainWindow *ui;
-
     data2d *data_input;
     data2d *data_fft;
     data2d *data_fft_phase;
@@ -91,7 +105,7 @@ private:
 
     double toImpulse = 1;
 
-    QVector<double> *averX,*averY,*averErr;
+    QVector<double> *averX, *averY, *averErr;
 
     bool imageLoaded = false;
 
