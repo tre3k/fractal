@@ -116,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(dsb_size_of_pixel_, SIGNAL(valueChanged(double)),
 		this,SLOT(slotChangeRangeFFT()));
 	connect(cb_size_of_pixel_, SIGNAL(clicked(bool)),
-		this,SLOT(on_pushButtonCentre_clicked()));
+		this,SLOT(gotoCenterMass()));
 
 	connect(pb_invert_data_, &QPushButton::clicked,
 		this, &MainWindow::invertData);
@@ -250,10 +250,6 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
                               double r_our,
                               double openAngle,
                               double posAngle){
-    if(cb_size_of_pixel_->isChecked()){
-        x+=0.5;
-        y+=0.5;
-    }
     plot->plot2D->clearItems();
     QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
     //our->setPen(QPen(Qt::white));
