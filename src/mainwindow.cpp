@@ -22,7 +22,6 @@
 
 #include "mainwindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -118,6 +117,17 @@ MainWindow::MainWindow(QWidget *parent) :
 		this,SLOT(slotChangeRangeFFT()));
 	connect(cb_size_of_pixel_, SIGNAL(clicked(bool)),
 		this,SLOT(on_pushButtonCentre_clicked()));
+
+	connect(pb_invert_data_, &QPushButton::clicked,
+		this, &MainWindow::invertData);
+	connect(pb_fft_, &QPushButton::clicked,
+		this, &MainWindow::buildFFT);
+	connect(pb_center_of_mass_, &QPushButton::clicked,
+		this, &MainWindow::gotoCenterMass);
+	connect(pb_invert_fft_, &QPushButton::clicked,
+		this, &MainWindow::invertFFT);
+	connect(pb_average_, &QPushButton::clicked,
+		this, &MainWindow::Average);
 
 	plot_fft->checkBoxLog->setChecked(true);
 	plot_fft->slot_log(plot_fft->checkBoxLog->isChecked());
@@ -423,7 +433,7 @@ void MainWindow::Close()
 	QApplication::exit(0);
 }
 
-void MainWindow::on_pushButtonIntegrate_clicked()
+void MainWindow::Average()
 {
     averX->clear();
     averY->clear();
@@ -581,25 +591,25 @@ void MainWindow::on_actionOpenImageFFT_triggered()
     preProcess();
 }
 
-void MainWindow::on_pushButton_invertData_clicked()
+void MainWindow::invertData()
 {
     funcs->inverteData(data_input_);
     plotData(plot_input,data_input_);
 }
 
-void MainWindow::on_pushButton_invertFFT_clicked()
+void MainWindow::invertFFT()
 {
     funcs->inverteData(data_fft_);
     //funcs->inverteData(data_fft_phase);
     preProcess();
 }
 
-void MainWindow::on_pushButtonCentre_clicked()
+void MainWindow::gotoCenterMass()
 {
     preProcess();
 }
 
-void MainWindow::on_pushButton_FFT_clicked()
+void MainWindow::buildFFT()
 {
     data_fft_ = new data2d;
     data_fft_phase_ = new data2d;

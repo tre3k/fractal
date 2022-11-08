@@ -93,16 +93,16 @@ private slots:
 	void slotChangeRangeFFT();
 
 	void slotOpenText();
-	void on_pushButtonIntegrate_clicked();
+	void Average();
 	void on_action_openFFT_triggered();
 	void on_actionScale_triggered();
 	void openImage(QString filename, data2d *indata);
 	void slotOpenImage();                          // with open dialog
 	void on_actionOpenImageFFT_triggered();
-	void on_pushButton_invertData_clicked();
-	void on_pushButton_invertFFT_clicked();
-	void on_pushButtonCentre_clicked();
-	void on_pushButton_FFT_clicked();
+	void invertData();
+	void invertFFT();
+	void gotoCenterMass();
+	void buildFFT();
 
 	void Close();
 
