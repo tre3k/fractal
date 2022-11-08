@@ -94,11 +94,11 @@ private slots:
 
 	void slotOpenText();
 	void Average();
-	void on_action_openFFT_triggered();
+	void slotOpenFFT();
 	void on_actionScale_triggered();
 	void openImage(QString filename, data2d *indata);
 	void slotOpenImage();                          // with open dialog
-	void on_actionOpenImageFFT_triggered();
+	void slotOpenImageFFT();
 	void invertData();
 	void invertFFT();
 	void gotoCenterMass();

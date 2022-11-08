@@ -197,6 +197,15 @@ void MainWindow::initActions() {
 	connect(s_actions_.open_image, &QAction::triggered,
 		this, &MainWindow::slotOpenImage);
 
+	s_actions_.open_fft = new QAction("open &Fourier (text)");
+	connect(s_actions_.open_fft, &QAction::triggered,
+		this, &MainWindow::slotOpenFFT);
+
+	s_actions_.open_image_fft   = new QAction("open Fo&urier (image)");
+	connect(s_actions_.open_image_fft, &QAction::triggered,
+		this, &MainWindow::slotOpenImageFFT);
+
+
 }
 
 void MainWindow::buildMenuBar() {
@@ -208,6 +217,8 @@ void MainWindow::buildMenuBar() {
 
 	m_file->addAction(s_actions_.open_text);
 	m_file->addAction(s_actions_.open_image);
+	m_file->addAction(s_actions_.open_fft);
+	m_file->addAction(s_actions_.open_image_fft);
 	m_file->addSeparator();
 	m_file->addAction(s_actions_.close);
 
@@ -343,7 +354,7 @@ void MainWindow::slotOpenText()
 	preProcess();
 }
 
-void MainWindow::on_action_openFFT_triggered()
+void MainWindow::slotOpenFFT()
 {
     QString tmp;
     int input_size_x,input_size_y;
@@ -563,7 +574,7 @@ void MainWindow::slotOpenImage()
 	preProcess();
 }
 
-void MainWindow::on_actionOpenImageFFT_triggered()
+void MainWindow::slotOpenImageFFT()
 {
     QString filename = QFileDialog::getOpenFileName(
     this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
@@ -580,10 +591,11 @@ void MainWindow::on_actionOpenImageFFT_triggered()
 
     if(filename == "") return;
     data_fft_ = new data2d;
-    openImage(filename,data_fft_);
-    plotData(plot_fft,data_fft_);
+    openImage(filename, data_fft_);
+    plotData(plot_fft, data_fft_);
     data_fft_phase_ = new data2d;
     data_input_ = new data2d;
+    imageLoaded = true;
     preProcess();
 }
 
