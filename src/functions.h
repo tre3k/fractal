@@ -22,12 +22,12 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <math.h>
+#include <QtMath>
 #include <QVector>
 #include <QDebug>
 
 #ifndef M_PI
-#define M_PI 4*atan(1)
+#define M_PI 4 * atan(1)
 #endif
 
 class data2d{
