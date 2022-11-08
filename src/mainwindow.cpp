@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	cb_size_of_pixel_    = new QCheckBox();
 	cb_size_of_pixel_->setText(
-		"size of pixel \n"
+		"size of object \n"
 		"in direct space \n"
 		"just physical size (m, cm, mm)"
 		);
@@ -98,25 +98,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	funcs = new functions;
 
-	connect(dsb_open_angle_,SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
-	connect(dsb_position_angle_,SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
+	connect(dsb_open_angle_, SIGNAL(valueChanged(double)),
+		this, SLOT(changeSpinBox(double)));
+	connect(dsb_position_angle_, SIGNAL(valueChanged(double)),
+		this, SLOT(changeSpinBox(double)));
 	connect(dsb_center_x_, SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
+		this,SLOT(changeSpinBox(double)));
 	connect(dsb_center_y_, SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
-	connect(dsb_radius_in_,SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
-	connect(dsb_radius_out_,SIGNAL(valueChanged(double)),
-		this,SLOT(slot_changeSpinBoxs(double)));
+		this,SLOT(changeSpinBox(double)));
+	connect(dsb_radius_in_, SIGNAL(valueChanged(double)),
+		this,SLOT(changeSpinBox(double)));
+	connect(dsb_radius_out_, SIGNAL(valueChanged(double)),
+		this,SLOT(changeSpinBox(double)));
 	connect(this,SIGNAL(signal_plot(windowPlotValues)),
 		winPlot,SLOT(slot_plot(windowPlotValues)));
 	connect(cb_size_of_pixel_, SIGNAL(clicked(bool)),
 		this,SLOT(slotChangeRangeFFT()));
-	connect(dsb_size_of_pixel_,SIGNAL(valueChanged(double)),
+	connect(dsb_size_of_pixel_, SIGNAL(valueChanged(double)),
 		this,SLOT(slotChangeRangeFFT()));
-	connect(cb_size_of_pixel_,SIGNAL(clicked(bool)),
+	connect(cb_size_of_pixel_, SIGNAL(clicked(bool)),
 		this,SLOT(on_pushButtonCentre_clicked()));
 
 	plot_fft->checkBoxLog->setChecked(true);
@@ -163,6 +163,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	initActions();
 	buildMenuBar();
 	buildToolBar();
+
+	data_input_ = new data2d;
+	data_fft_ = new data2d;
+	data_fft_phase_ = new data2d;
 }
 
 MainWindow::~MainWindow()
@@ -170,7 +174,26 @@ MainWindow::~MainWindow()
 
 }
 
+void MainWindow::initActions() {
+	s_actions_.close = new QAction("close");
+	connect(s_actions_.close, &QAction::triggered,
+		this, &MainWindow::Close);
+
+	s_actions_.open_text = new QAction("open (text)");
+	connect(s_actions_.open_text, &QAction::triggered,
+		this, &MainWindow::slotOpenText);
+}
+
 void MainWindow::buildMenuBar() {
+	auto menu_bar = new QMenuBar();
+	this->setMenuBar(menu_bar);
+
+	auto m_file = new QMenu("&File");
+	menu_bar->addMenu(m_file);
+
+	m_file->addAction(s_actions_.open_text);
+	m_file->addSeparator();
+	m_file->addAction(s_actions_.close);
 
 }
 
@@ -178,27 +201,18 @@ void MainWindow::buildToolBar() {
 
 }
 
-void MainWindow::initActions() {
-
-}
 
 
 void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
-    int i,j;
+    int i, j;
 
-    //plot->plot2D->ColorMap->data()->setRange(QCPRange(0,dat->size_x),QCPRange(0,dat->size_y));
-    plot->plot2D->ColorMap->data()->setSize(dat->size_x,dat->size_y);
+    plot->plot2D->ColorMap->data()->setSize(dat->size_x, dat->size_y);
     for(i=0;i<dat->size_x;i++){
         for(j=0;j<dat->size_y;j++){
             plot->plot2D->ColorMap->data()->setCell(i,j,dat->data[i][j]);
         }
     }
     slotChangeRangeFFT();
-    /*
-    plot->plot2D->ColorMap->rescaleDataRange(true);
-    plot->plot2D->rescaleAxes();
-    plot->plot2D->replot();
-    */
     return;
 }
 
@@ -252,7 +266,7 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
     plot->plot2D->replot();
 }
 
-void MainWindow::slot_changeSpinBoxs(double val){
+void MainWindow::changeSpinBox(double val){
     paintCircles(plot_fft,
                  dsb_center_x_->value(),
                  dsb_center_y_->value(),
@@ -264,45 +278,53 @@ void MainWindow::slot_changeSpinBoxs(double val){
     dsb_radius_in_->setMaximum(dsb_radius_out_->value());
 }
 
-void MainWindow::on_action_Open_triggered()
+void MainWindow::slotOpenText()
 {
-    int input_size_x,input_size_y;
-    QString tmp;
-    QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
-    if(filename=="") return;
-    QFile f(filename);
-    f.open(QIODevice::ReadOnly);
-    QTextStream txtStream(&f);
+	int input_size_x, input_size_y;
+	QString tmp;
+	QString filename = QFileDialog::getOpenFileName(
+		this,
+		"Fractal",
+		"",
+		"*.txt"
+		);
 
+	if(filename == "") return;
+	QFile f(filename);
+	f.open(QIODevice::ReadOnly);
+	QTextStream text_stream(&f);
 
-    txtStream >> tmp;
-    input_size_x = QString(tmp).toInt();
-    txtStream >> tmp;
-    input_size_y = QString(tmp).toInt();
+	text_stream >> tmp;
+	input_size_x = QString(tmp).toInt();
+	text_stream >> tmp;
+	input_size_y = QString(tmp).toInt();
 
-    data_input = new data2d(input_size_x,input_size_y);
+        data_input_ = new data2d(input_size_x, input_size_y);
 
-    int i=0,j=0;
+	int i=0, j=0;
 
-    while(!txtStream.atEnd()){
-        txtStream >> tmp;
-        data_input->data[i][j] = QString(tmp).toDouble();//+(double)(rand()%100)/100;
-        i++;
-        if(i>=data_input->size_x){
-            i=0; j++;
-            if(j>=data_input->size_y) break;
-        }
-    }
+	while(!text_stream.atEnd()){
+		text_stream >> tmp;
+		data_input_->data[i][j] = QString(tmp).toDouble();
+		i++;
+		if(i>=data_input_->size_x){
+			i=0; j++;
+			if(j>=data_input_->size_y) break;
+		}
+	}
 
-    f.close();
+	f.close();
 
-    plotData(plot_input,data_input);
+	plotData(plot_input, data_input_);
 
-    data_fft = new data2d;
-    data_fft_phase = new data2d;
-    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
-    imageLoaded=true;
-    preProcess();
+	data_fft_ = new data2d;
+	data_fft_phase_ = new data2d;
+	funcs->makeFFT2D(
+		data_input_,
+		data_fft_,
+		data_fft_phase_);
+	imageLoaded=true;
+	preProcess();
 }
 
 void MainWindow::on_action_openFFT_triggered()
@@ -320,32 +342,32 @@ void MainWindow::on_action_openFFT_triggered()
     txtStream >> tmp;
     input_size_y = QString(tmp).toInt();
 
-    data_fft = new data2d(input_size_x,input_size_y);
+    data_fft_ = new data2d(input_size_x,input_size_y);
 
     int i=0,j=0;
 
     while(!txtStream.atEnd()){
         txtStream >> tmp;
-        data_fft->data[i][j] = QString(tmp).toDouble();
+        data_fft_->data[i][j] = QString(tmp).toDouble();
         i++;
-        if(i>=data_fft->size_x){
+        if(i>=data_fft_->size_x){
             i=0; j++;
-            if(j>=data_fft->size_y) break;
+            if(j>=data_fft_->size_y) break;
         }
     }
 
     f.close();
-    data_fft_phase = new data2d;
-    data_input = new data2d;
+    data_fft_phase_ = new data2d;
+    data_input_ = new data2d;
     preProcess();
 }
 
 void MainWindow::preProcess(){
     if(imageLoaded != true) return;
-    if(data_fft->size_x==0 || data_fft->size_y==0) return;
-    plotData(plot_fft,data_fft);
-    if(data_fft_phase->size_x!=0 && data_fft_phase->size_y!=0){
-        plotData(plot_fft_phase,data_fft_phase);
+    if(data_fft_->size_x==0 || data_fft_->size_y==0) return;
+    plotData(plot_fft,data_fft_);
+    if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
+        plotData(plot_fft_phase,data_fft_phase_);
     }
     plot_fft_phase->plot2D->ColorScale->axis()->
     setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
@@ -354,11 +376,11 @@ void MainWindow::preProcess(){
 
     double c_x=0,c_y=0,S=0;
 
-    for(int i=0;i<data_fft->size_x;i++){
-        for(int j=0;j<data_fft->size_y;j++){
-            c_x += data_fft->data[i][j]*i;
-            c_y += data_fft->data[i][j]*j;
-            S += data_fft->data[i][j];
+    for(int i=0;i<data_fft_->size_x;i++){
+        for(int j=0;j<data_fft_->size_y;j++){
+            c_x += data_fft_->data[i][j]*i;
+            c_y += data_fft_->data[i][j]*j;
+            S += data_fft_->data[i][j];
         }
     }
     c_x /= S;
@@ -370,25 +392,25 @@ void MainWindow::preProcess(){
     double ourRadius_default;
 
 
-    if(data_fft->size_x<=data_fft->size_y){
-        ourRadius_default=(double)(data_fft->size_x-1)/2;
+    if(data_fft_->size_x<=data_fft_->size_y){
+        ourRadius_default=(double)(data_fft_->size_x-1)/2;
     }else{
-        ourRadius_default=(double)(data_fft->size_y-1)/2;
+        ourRadius_default=(double)(data_fft_->size_y-1)/2;
     }
     dsb_radius_out_->setValue(ourRadius_default);
 
 
     if(cb_size_of_pixel_->isChecked()){
-        dsb_center_x_->setValue(toImpulse*(c_x-data_fft->size_x/2));
-        dsb_center_y_->setValue(toImpulse*(c_y-data_fft->size_y/2));
+        dsb_center_x_->setValue(toImpulse*(c_x-data_fft_->size_x/2));
+        dsb_center_y_->setValue(toImpulse*(c_y-data_fft_->size_y/2));
         dsb_radius_out_->setValue(ourRadius_default*toImpulse/2);
     }
 
 }
 
-void MainWindow::on_action_Close_triggered()
+void MainWindow::Close()
 {
-    QApplication::exit(0);
+	QApplication::exit(0);
 }
 
 void MainWindow::on_pushButtonIntegrate_clicked()
@@ -403,14 +425,14 @@ void MainWindow::on_pushButtonIntegrate_clicked()
     double px_radius_out = dsb_radius_out_->value();
 
     if(cb_size_of_pixel_->isChecked()){
-        px_center_x = dsb_center_x_->value()/toImpulse + data_fft->size_x/2;
-        px_center_y = dsb_center_y_->value()/toImpulse + data_fft->size_y/2;
+        px_center_x = dsb_center_x_->value()/toImpulse + data_fft_->size_x/2;
+        px_center_y = dsb_center_y_->value()/toImpulse + data_fft_->size_y/2;
         px_radius_in = dsb_radius_in_->value()/toImpulse;
         px_radius_out = 2*dsb_radius_out_->value()/toImpulse;
     }
 
 
-    funcs->average(data_fft,
+    funcs->average(data_fft_,
                    px_center_x,
                    px_center_y,
                    dsb_position_angle_->value(),
@@ -495,30 +517,34 @@ void MainWindow::openImage(QString filename,data2d *indata){
 
 void MainWindow::on_actionOpenImage_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName
-    (this,"Image","","All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
-    "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM *.xbm *.XBM *.xpm *.XPM);;"
-    "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
-    "BMP (*.bmp *.BMP);;"
-    "GIF (*.gif *.GIF);;"
-    "PNG (*.png *.PNG);;"
-    "PBM (*.pbm *.PBM);;"
-    "PGM (*.pgm *.PGM);;"
-    "PPM (*.ppm *.PPM);;"
-    "XBM (*.xbm *.XBM);;"
-    "XPM (*.xpm *.XPM)");
+	QString filename = QFileDialog::getOpenFileName
+		(this,
+		 "Image",
+		 "",
+		 "All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
+		 "*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM "
+		 "*.xbm *.XBM *.xpm *.XPM);;"
+		 "Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
+		 "BMP (*.bmp *.BMP);;"
+		 "GIF (*.gif *.GIF);;"
+		 "PNG (*.png *.PNG);;"
+		 "PBM (*.pbm *.PBM);;"
+		 "PGM (*.pgm *.PGM);;"
+		 "PPM (*.ppm *.PPM);;"
+		 "XBM (*.xbm *.XBM);;"
+		 "XPM (*.xpm *.XPM)");
 
-    if(filename == "") return;
-    data_input = new data2d;
-    openImage(filename,data_input);
-    plotData(plot_input,data_input);
+	if(filename == "") return;
+	data_input_ = new data2d;
+	openImage(filename, data_input_);
+	plotData(plot_input, data_input_);
 
 
-    data_fft = new data2d;
-    data_fft_phase = new data2d;
-    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
-    imageLoaded=true;
-    preProcess();
+	data_fft_ = new data2d;
+	data_fft_phase_ = new data2d;
+	funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
+	imageLoaded=true;
+	preProcess();
 }
 
 void MainWindow::on_actionOpenImageFFT_triggered()
@@ -537,23 +563,23 @@ void MainWindow::on_actionOpenImageFFT_triggered()
     "XPM (*.xpm *.XPM)");
 
     if(filename == "") return;
-    data_fft = new data2d;
-    openImage(filename,data_fft);
-    plotData(plot_fft,data_fft);
-    data_fft_phase = new data2d;
-    data_input = new data2d;
+    data_fft_ = new data2d;
+    openImage(filename,data_fft_);
+    plotData(plot_fft,data_fft_);
+    data_fft_phase_ = new data2d;
+    data_input_ = new data2d;
     preProcess();
 }
 
 void MainWindow::on_pushButton_invertData_clicked()
 {
-    funcs->inverteData(data_input);
-    plotData(plot_input,data_input);
+    funcs->inverteData(data_input_);
+    plotData(plot_input,data_input_);
 }
 
 void MainWindow::on_pushButton_invertFFT_clicked()
 {
-    funcs->inverteData(data_fft);
+    funcs->inverteData(data_fft_);
     //funcs->inverteData(data_fft_phase);
     preProcess();
 }
@@ -565,26 +591,38 @@ void MainWindow::on_pushButtonCentre_clicked()
 
 void MainWindow::on_pushButton_FFT_clicked()
 {
-    data_fft = new data2d;
-    data_fft_phase = new data2d;
-    funcs->makeFFT2D(data_input,data_fft,data_fft_phase);
+    data_fft_ = new data2d;
+    data_fft_phase_ = new data2d;
+    funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
     preProcess();
 }
 
 void MainWindow::slotChangeRangeFFT(){
-    if((data_fft == NULL) || (data_input == NULL) || (data_fft_phase == NULL)) return;
-    if(!cb_size_of_pixel_->isChecked()){
-        plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(0,data_fft->size_x),QCPRange(0,data_fft->size_y));
+    if((data_fft_ == NULL) ||
+       (data_input_ == NULL) ||
+       (data_fft_phase_ == NULL))
+	    return;
+
+    if(!cb_size_of_pixel_->isChecked()) {
+        plot_fft->plot2D->ColorMap->data()->setRange(
+		QCPRange(0, data_fft_->size_x),
+		QCPRange(0, data_fft_->size_y)
+		);
         plot_fft->plot2D->ColorMap->rescaleDataRange(true);
         plot_fft->plot2D->rescaleAxes();
         plot_fft->plot2D->replot();
 
-        plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(0,data_fft->size_x),QCPRange(0,data_fft->size_y));
+        plot_fft_phase->plot2D->ColorMap->data()->setRange(
+		QCPRange(0, data_fft_->size_x),
+		QCPRange(0, data_fft_->size_y)
+		);
         plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
         plot_fft_phase->plot2D->rescaleAxes();
         plot_fft_phase->plot2D->replot();
 
-        plot_input->plot2D->ColorMap->data()->setRange(QCPRange(0,data_input->size_x),QCPRange(0,data_input->size_y));
+        plot_input->plot2D->ColorMap->data()->setRange(
+		QCPRange(0, data_input_->size_x),
+		QCPRange(0, data_input_->size_y));
         plot_input->plot2D->ColorMap->rescaleDataRange(true);
         plot_input->plot2D->rescaleAxes();
         plot_input->plot2D->replot();
@@ -609,10 +647,10 @@ void MainWindow::slotChangeRangeFFT(){
                                                           0.5*2*M_PI/SpinBoxSizeOfPixel->value()));
      */
 
-    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft->size_x/dsb_size_of_pixel_->value(),
-                                                          0.5*2*M_PI*data_fft->size_x/dsb_size_of_pixel_->value()),
-                                                 QCPRange(-0.5*2*M_PI*data_fft->size_y/dsb_size_of_pixel_->value(),
-                                                          0.5*2*M_PI*data_fft->size_y/dsb_size_of_pixel_->value()));
+    plot_fft->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_->size_x/dsb_size_of_pixel_->value(),
+                                                          0.5*2*M_PI*data_fft_->size_x/dsb_size_of_pixel_->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft_->size_y/dsb_size_of_pixel_->value(),
+                                                          0.5*2*M_PI*data_fft_->size_y/dsb_size_of_pixel_->value()));
 
     plot_fft->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft->plot2D->rescaleAxes();
@@ -623,15 +661,15 @@ void MainWindow::slotChangeRangeFFT(){
                                                  QCPRange(-0.5*2*M_PI/SpinBoxSizeOfPixel->value(),
                                                           0.5*2*M_PI/SpinBoxSizeOfPixel->value()));
                                                           */
-    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_phase->size_x/dsb_size_of_pixel_->value(),
-                                                          0.5*2*M_PI*data_fft_phase->size_x/dsb_size_of_pixel_->value()),
-                                                 QCPRange(-0.5*2*M_PI*data_fft_phase->size_y/dsb_size_of_pixel_->value(),
-                                                          0.5*2*M_PI*data_fft_phase->size_y/dsb_size_of_pixel_->value()));
+    plot_fft_phase->plot2D->ColorMap->data()->setRange(QCPRange(-0.5*2*M_PI*data_fft_phase_->size_x/dsb_size_of_pixel_->value(),
+                                                          0.5*2*M_PI*data_fft_phase_->size_x/dsb_size_of_pixel_->value()),
+                                                 QCPRange(-0.5*2*M_PI*data_fft_phase_->size_y/dsb_size_of_pixel_->value(),
+                                                          0.5*2*M_PI*data_fft_phase_->size_y/dsb_size_of_pixel_->value()));
 
     plot_fft_phase->plot2D->ColorMap->rescaleDataRange(true);
     plot_fft_phase->plot2D->rescaleAxes();
     plot_fft_phase->plot2D->replot();
     //toImpulse = 4*M_PI/SpinBoxSizeOfPixel->value()/data_fft->size_x;
-    toImpulse = 4*M_PI*data_fft->size_x/dsb_size_of_pixel_->value()/data_fft->size_x;
+    toImpulse = 4*M_PI*data_fft_->size_x/dsb_size_of_pixel_->value()/data_fft_->size_x;
     return;
 }

@@ -32,11 +32,11 @@
 
 class data2d{
 public:
-    int size_x,size_y;
-    double **data;
-    data2d(int sx=0,int sy=0);
-    void remove();
-    void reinit(int, int);
+	int size_x,size_y;
+	double **data;
+	data2d(int sx=0,int sy=0);
+	void remove();
+	void reinit(int, int);
 };
 
 class functions{
