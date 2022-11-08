@@ -593,13 +593,13 @@ void MainWindow::on_actionOpenImageFFT_triggered()
 
 void MainWindow::invertData()
 {
-    funcs->inverteData(data_input_);
+    funcs->invertData(data_input_);
     plotData(plot_input,data_input_);
 }
 
 void MainWindow::invertFFT()
 {
-    funcs->inverteData(data_fft_);
+    funcs->invertData(data_fft_);
     //funcs->inverteData(data_fft_phase);
     preProcess();
 }

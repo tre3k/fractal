@@ -50,7 +50,7 @@ public:
     void toCircle(double *,double *,double,double);
     void average(data2d *,double,double,double,double,double,double,
                  QVector<double> *,QVector<double> *,QVector<double> *,bool,int);
-    void inverteData(data2d *);
+    void invertData(data2d *);
 };
 
 #endif // FUNCTIONS_H
