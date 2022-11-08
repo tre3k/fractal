@@ -23,7 +23,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <math.h>
+#include <QtMath>
 
 #include <QMainWindow>
 #include <QImage>
@@ -31,10 +31,14 @@
 
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QFormLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "iqcustomplot.h"
 #include "functions.h"
 #include "windowplot.h"
+#include "config.h"
 
 
 class MainWindow : public QMainWindow
@@ -49,17 +53,22 @@ public:
     ~MainWindow();
 
 private:
-	QCheckBox *checkBoxSizeOfPixel;
-	QCheckBox *checkBoxLog;
+	QCheckBox *cb_size_of_pixel_;
+	QCheckBox *cb_to_log_;
 
-	QDoubleSpinBox *spinBox_center_x;
-	QDoubleSpinBox *spinBox_center_y;
-	QDoubleSpinBox *spinBox_radius_in;
-	QDoubleSpinBox *spinBox_radius_our;
-	QDoubleSpinBox *spinBox_openAngle;
-	QDoubleSpinBox *spinBox_positionAngle;
-	QDoubleSpinBox *SpinBoxSizeOfPixel;
+	QDoubleSpinBox *dsb_center_x_;
+	QDoubleSpinBox *dsb_center_y_;
+	QDoubleSpinBox *dsb_radius_in_;
+	QDoubleSpinBox *dsb_radius_out_;
+	QDoubleSpinBox *dsb_open_angle_;
+	QDoubleSpinBox *dsb_position_angle_;
+	QDoubleSpinBox *dsb_size_of_pixel_;
 
+	QPushButton *pb_invert_data_;
+	QPushButton *pb_invert_fft_;
+	QPushButton *pb_fft_;
+	QPushButton *pb_center_of_mass_;
+	QPushButton *pb_average_;
 
 
 private slots:

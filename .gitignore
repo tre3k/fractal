@@ -1,8 +1,10 @@
 /build*/
 /bin/
-
-src/config.h
+/.cache/
 
 *.user
 *.log
 *.txt
+
+src/config.h
+compile_commands.json
