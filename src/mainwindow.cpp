@@ -160,12 +160,28 @@ MainWindow::MainWindow(QWidget *parent) :
 	centralLayout->addLayout(ltv_controls,1,0);
 	centralLayout->addWidget(plot_fft_phase,1,1);
 
+	initActions();
+	buildMenuBar();
+	buildToolBar();
 }
 
 MainWindow::~MainWindow()
 {
 
 }
+
+void MainWindow::buildMenuBar() {
+
+}
+
+void MainWindow::buildToolBar() {
+
+}
+
+void MainWindow::initActions() {
+
+}
+
 
 void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
     int i,j;

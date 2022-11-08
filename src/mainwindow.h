@@ -28,7 +28,7 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QRgb>
-
+#include <QAction>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
@@ -73,10 +73,23 @@ private:
 	QPushButton *pb_average_;
 
 
+	struct Actions {
+		QAction open_text;
+		QAction open_image;
+		QAction open_fft;
+		QAction open_image_fft;
+		QAction close;
+
+	} s_actions_;
+
+	void buildMenuBar();
+	void buildToolBar();
+	void initActions();
+
+
 private slots:
     void slot_changeSpinBoxs(double);
     void slotChangeRangeFFT();
-
 
     void on_action_Open_triggered();
     void on_action_Close_triggered();
