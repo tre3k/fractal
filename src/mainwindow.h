@@ -36,6 +36,7 @@
 #include <QVBoxLayout>
 #include <QScreen>
 #include <QGuiApplication>
+#include <QToolBar>
 
 #include "iqcustomplot.h"
 #include "functions.h"

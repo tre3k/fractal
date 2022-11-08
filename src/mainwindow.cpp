@@ -204,6 +204,10 @@ void MainWindow::buildMenuBar() {
 }
 
 void MainWindow::buildToolBar() {
+	auto tool_bar = new QToolBar();
+	this->addToolBar(tool_bar);
+	tool_bar->addAction(s_actions_.open_text);
+	tool_bar->addAction(s_actions_.open_image);
 
 }
 
