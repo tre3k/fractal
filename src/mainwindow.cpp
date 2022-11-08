@@ -205,6 +205,9 @@ void MainWindow::initActions() {
 	connect(s_actions_.open_image_fft, &QAction::triggered,
 		this, &MainWindow::slotOpenImageFFT);
 
+	s_actions_.rescale_axis = new QAction("Rescale axis");
+	connect(s_actions_.rescale, &QAction::triggered,
+		this, &MainWindow::slotRescale());
 
 }
 
@@ -229,22 +232,24 @@ void MainWindow::buildToolBar() {
 	this->addToolBar(tool_bar);
 	tool_bar->addAction(s_actions_.open_text);
 	tool_bar->addAction(s_actions_.open_image);
+	tool_bar->addSeparator();
+	tool_bar->addAction(s_actions_.rescale_axis);
 
 }
 
 
 
 void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
-    int i, j;
+	int i, j;
 
-    plot->plot2D->ColorMap->data()->setSize(dat->size_x, dat->size_y);
-    for(i=0;i<dat->size_x;i++){
-        for(j=0;j<dat->size_y;j++){
-            plot->plot2D->ColorMap->data()->setCell(i,j,dat->data[i][j]);
-        }
-    }
-    slotChangeRangeFFT();
-    return;
+	plot->plot2D->ColorMap->data()->setSize(dat->size_x, dat->size_y);
+	for(i=0;i<dat->size_x;i++){
+		for(j=0;j<dat->size_y;j++){
+			plot->plot2D->ColorMap->data()->setCell(i,j,dat->data[i][j]);
+		}
+	}
+	slotChangeRangeFFT();
+	return;
 }
 
 void MainWindow::toCircle(double *x, double *y, double r, double phi){
@@ -261,48 +266,48 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
                               double r_our,
                               double openAngle,
                               double posAngle){
-    plot->plot2D->clearItems();
-    QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
-    //our->setPen(QPen(Qt::white));
-    our->setPen(QPen(Qt::black));
-    our->topLeft->setCoords(x+r_our,y+r_our);
-    our->bottomRight->setCoords(x-r_our,y-r_our);
-    QCPItemEllipse *in = new QCPItemEllipse(plot->plot2D);
-    //in->setPen(QPen(Qt::white));
-    in->setPen(QPen(Qt::black));
-    in->topLeft->setCoords(x+r_in,y+r_in);
-    in->bottomRight->setCoords(x-r_in,y-r_in);
+	plot->plot2D->clearItems();
+	QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
+	//our->setPen(QPen(Qt::white));
+	our->setPen(QPen(Qt::black));
+	our->topLeft->setCoords(x+r_our,y+r_our);
+	our->bottomRight->setCoords(x-r_our,y-r_our);
+	QCPItemEllipse *in = new QCPItemEllipse(plot->plot2D);
+	//in->setPen(QPen(Qt::white));
+	in->setPen(QPen(Qt::black));
+	in->topLeft->setCoords(x+r_in,y+r_in);
+	in->bottomRight->setCoords(x-r_in,y-r_in);
 
-    double xl, yl;
-    auto line1 = new QCPItemLine(plot->plot2D);
-    line1->setPen(QPen(QColor("black"), 1,
-                       Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
-    toCircle(&xl, &yl, r_in ,posAngle + openAngle/2);
-    line1->start->setCoords(xl + x, yl + y);
-    toCircle(&xl, &yl, r_our ,posAngle + openAngle/2);
-    line1->end->setCoords(xl + x, yl + y);
+	double xl, yl;
+	auto line1 = new QCPItemLine(plot->plot2D);
+	line1->setPen(QPen(QColor("black"), 1,
+			   Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+	toCircle(&xl, &yl, r_in ,posAngle + openAngle/2);
+	line1->start->setCoords(xl + x, yl + y);
+	toCircle(&xl, &yl, r_our ,posAngle + openAngle/2);
+	line1->end->setCoords(xl + x, yl + y);
 
-    auto line2 = new QCPItemLine(plot->plot2D);
-    line2->setPen(QPen(QColor("black"), 1,
-                       Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
-    toCircle(&xl, &yl, r_in ,posAngle - openAngle/2);
-    line2->start->setCoords(xl + x, yl + y);
-    toCircle(&xl, &yl, r_our ,posAngle - openAngle/2);
-    line2->end->setCoords(xl + x, yl + y);
+	auto line2 = new QCPItemLine(plot->plot2D);
+	line2->setPen(QPen(QColor("black"), 1,
+			   Qt::SolidLine,Qt::SquareCap,Qt::BevelJoin));
+	toCircle(&xl, &yl, r_in ,posAngle - openAngle/2);
+	line2->start->setCoords(xl + x, yl + y);
+	toCircle(&xl, &yl, r_our ,posAngle - openAngle/2);
+	line2->end->setCoords(xl + x, yl + y);
 
-    plot->plot2D->replot();
+	plot->plot2D->replot();
 }
 
 void MainWindow::changeSpinBox(double val){
-    paintCircles(plot_fft,
-                 dsb_center_x_->value(),
-                 dsb_center_y_->value(),
-                 dsb_radius_in_->value(),
-                 dsb_radius_out_->value(),
-                 dsb_open_angle_->value(),
-                 dsb_position_angle_->value());
+	paintCircles(plot_fft,
+		     dsb_center_x_->value(),
+		     dsb_center_y_->value(),
+		     dsb_radius_in_->value(),
+		     dsb_radius_out_->value(),
+		     dsb_open_angle_->value(),
+		     dsb_position_angle_->value());
 
-    dsb_radius_in_->setMaximum(dsb_radius_out_->value());
+	dsb_radius_in_->setMaximum(dsb_radius_out_->value());
 }
 
 void MainWindow::slotOpenText()
@@ -356,82 +361,82 @@ void MainWindow::slotOpenText()
 
 void MainWindow::slotOpenFFT()
 {
-    QString tmp;
-    int input_size_x,input_size_y;
-    QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
-    if(filename=="") return;
-    QFile f(filename);
-    f.open(QIODevice::ReadOnly);
-    QTextStream txtStream(&f);
+	QString tmp;
+	int input_size_x,input_size_y;
+	QString filename = QFileDialog::getOpenFileName(this,"Fractal","","*.txt");
+	if(filename=="") return;
+	QFile f(filename);
+	f.open(QIODevice::ReadOnly);
+	QTextStream txtStream(&f);
 
-    txtStream >> tmp;
-    input_size_x = QString(tmp).toInt();
-    txtStream >> tmp;
-    input_size_y = QString(tmp).toInt();
+	txtStream >> tmp;
+	input_size_x = QString(tmp).toInt();
+	txtStream >> tmp;
+	input_size_y = QString(tmp).toInt();
 
-    data_fft_ = new data2d(input_size_x,input_size_y);
+	data_fft_ = new data2d(input_size_x,input_size_y);
 
-    int i=0,j=0;
+	int i=0,j=0;
 
-    while(!txtStream.atEnd()){
-        txtStream >> tmp;
-        data_fft_->data[i][j] = QString(tmp).toDouble();
-        i++;
-        if(i>=data_fft_->size_x){
-            i=0; j++;
-            if(j>=data_fft_->size_y) break;
-        }
-    }
+	while(!txtStream.atEnd()){
+		txtStream >> tmp;
+		data_fft_->data[i][j] = QString(tmp).toDouble();
+		i++;
+		if(i>=data_fft_->size_x){
+			i=0; j++;
+			if(j>=data_fft_->size_y) break;
+		}
+	}
 
-    f.close();
-    data_fft_phase_ = new data2d;
-    data_input_ = new data2d;
-    preProcess();
+	f.close();
+	data_fft_phase_ = new data2d;
+	data_input_ = new data2d;
+	preProcess();
 }
 
 void MainWindow::preProcess(){
-    if(imageLoaded != true) return;
-    if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
-    plotData(plot_fft, data_fft_);
-    if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
-        plotData(plot_fft_phase,data_fft_phase_);
-    }
-    plot_fft_phase->plot2D->ColorScale->axis()->
-    setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
-    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
-    plot_fft_phase->plot2D->replot();
+	if(imageLoaded != true) return;
+	if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
+	plotData(plot_fft, data_fft_);
+	if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
+		plotData(plot_fft_phase,data_fft_phase_);
+	}
+	plot_fft_phase->plot2D->ColorScale->axis()->
+		setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
+	plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
+	plot_fft_phase->plot2D->replot();
 
-    double c_x=0,c_y=0,S=0;
+	double c_x=0,c_y=0,S=0;
 
-    for(int i=0;i<data_fft_->size_x;i++){
-        for(int j=0;j<data_fft_->size_y;j++){
-            c_x += data_fft_->data[i][j] * i;
-            c_y += data_fft_->data[i][j] * j;
-            S += data_fft_->data[i][j];
-        }
-    }
-    c_x /= S;
-    c_y /= S;
+	for(int i=0;i<data_fft_->size_x;i++){
+		for(int j=0;j<data_fft_->size_y;j++){
+			c_x += data_fft_->data[i][j] * i;
+			c_y += data_fft_->data[i][j] * j;
+			S += data_fft_->data[i][j];
+		}
+	}
+	c_x /= S;
+	c_y /= S;
 
-    dsb_center_x_->setValue(c_x);
-    dsb_center_y_->setValue(c_y);
-    dsb_radius_in_->setValue(0.0);
-    double ourRadius_default;
-
-
-    if(data_fft_->size_x<=data_fft_->size_y){
-        ourRadius_default=(double)(data_fft_->size_x-1)/2;
-    }else{
-        ourRadius_default=(double)(data_fft_->size_y-1)/2;
-    }
-    dsb_radius_out_->setValue(ourRadius_default);
+	dsb_center_x_->setValue(c_x);
+	dsb_center_y_->setValue(c_y);
+	dsb_radius_in_->setValue(0.0);
+	double ourRadius_default;
 
 
-    if(cb_size_of_pixel_->isChecked()){
-        dsb_center_x_->setValue(toImpulse*(c_x-data_fft_->size_x/2));
-        dsb_center_y_->setValue(toImpulse*(c_y-data_fft_->size_y/2));
-        dsb_radius_out_->setValue(ourRadius_default*toImpulse/2);
-    }
+	if(data_fft_->size_x<=data_fft_->size_y){
+		ourRadius_default=(double)(data_fft_->size_x-1)/2;
+	}else{
+		ourRadius_default=(double)(data_fft_->size_y-1)/2;
+	}
+	dsb_radius_out_->setValue(ourRadius_default);
+
+
+	if(cb_size_of_pixel_->isChecked()){
+		dsb_center_x_->setValue(toImpulse*(c_x-data_fft_->size_x/2));
+		dsb_center_y_->setValue(toImpulse*(c_y-data_fft_->size_y/2));
+		dsb_radius_out_->setValue(ourRadius_default*toImpulse/2);
+	}
 
 }
 
@@ -442,76 +447,76 @@ void MainWindow::Close()
 
 void MainWindow::Average()
 {
-    averX->clear();
-    averY->clear();
-    averErr->clear();
+	averX->clear();
+	averY->clear();
+	averErr->clear();
 
-    double px_center_x = dsb_center_x_->value();
-    double px_center_y = dsb_center_y_->value();
-    double px_radius_in = dsb_radius_in_->value();
-    double px_radius_out = dsb_radius_out_->value();
+	double px_center_x = dsb_center_x_->value();
+	double px_center_y = dsb_center_y_->value();
+	double px_radius_in = dsb_radius_in_->value();
+	double px_radius_out = dsb_radius_out_->value();
 
-    if(cb_size_of_pixel_->isChecked()){
-        px_center_x = dsb_center_x_->value()/toImpulse + data_fft_->size_x/2;
-        px_center_y = dsb_center_y_->value()/toImpulse + data_fft_->size_y/2;
-        px_radius_in = dsb_radius_in_->value()/toImpulse;
-        px_radius_out = 2*dsb_radius_out_->value()/toImpulse;
-    }
+	if(cb_size_of_pixel_->isChecked()){
+		px_center_x = dsb_center_x_->value()/toImpulse + data_fft_->size_x/2;
+		px_center_y = dsb_center_y_->value()/toImpulse + data_fft_->size_y/2;
+		px_radius_in = dsb_radius_in_->value()/toImpulse;
+		px_radius_out = 2*dsb_radius_out_->value()/toImpulse;
+	}
 
 
-    funcs->average(data_fft_,
-                   px_center_x,
-                   px_center_y,
-                   dsb_position_angle_->value(),
-                   dsb_open_angle_->value(),
-                   px_radius_in,px_radius_out,
-                   averX,
-                   averY,
-                   averErr,
-                   false,
-                   0);
+	funcs->average(data_fft_,
+		       px_center_x,
+		       px_center_y,
+		       dsb_position_angle_->value(),
+		       dsb_open_angle_->value(),
+		       px_radius_in,px_radius_out,
+		       averX,
+		       averY,
+		       averErr,
+		       false,
+		       0);
 
-    windowPlotValues wPlotValues;
+	windowPlotValues wPlotValues;
 
-    wPlotValues.logScale = true;
-    if(cb_size_of_pixel_->isChecked()){
-        for(int i=0;i<averX->size();i++){
-            (*(averX))[i] = toImpulse*averX->at(i)/2;
-        }
-    }
-    if(cb_to_log_->isChecked()){
-        for(int i=0;i<averX->size();i++){
-            if(averX->at(i)==0) averX->remove(i);
-            if(averY->at(i)==0) averY->remove(i);
-        }
-        for(int i=0;i<averX->size();i++){
-            (*(averX))[i] = log(averX->at(i));
-            (*(averY))[i] = log(averY->at(i));
-        }
-        wPlotValues.logScale = false;
-    }
+	wPlotValues.logScale = true;
+	if(cb_size_of_pixel_->isChecked()){
+		for(int i=0;i<averX->size();i++){
+			(*(averX))[i] = toImpulse*averX->at(i)/2;
+		}
+	}
+	if(cb_to_log_->isChecked()){
+		for(int i=0;i<averX->size();i++){
+			if(averX->at(i)==0) averX->remove(i);
+			if(averY->at(i)==0) averY->remove(i);
+		}
+		for(int i=0;i<averX->size();i++){
+			(*(averX))[i] = log(averX->at(i));
+			(*(averY))[i] = log(averY->at(i));
+		}
+		wPlotValues.logScale = false;
+	}
 
-    wPlotValues.err = averErr;
-    wPlotValues.x = averX;
-    wPlotValues.y = averY;
-    wPlotValues.showError = false;
+	wPlotValues.err = averErr;
+	wPlotValues.x = averX;
+	wPlotValues.y = averY;
+	wPlotValues.showError = false;
 
-    emit signal_plot(wPlotValues);
-    winPlot->show();
+	emit signal_plot(wPlotValues);
+	winPlot->show();
 }
 
-void MainWindow::on_actionScale_triggered()
+void MainWindow::slotRescale()
 {
-    plot_fft->plot2D->rescaleAxes();
-    plot_fft->plot2D->ColorScale->rescaleDataRange(true);
-    plot_fft->plot2D->replot();
+	plot_fft->plot2D->rescaleAxes();
+	plot_fft->plot2D->ColorScale->rescaleDataRange(true);
+	plot_fft->plot2D->replot();
 
-    plot_input->plot2D->rescaleAxes();
-    plot_input->plot2D->ColorScale->rescaleDataRange(true);
-    plot_input->plot2D->replot();
+	plot_input->plot2D->rescaleAxes();
+	plot_input->plot2D->ColorScale->rescaleDataRange(true);
+	plot_input->plot2D->replot();
 
-    plot_fft_phase->plot2D->rescaleAxes();
-    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI,M_PI));
+	plot_fft_phase->plot2D->rescaleAxes();
+    plot_fft_phase->plot2D->ColorScale->setDataRange(QCPRange(-M_PI, M_PI));
     plot_fft_phase->plot2D->replot();
 }
 

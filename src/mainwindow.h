@@ -79,6 +79,7 @@ private:
 		QAction *open_image;
 		QAction *open_fft;
 		QAction *open_image_fft;
+		QAction *rescale_axis;
 		QAction *close;
 
 	} s_actions_;
@@ -95,7 +96,7 @@ private slots:
 	void slotOpenText();
 	void Average();
 	void slotOpenFFT();
-	void on_actionScale_triggered();
+	void slotRescale();
 	void openImage(QString filename, data2d *indata);
 	void slotOpenImage();                          // with open dialog
 	void slotOpenImageFFT();
