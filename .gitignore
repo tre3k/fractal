@@ -5,6 +5,7 @@
 *.user
 *.log
 *.txt
+!CMakeLists.txt
 
 src/config.h
 compile_commands.json

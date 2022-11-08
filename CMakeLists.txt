@@ -21,7 +21,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-set(PROGRAM_NAME choppers)
+set(PROGRAM_NAME fractal)
 project(PROGRAM_NAME)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)

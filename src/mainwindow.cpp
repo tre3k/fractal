@@ -28,6 +28,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	this->setWindowTitle(APPLICATION_NAME);
 
+	/* 80 % height of screen */
+	auto WINDOW_SCALE = .8;
+	auto window_geometry = (QGuiApplication::primaryScreen())->geometry();
+	window_geometry.setHeight(window_geometry.height() * WINDOW_SCALE);
+	window_geometry.setWidth(window_geometry.height());
+
+	this->setMinimumSize(100, 100);
+	this->setGeometry(window_geometry);
+
 	auto centralLayout = new QGridLayout();
 	auto centralWidget = new QWidget();
 	centralWidget->setLayout(centralLayout);
@@ -64,20 +73,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	dsb_radius_out_->setDecimals(3);
 	dsb_radius_out_->setRange(0., 999999);
 
-	dsb_open_angle_  = new QDoubleSpinBox();
-	dsb_position_angle_  = new QDoubleSpinBox();
+	dsb_open_angle_ = new QDoubleSpinBox();
+	dsb_position_angle_ = new QDoubleSpinBox();
 	dsb_open_angle_->setRange(0., 360.);
 	dsb_open_angle_->setSuffix(" deg.");
 	dsb_open_angle_->setValue(10);
 	dsb_position_angle_->setRange(-360., 360.);
 	dsb_position_angle_->setSuffix(" deg.");
 
-	dsb_size_of_pixel_     = new QDoubleSpinBox();
+	dsb_size_of_pixel_ = new QDoubleSpinBox();
+	dsb_size_of_pixel_->setValue(1.0);
 
-	pb_invert_data_  = new QPushButton("inverse data");
-	pb_invert_fft_   = new QPushButton("inverse Fourier");
-	pb_fft_	       = new QPushButton("make FFT");
-	pb_center_of_mass_       = new QPushButton("centr. of mass");
+	pb_invert_data_ = new QPushButton("inverse data");
+	pb_invert_fft_ = new QPushButton("inverse Fourier");
+	pb_fft_ = new QPushButton("make FFT");
+	pb_center_of_mass_ = new QPushButton("centr. of mass");
 	pb_average_ = new QPushButton("average");
 
 	winPlot = new windowPlot;
@@ -143,7 +153,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	lth_size_of_pixel->addWidget(dsb_size_of_pixel_);
 	lth_size_of_pixel->addWidget(cb_size_of_pixel_);
 	ltv_controls->addLayout(lth_size_of_pixel);
-	ltv_controls->addSpacing(100);
+	ltv_controls->addSpacing(1);
 
 	centralLayout->addWidget(plot_input,0,0);
 	centralLayout->addWidget(plot_fft,0,1);

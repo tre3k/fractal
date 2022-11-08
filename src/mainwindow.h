@@ -34,6 +34,8 @@
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "iqcustomplot.h"
 #include "functions.h"
@@ -77,27 +79,16 @@ private slots:
 
 
     void on_action_Open_triggered();
-
     void on_action_Close_triggered();
-
     void on_pushButtonIntegrate_clicked();
-
     void on_action_openFFT_triggered();
-
     void on_actionScale_triggered();
-
     void openImage(QString, data2d *);
-
     void on_actionOpenImage_triggered();
-
     void on_actionOpenImageFFT_triggered();
-
     void on_pushButton_invertData_clicked();
-
     void on_pushButton_invertFFT_clicked();
-
     void on_pushButtonCentre_clicked();
-
     void on_pushButton_FFT_clicked();
 
 private:
