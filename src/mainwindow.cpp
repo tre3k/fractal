@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	auto centralLayout = new QVBoxLayout();
 	auto centralWidget = new QWidget();
+	centralWidget->setLayout(centralLayout);
 
 	this->setCentralWidget(centralWidget);
 

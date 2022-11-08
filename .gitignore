@@ -1,4 +1,7 @@
 /build*/
+/bin/
+
+src/config.h
 
 *.user
 *.log
