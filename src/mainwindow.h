@@ -95,8 +95,8 @@ private slots:
 	void on_pushButtonIntegrate_clicked();
 	void on_action_openFFT_triggered();
 	void on_actionScale_triggered();
-	void openImage(QString, data2d *);
-	void on_actionOpenImage_triggered();
+	void openImage(QString filename, data2d *indata);
+	void slotOpenImage();                          // with open dialog
 	void on_actionOpenImageFFT_triggered();
 	void on_pushButton_invertData_clicked();
 	void on_pushButton_invertFFT_clicked();
@@ -125,8 +125,14 @@ private:
 
 	void preProcess();
 	void plotData(iCasePlot2D *,data2d *);
-	void toCircle(double *x, double *y, double r, double phi);
-	void paintCircles(iCasePlot2D *,double, double, double, double, double, double);
+	void toCircle(
+		double *x,
+		double *y,
+		double r,
+		double phi
+		);
+	void paintCircles(iCasePlot2D *, double, double,
+			  double, double, double, double);
 };
 
 #endif // MAINWINDOW_H

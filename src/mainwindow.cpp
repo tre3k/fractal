@@ -179,9 +179,14 @@ void MainWindow::initActions() {
 	connect(s_actions_.close, &QAction::triggered,
 		this, &MainWindow::Close);
 
-	s_actions_.open_text = new QAction("open (text)");
+	s_actions_.open_text = new QAction("&open (text)");
 	connect(s_actions_.open_text, &QAction::triggered,
 		this, &MainWindow::slotOpenText);
+
+	s_actions_.open_image = new QAction("open (&image)");
+	connect(s_actions_.open_image, &QAction::triggered,
+		this, &MainWindow::slotOpenImage);
+
 }
 
 void MainWindow::buildMenuBar() {
@@ -192,6 +197,7 @@ void MainWindow::buildMenuBar() {
 	menu_bar->addMenu(m_file);
 
 	m_file->addAction(s_actions_.open_text);
+	m_file->addAction(s_actions_.open_image);
 	m_file->addSeparator();
 	m_file->addAction(s_actions_.close);
 
@@ -489,7 +495,7 @@ void MainWindow::on_actionScale_triggered()
 }
 
 
-void MainWindow::openImage(QString filename,data2d *indata){
+void MainWindow::openImage(QString filename, data2d *indata){
     int sx,sy;
     QImage *img = new QImage(filename);
     sx = img->width();
@@ -515,7 +521,7 @@ void MainWindow::openImage(QString filename,data2d *indata){
     return;
 }
 
-void MainWindow::on_actionOpenImage_triggered()
+void MainWindow::slotOpenImage()
 {
 	QString filename = QFileDialog::getOpenFileName
 		(this,
