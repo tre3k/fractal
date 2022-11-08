@@ -380,8 +380,8 @@ void MainWindow::on_action_openFFT_triggered()
 
 void MainWindow::preProcess(){
     if(imageLoaded != true) return;
-    if(data_fft_->size_x==0 || data_fft_->size_y==0) return;
-    plotData(plot_fft,data_fft_);
+    if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
+    plotData(plot_fft, data_fft_);
     if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
         plotData(plot_fft_phase,data_fft_phase_);
     }
@@ -394,8 +394,8 @@ void MainWindow::preProcess(){
 
     for(int i=0;i<data_fft_->size_x;i++){
         for(int j=0;j<data_fft_->size_y;j++){
-            c_x += data_fft_->data[i][j]*i;
-            c_y += data_fft_->data[i][j]*j;
+            c_x += data_fft_->data[i][j] * i;
+            c_y += data_fft_->data[i][j] * j;
             S += data_fft_->data[i][j];
         }
     }
