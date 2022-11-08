@@ -206,8 +206,8 @@ void MainWindow::initActions() {
 		this, &MainWindow::slotOpenImageFFT);
 
 	s_actions_.rescale_axis = new QAction("Rescale axis");
-	connect(s_actions_.rescale, &QAction::triggered,
-		this, &MainWindow::slotRescale());
+	connect(s_actions_.rescale_axis, &QAction::triggered,
+		this, &MainWindow::slotRescale);
 
 }
 
@@ -215,8 +215,10 @@ void MainWindow::buildMenuBar() {
 	auto menu_bar = new QMenuBar();
 	this->setMenuBar(menu_bar);
 
-	auto m_file = new QMenu("&File");
+	auto m_file = new QMenu("&file");
 	menu_bar->addMenu(m_file);
+	auto m_view = new QMenu("&view");
+	menu_bar->addMenu(m_view);
 
 	m_file->addAction(s_actions_.open_text);
 	m_file->addAction(s_actions_.open_image);
@@ -224,6 +226,8 @@ void MainWindow::buildMenuBar() {
 	m_file->addAction(s_actions_.open_image_fft);
 	m_file->addSeparator();
 	m_file->addAction(s_actions_.close);
+
+	m_view->addAction(s_actions_.rescale_axis);
 
 }
 
