@@ -119,7 +119,7 @@ private:
 	iCasePlot2D *plot_fft_phase;
 
 	windowPlot *winPlot;
-	functions *funcs;
+	Functions *funcs;
 
 	double toImpulse = 1;
 

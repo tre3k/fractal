@@ -39,18 +39,19 @@ public:
 	void reinit(int, int);
 };
 
-class functions{
+class Functions{
 public:
-    functions();
-    void fft(double *,double *,int);
-    void fft2d(double **,double **,int,int);
-    void sort(double **,int,int);
-    void makeFFT2D(Data2D *,Data2D *,Data2D *);
-    int doubleToInt(double);
-    void toCircle(double *,double *,double,double);
-    void average(Data2D *,double,double,double,double,double,double,
-                 QVector<double> *,QVector<double> *,QVector<double> *,bool,int);
-    void invertData(Data2D *);
+	Functions();
+	void fft(double *, double *, int);
+	void fft2d(double **, double **, int, int);
+	void sort(double **, int, int);
+	void makeFFT2D(Data2D *, Data2D *, Data2D *);
+	int doubleToInt(double);
+	void toCircle(double *, double *, double, double);
+	void average(Data2D *, double, double, double, double, double, double,
+		     QVector<double> *, QVector<double> *, QVector<double> *,
+		     bool, int);
+	void invertData(Data2D *);
 };
 
 #endif // FUNCTIONS_H

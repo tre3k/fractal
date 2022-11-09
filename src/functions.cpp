@@ -41,11 +41,11 @@ void Data2D::reinit(int sx, int sy){
 	return;
 }
 
-functions::functions(){
+Functions::Functions(){
 
 }
 
-void functions::fft(double *real,double *imgn,int n){
+void Functions::fft(double *real,double *imgn,int n){
 	int step, start, old_start, i, j, theta=0;
 	double tmp_real, tmp_imgn;
 
@@ -109,7 +109,7 @@ void functions::fft(double *real,double *imgn,int n){
 	}
 }
 
-void functions::fft2d(double **real, double **imgn, int N, int M){
+void Functions::fft2d(double **real, double **imgn, int N, int M){
 	double *tmp_real;
 	double *tmp_imgn;
 
@@ -157,7 +157,7 @@ void functions::fft2d(double **real, double **imgn, int N, int M){
 	return;
 }
 
-void functions::sort(double **mass, int a, int b){
+void Functions::sort(double **mass, int a, int b){
 	double tmp = 0.0;
 	for(int i=0; i < a; i++){
 		for(int j = 0; j < b/2; j++){
@@ -178,7 +178,7 @@ void functions::sort(double **mass, int a, int b){
 	return;
 }
 
-void functions::makeFFT2D(Data2D *data_in,
+void Functions::makeFFT2D(Data2D *data_in,
 			  Data2D *data_out,
 			  Data2D *data_out_phase){
 	double **real;
@@ -260,18 +260,18 @@ void functions::makeFFT2D(Data2D *data_in,
 	delete [] imgn;
 }
 
-int functions::doubleToInt(double val){
+int Functions::doubleToInt(double val){
 	return (int)(val+0.5);
 }
 
-void functions::toCircle(double *x, double *y, double r, double phi){
+void Functions::toCircle(double *x, double *y, double r, double phi){
 	phi = 2 * M_PI * phi/360;
 	*x = r * cos(phi);
 	*y = r * sin(phi);
 	return;
 }
 
-void functions::average(Data2D *data,
+void Functions::average(Data2D *data,
 			double x0, double y0,
 			double angle, double oangle,
 			double offset, double len,
@@ -341,7 +341,7 @@ void functions::average(Data2D *data,
 	return;
 }
 
-void functions::invertData(Data2D *idata){
+void Functions::invertData(Data2D *idata){
 	if(idata->size_x==0 || idata->size_y==0) return;
 	double max=idata->data[0][0];
 	for(int i=0;i<idata->size_x;i++){

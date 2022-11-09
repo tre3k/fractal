@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	averY = new QVector<double>;
 	averErr = new QVector<double>;
 
-	funcs = new functions;
+	funcs = new Functions;
 
 	connect(dsb_open_angle_, SIGNAL(valueChanged(double)),
 		this, SLOT(changeSpinBox(double)));
