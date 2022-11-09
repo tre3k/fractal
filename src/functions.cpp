@@ -110,46 +110,90 @@ void Functions::fft(double *real,double *imgn,int n){
 }
 
 void Functions::fft2d(double **real, double **imgn, int N, int M){
-	double *tmp_real;
-	double *tmp_imgn;
+	int delta, last_delta, from, to;
+	QVector<FFTThread *> fft_threads;
+	bool complites {false};
 
-	tmp_real = new double [N];
-	tmp_imgn = new double [N];
+	int input_threads_ = QThread::idealThreadCount();
+	auto threads = input_threads_;
 
-	for(int j = 0; j < M; j++){
-		for(int i=0; i < N; i++){
-			tmp_real[i] = real[i][j];
-			tmp_imgn[i] = imgn[i][j];
-		}
+	delta = int(M / threads);
+	last_delta = M % threads;
+	from = 0;
+	to = delta;
 
-		fft(tmp_real,tmp_imgn,N);
+	if(last_delta != 0) {
+		threads ++;
+	}else{
+		last_delta = delta;
+	}
 
-		for(int i=0;i<N;i++){
-			real[i][j] = tmp_real[i];
-			imgn[i][j] = tmp_imgn[i];
+	for(int i = 0; i < threads; i++){
+		auto fft_thread = new FFTThread();
+		fft_thread->setData(real, imgn, N, M);
+		fft_thread->setType(FFTThread::ROWS);
+		fft_thread->setFromTo(from, to);
+		fft_thread->start();
+		fft_threads.append(fft_thread);
+
+		from = to;
+		if(i + 2 == threads){
+			to = from + last_delta;
+		} else {
+			to = from + delta;
 		}
 	}
 
-	delete [] tmp_real;
-	delete [] tmp_imgn;
-
-	tmp_real = new double [M];
-	tmp_imgn = new double [M];
-
-	for(int i = 0; i<N; i++){
-		for(int j = 0; j < M; j++){
-			tmp_real[j] = real[i][j];
-			tmp_imgn[j] = imgn[i][j];
+	while(!complites) {
+		complites = fft_threads.at(0)->isComplete();
+		for(auto fft_thread : fft_threads) {
+			complites &= fft_thread->isComplete();
 		}
-		fft(tmp_real, tmp_imgn, M);
-		for(int j = 0; j < M; j++){
-			real[i][j] = tmp_real[j];
-			imgn[i][j] = tmp_imgn[j];
+		QThread::msleep(5);
+	}
+
+	for(auto fft_thread : fft_threads) delete fft_thread;
+	fft_threads.clear();
+
+	threads = input_threads_;
+	delta = int(N / threads);
+	last_delta = N % threads;
+	from = 0;
+	to = delta;
+
+	if(last_delta != 0) {
+		threads ++;
+	}else{
+		last_delta = delta;
+	}
+
+	for(int i = 0; i < threads; i++){
+		auto fft_thread = new FFTThread();
+		fft_thread->setData(real, imgn, N, M);
+		fft_thread->setType(FFTThread::COLUMNS);
+		fft_thread->setFromTo(from, to);
+		fft_thread->start();
+		fft_threads.append(fft_thread);
+
+		from = to;
+		if(i + 2 == threads){
+			to = from + last_delta;
+		} else {
+			to = from + delta;
 		}
 	}
 
-	delete [] tmp_real;
-	delete [] tmp_imgn;
+	complites = false;
+	while(!complites) {
+		complites = fft_threads.at(0)->isComplete();
+		for(auto fft_thread : fft_threads) {
+			complites &= fft_thread->isComplete();
+		}
+		QThread::msleep(5);
+	}
+
+	for(auto fft_thread : fft_threads) delete fft_thread;
+	fft_threads.clear();
 
 	sort(real, N, M);
 	sort(imgn, N, M);
@@ -360,15 +404,80 @@ void Functions::invertData(Data2D *idata){
 
 
 FFTThread::FFTThread() : QThread() {
-
+	is_complete_ = false;
 }
 
-bool FFTThread::isComplete() {
+volatile bool FFTThread::isComplete() {
 	return is_complete_;
 }
 
-void FFTThread::run() {
+void FFTThread::setFromTo(int from, int to) {
+	from_ = from;
+	to_ = to;
+}
 
+void FFTThread::setData(double **real, double **imgn, int N, int M) {
+	real_ = real;
+	imgn_ = imgn;
+	N_ = N;
+	M_ = M;
+}
+
+void FFTThread::setType(Types type){
+	type_ = type;
+}
+
+void FFTThread::run() {
+	is_complete_ = false;
+	double *tmp_real;
+	double *tmp_imgn;
+
+	switch(type_) {
+	case ROWS:
+		tmp_real = new double [N_];
+		tmp_imgn = new double [N_];
+
+		for(int j = from_; j < to_; j++){
+
+			for(int i=0; i < N_; i++){
+				tmp_real[i] = real_[i][j];
+				tmp_imgn[i] = imgn_[i][j];
+			}
+
+			Functions::fft(tmp_real, tmp_imgn, N_);
+
+			for(int i = 0; i < N_; i++){
+				real_[i][j] = tmp_real[i];
+				imgn_[i][j] = tmp_imgn[i];
+			}
+		}
+
+		delete [] tmp_real;
+		delete [] tmp_imgn;
+		break;
+
+	case COLUMNS:
+		tmp_real = new double [M_];
+		tmp_imgn = new double [M_];
+
+		for(int i = from_; i < to_; i++){
+
+			for(int j = 0; j < M_; j++){
+				tmp_real[j] = real_[i][j];
+				tmp_imgn[j] = imgn_[i][j];
+			}
+
+			Functions::fft(tmp_real, tmp_imgn, M_);
+
+			for(int j = 0; j < M_; j++){
+				real_[i][j] = tmp_real[j];
+				imgn_[i][j] = tmp_imgn[j];
+			}
+		}
+		delete [] tmp_real;
+		delete [] tmp_imgn;
+		break;
+	}
 
 	is_complete_ = true;
 	emit complete();

@@ -44,7 +44,7 @@ public:
 class Functions{
 public:
 	Functions();
-	void fft(double *, double *, int);
+	static void fft(double *, double *, int);
 	void fft2d(double **, double **, int, int);
 	void sort(double **, int, int);
 	void makeFFT2D(Data2D *, Data2D *, Data2D *);
@@ -59,13 +59,25 @@ public:
 class FFTThread : public QThread {
 	Q_OBJECT
 public:
+	enum Types {
+		ROWS,
+		COLUMNS
+	};
+
 	FFTThread();
+	void setData(double **real, double **imgn, int N, int M);
+	void setFromTo(int from, int to);
+	void setType(Types type);
 
 	void run();
-	bool isComplete();
+	volatile bool isComplete();
 
 private:
-	bool is_complete_ {false};
+	volatile bool is_complete_ {false};
+	int N_ {0}, M_ {0};
+	double **real_ {nullptr}, **imgn_{nullptr};
+	Types type_ {Types::ROWS};
+	int from_, to_;
 
 signals:
 	void complete();
@@ -85,8 +97,6 @@ private:
 	Data2D * data_out_ {nullptr};
 	Data2D * data_out_phase_ {nullptr};
 	bool data_is_loaded_ {false};
-
-	int threads_ {4}; // 4 just for test
 
 signals:
 	void complete();
