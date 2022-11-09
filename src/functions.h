@@ -59,7 +59,8 @@ public:
 class FFT2DThread : public QThread {
 	Q_OBJECT
 public:
-	FFT2DThread(Data2D *, Data2D *, Data2D *);
+	FFT2DThread();
+	void setData(Data2D *, Data2D *, Data2D *);
 
 	void run();
 private:
@@ -67,6 +68,8 @@ private:
 	Data2D * data_in_ {nullptr};
 	Data2D * data_out_ {nullptr};
 	Data2D * data_out_phase_ {nullptr};
+	bool data_is_loaded_ {false};
+
 
 signals:
 	void isComplete();

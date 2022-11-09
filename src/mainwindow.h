@@ -109,6 +109,8 @@ private slots:
 
 	void Close();
 
+	void preProcess();
+
 private:
 	Data2D *data_input_;
 	Data2D *data_fft_;
@@ -120,6 +122,7 @@ private:
 
 	windowPlot *winPlot;
 	Functions *funcs;
+	FFT2DThread * fft2d_thread_;
 
 	double toImpulse = 1;
 
@@ -127,7 +130,6 @@ private:
 
 	bool imageLoaded = false;
 
-	void preProcess();
 	void plotData(iCasePlot2D *,Data2D *);
 	void toCircle(
 		double *x,

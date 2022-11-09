@@ -98,6 +98,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	averErr = new QVector<double>;
 
 	funcs = new Functions;
+	fft2d_thread_ = new FFT2DThread;
+	connect(fft2d_thread_, &FFT2DThread::isComplete,
+		this, &MainWindow::preProcess);
 
 	connect(dsb_open_angle_, SIGNAL(valueChanged(double)),
 		this, SLOT(changeSpinBox(double)));
@@ -365,12 +368,11 @@ void MainWindow::slotOpenText()
 
 	data_fft_ = new Data2D;
 	data_fft_phase_ = new Data2D;
-	funcs->makeFFT2D(
-		data_input_,
-		data_fft_,
-		data_fft_phase_);
-	imageLoaded=true;
-	preProcess();
+
+	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
+	fft2d_thread_->start();
+
+	imageLoaded = true;
 }
 
 void MainWindow::slotOpenFFT()
@@ -588,9 +590,11 @@ void MainWindow::slotOpenImage()
 
 	data_fft_ = new Data2D;
 	data_fft_phase_ = new Data2D;
-	funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
-	imageLoaded=true;
-	preProcess();
+
+	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
+	fft2d_thread_->start();
+
+	imageLoaded = true;
 }
 
 void MainWindow::slotOpenImageFFT()
@@ -640,8 +644,8 @@ void MainWindow::buildFFT()
 {
     data_fft_ = new Data2D;
     data_fft_phase_ = new Data2D;
-    funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
-    preProcess();
+    fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
+    fft2d_thread_->start();
 }
 
 void MainWindow::slotChangeRangeFFT(){

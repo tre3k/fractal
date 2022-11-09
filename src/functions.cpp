@@ -359,15 +359,30 @@ void Functions::invertData(Data2D *idata){
 }
 
 
-FFT2DThread::FFT2DThread(Data2D *data_in,
-			 Data2D *data_out,
-			 Data2D *data_out_phase) :
+FFT2DThread::FFT2DThread() :
 	QThread(){
 
 	funcs_ = new Functions;
 }
 
+void FFT2DThread::setData(Data2D *data_in,
+			  Data2D *data_out,
+			  Data2D *data_out_phase) {
+	data_in_ = data_in;
+	data_out_ = data_out;
+	data_out_phase_ = data_out_phase;
+
+	data_is_loaded_ = true;
+}
+
 void FFT2DThread::run() {
+	if(!data_is_loaded_){
+		emit isComplete();
+		return;
+	}
 
+	funcs_->makeFFT2D(data_in_, data_out_, data_out_phase_);
 
+	data_is_loaded_ = false;
+	emit isComplete();
 }
