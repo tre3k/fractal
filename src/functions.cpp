@@ -21,19 +21,19 @@
 
 #include "functions.h"
 
-data2d::data2d(int sx,int sy){
+Data2D::Data2D(int sx,int sy){
 	size_x = sx;
 	size_y = sy;
 	data = new double * [size_x];
 	for(int i=0;i<size_x;i++) data[i] = new double [size_y];
 }
 
-void data2d::remove(){
+void Data2D::remove(){
 	for(int i=0;i<size_x;i++) delete [] data[i];
 	delete [] *data;
 }
 
-void data2d::reinit(int sx, int sy){
+void Data2D::reinit(int sx, int sy){
 	size_x = sx;
 	size_y = sy;
 	data = new double * [size_x];
@@ -178,9 +178,9 @@ void functions::sort(double **mass, int a, int b){
 	return;
 }
 
-void functions::makeFFT2D(data2d *data_in,
-			  data2d *data_out,
-			  data2d *data_out_phase){
+void functions::makeFFT2D(Data2D *data_in,
+			  Data2D *data_out,
+			  Data2D *data_out_phase){
 	double **real;
 	double **imgn;
 	double dphi = 0.0;
@@ -271,7 +271,7 @@ void functions::toCircle(double *x, double *y, double r, double phi){
 	return;
 }
 
-void functions::average(data2d *data,
+void functions::average(Data2D *data,
 			double x0, double y0,
 			double angle, double oangle,
 			double offset, double len,
@@ -341,7 +341,7 @@ void functions::average(data2d *data,
 	return;
 }
 
-void functions::invertData(data2d *idata){
+void functions::invertData(Data2D *idata){
 	if(idata->size_x==0 || idata->size_y==0) return;
 	double max=idata->data[0][0];
 	for(int i=0;i<idata->size_x;i++){

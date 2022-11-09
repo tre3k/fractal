@@ -177,9 +177,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	buildMenuBar();
 	buildToolBar();
 
-	data_input_ = new data2d;
-	data_fft_ = new data2d;
-	data_fft_phase_ = new data2d;
+	data_input_ = new Data2D;
+	data_fft_ = new Data2D;
+	data_fft_phase_ = new Data2D;
 }
 
 MainWindow::~MainWindow()
@@ -254,7 +254,7 @@ void MainWindow::buildToolBar() {
 
 
 
-void MainWindow::plotData(iCasePlot2D *plot, data2d *dat){
+void MainWindow::plotData(iCasePlot2D *plot, Data2D *dat){
 	int i, j;
 
 	plot->plot2D->ColorMap->data()->setSize(dat->size_x, dat->size_y);
@@ -346,7 +346,7 @@ void MainWindow::slotOpenText()
 	text_stream >> tmp;
 	input_size_y = QString(tmp).toInt();
 
-        data_input_ = new data2d(input_size_x, input_size_y);
+        data_input_ = new Data2D(input_size_x, input_size_y);
 
 	int i=0, j=0;
 
@@ -364,8 +364,8 @@ void MainWindow::slotOpenText()
 
 	plotData(plot_input, data_input_);
 
-	data_fft_ = new data2d;
-	data_fft_phase_ = new data2d;
+	data_fft_ = new Data2D;
+	data_fft_phase_ = new Data2D;
 	funcs->makeFFT2D(
 		data_input_,
 		data_fft_,
@@ -389,7 +389,7 @@ void MainWindow::slotOpenFFT()
 	txtStream >> tmp;
 	input_size_y = QString(tmp).toInt();
 
-	data_fft_ = new data2d(input_size_x,input_size_y);
+	data_fft_ = new Data2D(input_size_x,input_size_y);
 
 	int i=0,j=0;
 
@@ -404,8 +404,8 @@ void MainWindow::slotOpenFFT()
 	}
 
 	f.close();
-	data_fft_phase_ = new data2d;
-	data_input_ = new data2d;
+	data_fft_phase_ = new Data2D;
+	data_input_ = new Data2D;
 	preProcess();
 }
 
@@ -536,7 +536,7 @@ void MainWindow::slotRescale()
 }
 
 
-void MainWindow::openImage(QString filename, data2d *indata){
+void MainWindow::openImage(QString filename, Data2D *indata){
     int sx,sy;
     QImage *img = new QImage(filename);
     sx = img->width();
@@ -582,13 +582,13 @@ void MainWindow::slotOpenImage()
 		 "XPM (*.xpm *.XPM)");
 
 	if(filename == "") return;
-	data_input_ = new data2d;
+	data_input_ = new Data2D;
 	openImage(filename, data_input_);
 	plotData(plot_input, data_input_);
 
 
-	data_fft_ = new data2d;
-	data_fft_phase_ = new data2d;
+	data_fft_ = new Data2D;
+	data_fft_phase_ = new Data2D;
 	funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
 	imageLoaded=true;
 	preProcess();
@@ -610,11 +610,11 @@ void MainWindow::slotOpenImageFFT()
     "XPM (*.xpm *.XPM)");
 
     if(filename == "") return;
-    data_fft_ = new data2d;
+    data_fft_ = new Data2D;
     openImage(filename, data_fft_);
     plotData(plot_fft, data_fft_);
-    data_fft_phase_ = new data2d;
-    data_input_ = new data2d;
+    data_fft_phase_ = new Data2D;
+    data_input_ = new Data2D;
     imageLoaded = true;
     preProcess();
 }
@@ -639,8 +639,8 @@ void MainWindow::gotoCenterMass()
 
 void MainWindow::buildFFT()
 {
-    data_fft_ = new data2d;
-    data_fft_phase_ = new data2d;
+    data_fft_ = new Data2D;
+    data_fft_phase_ = new Data2D;
     funcs->makeFFT2D(data_input_, data_fft_, data_fft_phase_);
     preProcess();
 }

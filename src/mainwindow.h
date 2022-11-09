@@ -99,7 +99,7 @@ private slots:
 	void Average();
 	void slotOpenFFT();
 	void slotRescale();
-	void openImage(QString filename, data2d *indata);
+	void openImage(QString filename, Data2D *indata);
 	void slotOpenImage();                          // with open dialog
 	void slotOpenImageFFT();
 	void invertData();
@@ -110,9 +110,9 @@ private slots:
 	void Close();
 
 private:
-	data2d *data_input_;
-	data2d *data_fft_;
-	data2d *data_fft_phase_;
+	Data2D *data_input_;
+	Data2D *data_fft_;
+	Data2D *data_fft_phase_;
 
 	iCasePlot2D *plot_input;
 	iCasePlot2D *plot_fft;
@@ -128,7 +128,7 @@ private:
 	bool imageLoaded = false;
 
 	void preProcess();
-	void plotData(iCasePlot2D *,data2d *);
+	void plotData(iCasePlot2D *,Data2D *);
 	void toCircle(
 		double *x,
 		double *y,
