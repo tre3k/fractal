@@ -70,9 +70,9 @@ private:
 	Data2D * data_out_phase_ {nullptr};
 	bool data_is_loaded_ {false};
 
-
 signals:
 	void isComplete();
+	void message(QString message, int timeout = 0);
 };
 
 

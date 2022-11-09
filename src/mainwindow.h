@@ -37,6 +37,7 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QToolBar>
+#include <QStatusBar>
 
 #include "about.h"
 #include "iqcustomplot.h"
@@ -53,8 +54,8 @@ signals:
     void signal_plot(windowPlotValues);
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+	explicit MainWindow(QWidget *parent = 0);
+	~MainWindow();
 
 private:
 	QCheckBox *cb_size_of_pixel_;
@@ -89,6 +90,9 @@ private:
 	void buildMenuBar();
 	void buildToolBar();
 	void initActions();
+
+	QStatusBar *status_bar_;
+	void buildStatusBar();
 
 
 private slots:

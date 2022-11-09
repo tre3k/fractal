@@ -178,6 +178,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	initActions();
 	buildMenuBar();
 	buildToolBar();
+	buildStatusBar();
+
+	connect(fft2d_thread_, &FFT2DThread::message,
+		status_bar_, &QStatusBar::showMessage);
 
 	data_input_ = new Data2D;
 	data_fft_ = new Data2D;
@@ -251,9 +255,13 @@ void MainWindow::buildToolBar() {
 	tool_bar->addAction(s_actions_.open_image);
 	tool_bar->addSeparator();
 	tool_bar->addAction(s_actions_.rescale_axis);
-
 }
 
+void MainWindow::buildStatusBar() {
+	status_bar_ = new QStatusBar();
+
+	this->setStatusBar(status_bar_);
+}
 
 
 void MainWindow::plotData(iCasePlot2D *plot, Data2D *dat){
@@ -413,6 +421,8 @@ void MainWindow::slotOpenFFT()
 void MainWindow::preProcess(){
 	if(imageLoaded != true) return;
 	if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
+
+	status_bar_->showMessage("plotting...");
 	plotData(plot_fft, data_fft_);
 	if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
 		plotData(plot_fft_phase,data_fft_phase_);
@@ -454,6 +464,7 @@ void MainWindow::preProcess(){
 		dsb_radius_out_->setValue(ourRadius_default*toImpulse/2);
 	}
 
+	status_bar_->showMessage("Done");
 }
 
 void MainWindow::Close()
