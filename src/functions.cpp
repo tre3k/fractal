@@ -357,3 +357,17 @@ void Functions::invertData(Data2D *idata){
 	}
 	return;
 }
+
+
+FFT2DThread::FFT2DThread(Data2D *data_in,
+			 Data2D *data_out,
+			 Data2D *data_out_phase) :
+	QThread(){
+
+	funcs_ = new Functions;
+}
+
+void FFT2DThread::run() {
+
+
+}

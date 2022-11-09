@@ -21,7 +21,6 @@
 
 
 #include "mainwindow.h"
-#include "about.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)

@@ -25,6 +25,8 @@
 #include <QtMath>
 #include <QVector>
 #include <QDebug>
+#include <QObject>
+#include <QThread>
 
 #ifndef M_PI
 #define M_PI 4 * atan(1)
@@ -53,5 +55,22 @@ public:
 		     bool, int);
 	void invertData(Data2D *);
 };
+
+class FFT2DThread : public QThread {
+	Q_OBJECT
+public:
+	FFT2DThread(Data2D *, Data2D *, Data2D *);
+
+	void run();
+private:
+	Functions *funcs_;
+	Data2D * data_in_ {nullptr};
+	Data2D * data_out_ {nullptr};
+	Data2D * data_out_phase_ {nullptr};
+
+signals:
+	void isComplete();
+};
+
 
 #endif // FUNCTIONS_H
