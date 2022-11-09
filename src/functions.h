@@ -56,6 +56,21 @@ public:
 	void invertData(Data2D *);
 };
 
+class FFTThread : public QThread {
+	Q_OBJECT
+public:
+	FFTThread();
+
+	void run();
+	bool isComplete();
+
+private:
+	bool is_complete_ {false};
+
+signals:
+	void complete();
+};
+
 class FFT2DThread : public QThread {
 	Q_OBJECT
 public:
@@ -63,6 +78,7 @@ public:
 	void setData(Data2D *, Data2D *, Data2D *);
 
 	void run();
+
 private:
 	Functions *funcs_;
 	Data2D * data_in_ {nullptr};
@@ -70,8 +86,10 @@ private:
 	Data2D * data_out_phase_ {nullptr};
 	bool data_is_loaded_ {false};
 
+	int threads_ {4}; // 4 just for test
+
 signals:
-	void isComplete();
+	void complete();
 	void message(QString message, int timeout = 0);
 };
 

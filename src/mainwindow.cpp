@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	funcs = new Functions;
 	fft2d_thread_ = new FFT2DThread;
-	connect(fft2d_thread_, &FFT2DThread::isComplete,
+	connect(fft2d_thread_, &FFT2DThread::complete,
 		this, &MainWindow::preProcess);
 
 	connect(dsb_open_angle_, SIGNAL(valueChanged(double)),
