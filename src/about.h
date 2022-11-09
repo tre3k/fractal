@@ -20,19 +20,24 @@
  */
 
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#ifndef _ABOUT_H_
+#define _ABOUT_H_
 
-#include <QStringList>
+#include <QDialog>
+#include <QWidget>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QLabel>
 
-#define APPLICATION_NAME @APPLICATION_NAME@
-#define APPLICATION_VERSION @APPLICATION_VERSION@
-#define APPLICATION_DESCRIPTION						\
-	"Application for fractal dimension estimates."
+#include "config.h"
 
-#define BUILT_TIMESTAMP @TODAY_TEXT@
-#define BUILT_COMPILER_VERSION @CMAKE_CXX_COMPILER_VERSION_TEXT@
-#define BUILT_COMPILER_ID @CMAKE_CXX_COMPILER_ID_TEXT@
-#define COPYRIGHT_YEAR @COPY_YEAR_TEXT@
+class AboutDialog : public QDialog {
+	Q_OBJECT
 
-#endif
+public:
+	AboutDialog(QWidget *parent = nullptr);
+
+};
+
+
+#endif // _ABOUT_H_

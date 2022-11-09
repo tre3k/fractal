@@ -21,6 +21,7 @@
 
 
 #include "mainwindow.h"
+#include "about.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -35,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setMinimumSize(100, 100);
 	this->setGeometry(window_geometry);
+
+	aboutDialog_ = new AboutDialog();
 
 	auto centralLayout = new QGridLayout();
 	auto centralWidget = new QWidget();
@@ -210,6 +213,8 @@ void MainWindow::initActions() {
 		this, &MainWindow::slotRescale);
 
 	s_actions_.show_about = new QAction("&about");
+	connect(s_actions_.show_about, &QAction::triggered,
+		aboutDialog_, &QDialog::show);
 
 }
 

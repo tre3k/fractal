@@ -50,12 +50,14 @@ execute_process(
   )
 
 string(TIMESTAMP TODAY "%d.%m.%Y")
+string(TIMESTAMP COPY_YEAR "%Y")
 
 string(REGEX REPLACE "\n$" "" VERSION_GIT_OUTPUT "${VERSION_GIT_OUTPUT}")
 set(APPLICATION_VERSION \"${VERSION_GIT_OUTPUT}\")
 set(APPLICATION_NAME "\"Fractal\"")
 
 set(TODAY_TEXT \"${TODAY}\")
+set(COPY_YEAR_TEXT \"${COPY_YEAR}\")
 set(CMAKE_CXX_COMPILER_VERSION_TEXT \"${CMAKE_CXX_COMPILER_VERSION}\")
 set(CMAKE_CXX_COMPILER_ID_TEXT \"${CMAKE_CXX_COMPILER_ID}\")
 
@@ -68,6 +70,7 @@ add_executable(${PROGRAM_NAME}
   src/iqcustomplot.cpp src/iqcustomplot.h
   src/functions.cpp src/functions.h
   src/windowplot.cpp src/windowplot.h
+  src/about.cpp src/about.h
   src/external/qcustomplot.cpp src/external/qcustomplot.h
   )
 

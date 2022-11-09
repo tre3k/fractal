@@ -33,14 +33,16 @@ SOURCES += \
         src/iqcustomplot.cpp \
         src/external/qcustomplot.cpp \
         src/functions.cpp \
-        src/windowplot.cpp
+        src/windowplot.cpp \
+        src/about.cpp
 
 HEADERS += \
         src/mainwindow.h \
         src/iqcustomplot.h \
         src/external/qcustomplot.h \
         src/functions.h \
-        src/windowplot.h
+        src/windowplot.h \
+        src/about.h
 
 INCLUDEPATH += \
         src/ \

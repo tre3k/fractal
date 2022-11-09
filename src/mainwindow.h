@@ -38,6 +38,7 @@
 #include <QGuiApplication>
 #include <QToolBar>
 
+#include "about.h"
 #include "iqcustomplot.h"
 #include "functions.h"
 #include "windowplot.h"
@@ -136,6 +137,8 @@ private:
 		);
 	void paintCircles(iCasePlot2D *, double, double,
 			  double, double, double, double);
+
+	AboutDialog *aboutDialog_;
 };
 
 #endif // MAINWINDOW_H
