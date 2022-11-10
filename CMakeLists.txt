@@ -71,6 +71,7 @@ add_executable(${PROGRAM_NAME}
   src/functions.cpp src/functions.h
   src/windowplot.cpp src/windowplot.h
   src/about.cpp src/about.h
+  src/config.h
   src/external/qcustomplot.cpp src/external/qcustomplot.h
   )
 

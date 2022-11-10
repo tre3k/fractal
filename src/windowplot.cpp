@@ -27,24 +27,24 @@ windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
     this->setMinimumHeight(350);
 
     menuBar = new QMenuBar;
-    menuFile = new QMenu("&file");
-    actionSaveTxt = new QAction("export to txt",this);
+    menuFile = new QMenu(tr("&file"));
+    actionSaveTxt = new QAction(tr("export to txt"), this);
 
-    menuScale = new QMenu("scale");
-    actionDoubleLog = new QAction("double log.",this);
+    menuScale = new QMenu(tr("scale"));
+    actionDoubleLog = new QAction(tr("double log."), this);
     actionDoubleLog->setCheckable(true);
     actionDoubleLog->setChecked(true);
-    actionLogX = new QAction("log. х",this);
+    actionLogX = new QAction(tr("log. х"), this);
     actionLogX->setCheckable(true);
     actionLogX->setChecked(true);
-    actionLogY = new QAction("log. у",this);
+    actionLogY = new QAction(tr("log. у"),this);
     actionLogY->setCheckable(true);
     actionLogY->setChecked(true);
-    actionAutoscale = new QAction("autoscale.",this);
-    actionHideWindow = new QAction("close", this);
+    actionAutoscale = new QAction(tr("autoscale."), this);
+    actionHideWindow = new QAction(tr("close"), this);
 
-    menuApproximation = new QMenu("approximate (experemental)",this);
-    actionLinearApprox = new QAction("power approximation",this);
+    menuApproximation = new QMenu(tr("approximate"), this);
+    actionLinearApprox = new QAction(tr("power approximation"), this);
     actionLinearApprox->setCheckable(true);
 
 
@@ -141,9 +141,13 @@ void windowPlot::slot_logY(bool val){
 }
 
 void windowPlot::slot_saveTxt(){
-    QString filename = QFileDialog::getSaveFileName(this,"Export data to txt","","*.txt");
+    QString filename = QFileDialog::getSaveFileName(this,
+						    tr("Export data to txt"),
+						    "",
+						    "*.txt");
     if(filename=="") return;
-    if(filename.split('.').at(filename.split('.').size()-1)!="txt") filename += ".txt";
+    if(filename.split('.').at(filename.split('.').size()-1)!="txt")
+	    filename += ".txt";
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text)) return;
     QTextStream stream(&f);

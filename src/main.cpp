@@ -21,10 +21,19 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <QTranslator>
+#include <QLocale>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QTranslator translator;
+    if(translator.load("langs/fractal_" + QLocale::system().name())) {
+	    qDebug() << "install translator";
+	    a.installTranslator(&translator);
+    }
+
     MainWindow w;
     w.show();
 

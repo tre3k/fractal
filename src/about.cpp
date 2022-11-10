@@ -38,12 +38,12 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 					   Qt::SmoothTransformation));
 
 	auto label = new QLabel("<b>" + QString(APPLICATION_NAME) + " " +
-				QString(APPLICATION_VERSION) + "</b><br><hr>"
-				"Under license GNU GLPv3 © " +
-				QString(COPYRIGHT_YEAR) + "<br>"
-				"Autor: Kirill Pshenichnyi "
+				QString(APPLICATION_VERSION) + "</b><br><hr>" +
+				tr("Under license") +  " GNU GLPv3 © " +
+				QString(COPYRIGHT_YEAR) + "<br>" +
+				tr("Autor: Kirill Pshenichnyi ") +
 				"&lt;pshcyrill@mail.ru&gt;<br>" +
-				QString(APPLICATION_DESCRIPTION) +
+				APPLICATION_DESCRIPTION +
 				"<hr>" +
 				"Built: " + QString(BUILT_COMPILER_ID) +
 				" " + QString(BUILT_COMPILER_VERSION) +

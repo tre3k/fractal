@@ -27,8 +27,11 @@
 
 #define APPLICATION_NAME @APPLICATION_NAME@
 #define APPLICATION_VERSION @APPLICATION_VERSION@
-#define APPLICATION_DESCRIPTION						\
-	"Application for fractal dimension estimates."
+#define APPLICATION_DESCRIPTION			                              \
+	QT_TRANSLATE_NOOP(                                                    \
+		"AboutDescription",                                           \
+                "Application for fractal dimension estimates."                \
+	)                                                                     \
 
 #define BUILT_TIMESTAMP @TODAY_TEXT@
 #define BUILT_COMPILER_VERSION @CMAKE_CXX_COMPILER_VERSION_TEXT@

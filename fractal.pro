@@ -42,10 +42,12 @@ HEADERS += \
         src/external/qcustomplot.h \
         src/functions.h \
         src/windowplot.h \
-        src/about.h
+        src/about.h \
+        src/config.h
 
 INCLUDEPATH += \
         src/ \
         src/external
 
 RESOURCES += resources.qrc
+TRANSLATIONS += langs/fractal_ru.ts

@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
 		"in direct space \n"
 		"just physical size (m, cm, mm)")
 		);
-	cb_to_log_            = new QCheckBox();
-	cb_to_log_->setText("average to log");
+	cb_to_log_ = new QCheckBox();
+	cb_to_log_->setText(tr("average to log"));
 
 	dsb_center_x_ = new QDoubleSpinBox();
 	dsb_center_y_ = new QDoubleSpinBox();
@@ -199,7 +199,7 @@ void MainWindow::initActions() {
 	connect(s_actions_.close, &QAction::triggered,
 		this, &MainWindow::Close);
 
-	s_actions_.open_text = new QAction("&open (text)");
+	s_actions_.open_text = new QAction(tr("&open (text)"));
 	s_actions_.open_text->setIcon(QIcon(":/icons/open-txt"));
 	s_actions_.open_text->setIconVisibleInMenu(true);
 	connect(s_actions_.open_text, &QAction::triggered,
