@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
 	this->setWindowTitle(APPLICATION_NAME);
+	this->setWindowIcon(QIcon(":/icons/icon.png"));
 
 	/* 80 % height of screen */
 	auto WINDOW_SCALE = .8;

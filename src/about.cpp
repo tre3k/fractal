@@ -25,7 +25,7 @@
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 	this->setWindowTitle("About");
 
-		this->setWindowIcon(QIcon(":/icons/icon.png"));
+	this->setWindowIcon(QIcon(":/icons/icon.png"));
 
 	auto buttonClose = new QPushButton("close");
 	auto layoutMain = new QVBoxLayout();
