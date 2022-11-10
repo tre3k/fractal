@@ -30,48 +30,50 @@
 #include "iqcustomplot.h"
 
 struct WindowPlotValues{
-    QVector<double> *x, *y, *err;
-    bool showError;
-    bool logScale;
+	QVector<double> *x, *y, *err;
+	bool showError;
+	bool logScale;
 };
 
-class windowPlot : public QMainWindow
+class WindowPlot : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit windowPlot(QWidget *parent = nullptr);
+	explicit WindowPlot(QWidget *parent = nullptr);
 
-    QMenuBar *menuBar;
-    QMenu *menuFile;
-    QAction *actionSaveTxt;
-    QAction *actionHideWindow;
-    QMenu *menuScale;
-    QAction *actionDoubleLog;
-    QAction *actionLogX;
-    QAction *actionLogY;
-    QAction *actionAutoscale;
-    QMenu *menuApproximation;
-    QAction *actionLinearApprox;
+	QMenuBar *menu_bar;
+
+	QMenu *menu_file;
+	QAction *act_save_txt;
+	QAction *act_hide_window;
+
+	QMenu *menu_scale;
+	QAction *act_double_log;
+	QAction *act_log_x;
+	QAction *act_log_y;
+	QAction *act_autoscale;
+
+	QMenu *menu_approximation;
+	QAction *act_linear_approx;
 
 
-    iQCustomPlot *plot;
+	iQCustomPlot *plot;
 
-    WindowPlotValues global_val;
+	WindowPlotValues global_val;
 
-    void approximate();
+	void approximate();
 
 signals:
 
 public slots:
-    void slot_plot(WindowPlotValues);
-    void slot_saveTxt();
-    void slot_doubleLog(bool);
-    void slot_logX(bool);
-    void slot_logY(bool);
-    void slot_linearApprox(bool);
-    void slot_autoscale();
-    void slot_close();
-
+	void slot_plot(WindowPlotValues);
+	void slot_saveTxt();
+	void slot_doubleLog(bool);
+	void slot_logX(bool);
+	void slot_logY(bool);
+	void slot_linearApprox(bool);
+	void slot_autoscale();
+	void slot_close();
 };
 
 #endif // WINDOWPLOT_H

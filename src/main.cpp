@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
 
     QTranslator translator;
     if(translator.load("langs/fractal_" + QLocale::system().name())) {
-	    qDebug() << "install translator";
 	    a.installTranslator(&translator);
     }
 

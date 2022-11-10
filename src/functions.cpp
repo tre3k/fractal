@@ -25,11 +25,11 @@ Data2D::Data2D(int sx,int sy){
 	size_x = sx;
 	size_y = sy;
 	data = new double * [size_x];
-	for(int i=0;i<size_x;i++) data[i] = new double [size_y];
+	for(int i=0; i<size_x; i++) data[i] = new double [size_y];
 }
 
 void Data2D::remove(){
-	for(int i=0;i<size_x;i++) delete [] data[i];
+	for(int i=0; i < size_x; i++) delete [] data[i];
 	delete [] *data;
 }
 

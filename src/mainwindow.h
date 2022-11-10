@@ -48,10 +48,7 @@
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-
-signals:
-    void signal_plot(WindowPlotValues);
+	Q_OBJECT
 
 public:
 	explicit MainWindow(QWidget *parent = 0);
@@ -94,45 +91,23 @@ private:
 	QStatusBar *status_bar_;
 	void buildStatusBar();
 
-
-private slots:
-	void changeSpinBox(double);
-	void slotChangeRangeFFT();
-
-	void slotOpenText();
-	void Average();
-	void slotOpenFFT();
-	void slotRescale();
-	void openImage(QString filename, Data2D *indata);
-	void slotOpenImage();                          // with open dialog
-	void slotOpenImageFFT();
-	void invertData();
-	void invertFFT();
-	void gotoCenterMass();
-	void buildFFT();
-
-	void Close();
-
-	void preProcess();
-
-private:
 	Data2D *data_input_;
 	Data2D *data_fft_;
 	Data2D *data_fft_phase_;
 
-	iCasePlot2D *plot_input;
-	iCasePlot2D *plot_fft;
-	iCasePlot2D *plot_fft_phase;
+	iCasePlot2D *plot_input_;
+	iCasePlot2D *plot_fft_;
+	iCasePlot2D *plot_fft_phase_;
 
-	windowPlot *winPlot;
-	Functions *funcs;
+	WindowPlot *win_plot_;
+	Functions *funcs_;
 	FFT2DThread * fft2d_thread_;
 
-	double toImpulse = 1;
+	double to_impulse_ = 1;
 
-	QVector<double> *averX, *averY, *averErr;
+	QVector<double> *aver_x_, *aver_y_, *aver_err_;
 
-	bool imageLoaded = false;
+	bool image_loaded_ = false;
 
 	void plotData(iCasePlot2D *,Data2D *);
 	void toCircle(
@@ -144,7 +119,31 @@ private:
 	void paintCircles(iCasePlot2D *, double, double,
 			  double, double, double, double);
 
-	AboutDialog *aboutDialog_;
+	AboutDialog *about_dialog_;
+
+private slots:
+	void changeSpinBox(double);
+	void slotChangeRangeFFT();
+
+	void slotOpenText();
+	void Average();
+	void slotOpenFFT();
+	void slotRescale();
+	void openImage(QString filename, Data2D *indata);
+	void slotOpenImage();
+	void slotOpenImageFFT();
+	void invertData();
+	void invertFFT();
+	void gotoCenterMass();
+	void buildFFT();
+
+	void Close();
+
+	void preProcess();
+
+signals:
+	void signal_plot(WindowPlotValues);
+
 };
 
 #endif // MAINWINDOW_H

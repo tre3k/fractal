@@ -78,93 +78,108 @@ just physical size (m, cm, mm)</source>
         <translation>усреднение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>sector pos. angle: </source>
         <translation>угол позиции сектора: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>sector open angle: </source>
         <translation>угол раскрытия сектора: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>outer radius: </source>
         <translation>внешний радиус: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="164"/>
         <source>inner radius: </source>
         <translation>внутренний радиус: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>center: </source>
         <translation>сентр: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="198"/>
+        <location filename="../src/mainwindow.cpp" line="210"/>
         <source>close</source>
         <translation>закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="202"/>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>&amp;open (text)</source>
         <translation>&amp;открыть (текстовый формат)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="208"/>
+        <location filename="../src/mainwindow.cpp" line="220"/>
         <source>open (&amp;image)</source>
         <translation>открыть (&amp;изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="214"/>
+        <location filename="../src/mainwindow.cpp" line="226"/>
         <source>open &amp;Fourier (text)</source>
         <translation>открыть образ &amp;Фурье (текстовый формат)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="218"/>
+        <location filename="../src/mainwindow.cpp" line="230"/>
         <source>open Fo&amp;urier (image)</source>
         <translation>открыть образ Ф&amp;урье (изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="234"/>
         <source>rescale axis</source>
         <translation>масштабировать графики</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="228"/>
+        <location filename="../src/mainwindow.cpp" line="240"/>
         <source>&amp;about</source>
         <translation>&amp;о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="238"/>
+        <location filename="../src/mainwindow.cpp" line="249"/>
         <source>&amp;file</source>
         <translation>&amp;файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="240"/>
+        <location filename="../src/mainwindow.cpp" line="258"/>
         <source>&amp;view</source>
         <translation>&amp;вид</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="242"/>
+        <location filename="../src/mainwindow.cpp" line="262"/>
         <source>&amp;help</source>
         <translation>&amp;справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="436"/>
+        <location filename="../src/mainwindow.cpp" line="375"/>
+        <source>Open fractal (text format)</source>
+        <translation>Открыть фрактал (текстовый формат)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="423"/>
+        <source>Open Fourier (image format)</source>
+        <translation>Открыть Фурье образ (изображение)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="461"/>
         <source>plotting...</source>
         <translation>построение графиков...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="478"/>
+        <location filename="../src/mainwindow.cpp" line="511"/>
         <source>done.</source>
         <translation>готово.</translation>
     </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="632"/>
+        <source>Open fractal (image format)</source>
+        <translation>Открыть фрактал (изображение)</translation>
+    </message>
 </context>
 <context>
-    <name>windowPlot</name>
+    <name>WindowPlot</name>
     <message>
         <location filename="../src/windowplot.cpp" line="30"/>
         <source>&amp;file</source>
@@ -201,10 +216,6 @@ just physical size (m, cm, mm)</source>
         <translation>авт. масштаб</translation>
     </message>
     <message>
-        <source>autoscale.</source>
-        <translation type="vanished">авт. масштаб</translation>
-    </message>
-    <message>
         <location filename="../src/windowplot.cpp" line="44"/>
         <source>close</source>
         <translation>закрыть</translation>
@@ -223,6 +234,57 @@ just physical size (m, cm, mm)</source>
         <location filename="../src/windowplot.cpp" line="152"/>
         <source>Export data to txt</source>
         <translation>Экспортироватирование данных</translation>
+    </message>
+</context>
+<context>
+    <name>windowPlot</name>
+    <message>
+        <source>&amp;file</source>
+        <translation type="vanished">&amp;файл</translation>
+    </message>
+    <message>
+        <source>export to txt</source>
+        <translation type="vanished">экспортировать в текстовый формат</translation>
+    </message>
+    <message>
+        <source>scale</source>
+        <translation type="vanished">шкалы</translation>
+    </message>
+    <message>
+        <source>double log.</source>
+        <translation type="vanished">двойной лог.</translation>
+    </message>
+    <message>
+        <source>log. х</source>
+        <translation type="vanished">лог. x</translation>
+    </message>
+    <message>
+        <source>log. у</source>
+        <translation type="vanished">лог. y</translation>
+    </message>
+    <message>
+        <source>autoscale</source>
+        <translation type="vanished">авт. масштаб</translation>
+    </message>
+    <message>
+        <source>autoscale.</source>
+        <translation type="vanished">авт. масштаб</translation>
+    </message>
+    <message>
+        <source>close</source>
+        <translation type="vanished">закрыть</translation>
+    </message>
+    <message>
+        <source>approximate</source>
+        <translation type="vanished">аппроксимация</translation>
+    </message>
+    <message>
+        <source>linear approximation (LSM)</source>
+        <translation type="vanished">линейная аппроксимация (МНК)</translation>
+    </message>
+    <message>
+        <source>Export data to txt</source>
+        <translation type="vanished">Экспортироватирование данных</translation>
     </message>
 </context>
 </TS>

@@ -27,40 +27,42 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 
 	this->setWindowIcon(QIcon(":/icons/main-icon"));
 
-	auto buttonClose = new QPushButton("close");
-	auto layoutMain = new QVBoxLayout();
-	auto layoutButtons = new QHBoxLayout();
-	auto labelPixmap = new QLabel();
+	auto btn_close = new QPushButton("close");
+	auto ltv_main = new QVBoxLayout();
+	auto lth_buttons = new QHBoxLayout();
+	auto lb_pixmap = new QLabel();
 	QPixmap logo(":/icons/main-icon");
-	labelPixmap->setPixmap(logo.scaled(70,
-					   70,
-					   Qt::KeepAspectRatio,
-					   Qt::SmoothTransformation));
-
-	auto label = new QLabel("<b>" + QString(APPLICATION_NAME) + " " +
-				QString(APPLICATION_VERSION) + "</b><br><hr>" +
-				tr("Under license") +  " GNU GLPv3 © " +
-				QString(COPYRIGHT_YEAR) + "<br>" +
-				tr("Autor: Kirill Pshenichnyi ") +
-				"&lt;pshcyrill@mail.ru&gt;<br>" +
-				APPLICATION_DESCRIPTION +
-				"<hr>" +
-				"Built: " + QString(BUILT_COMPILER_ID) +
-				" " + QString(BUILT_COMPILER_VERSION) +
-				+ " compiler"+
-				" (" + QString(BUILT_TIMESTAMP) + ")"
-
+	lb_pixmap->setPixmap(
+		logo.scaled(
+			70,
+			70,
+			Qt::KeepAspectRatio,
+			Qt::SmoothTransformation)
 		);
 
-	layoutMain->addWidget(labelPixmap);
-	layoutMain->addWidget(label);
+	auto label = new QLabel(
+		"<b>" + QString(APPLICATION_NAME) + " " +
+		QString(APPLICATION_VERSION) + "</b><br><hr>" +
+		tr("Under license") +  " GNU GLPv3 © " +
+		QString(COPYRIGHT_YEAR) + "<br>" +
+		tr("Autor: Kirill Pshenichnyi ") +
+		"&lt;pshcyrill@mail.ru&gt;<br>" +
+		APPLICATION_DESCRIPTION +
+		"<hr>" +
+		"Built: " + QString(BUILT_COMPILER_ID) +
+		" " + QString(BUILT_COMPILER_VERSION) +
+		+ " compiler"+
+		" (" + QString(BUILT_TIMESTAMP) + ")"
+		);
 
-	connect(buttonClose, &QPushButton::released,
+	ltv_main->addWidget(lb_pixmap);
+	ltv_main->addWidget(label);
+
+	connect(btn_close, &QPushButton::released,
 		this, &QDialog::hide);
 
-	layoutButtons->addStretch();
-	layoutButtons->addWidget(buttonClose);
-	layoutMain->addLayout(layoutButtons);
-	this->setLayout(layoutMain);
-
+	lth_buttons->addStretch();
+	lth_buttons->addWidget(btn_close);
+	ltv_main->addLayout(lth_buttons);
+	this->setLayout(ltv_main);
 }

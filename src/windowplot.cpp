@@ -21,71 +21,74 @@
 
 #include "windowplot.h"
 
-windowPlot::windowPlot(QWidget *parent) : QMainWindow(parent)
+WindowPlot::WindowPlot(QWidget *parent) : QMainWindow(parent)
 {
 	this->setMinimumWidth(600);
 	this->setMinimumHeight(350);
 
-	menuBar = new QMenuBar;
-	menuFile = new QMenu(tr("&file"));
-	actionSaveTxt = new QAction(tr("export to txt"), this);
+	menu_bar = new QMenuBar;
+	menu_file = new QMenu(tr("&file"));
+	act_save_txt = new QAction(tr("export to txt"), this);
 
-	menuScale = new QMenu(tr("scale"));
-	actionDoubleLog = new QAction(tr("double log."), this);
-	actionDoubleLog->setCheckable(true);
-	actionDoubleLog->setChecked(true);
-	actionLogX = new QAction(tr("log. х"), this);
-	actionLogX->setCheckable(true);
-	actionLogX->setChecked(true);
-	actionLogY = new QAction(tr("log. у"),this);
-	actionLogY->setCheckable(true);
-	actionLogY->setChecked(true);
-	actionAutoscale = new QAction(tr("autoscale"), this);
-	actionHideWindow = new QAction(tr("close"), this);
+	menu_scale = new QMenu(tr("scale"));
+	act_double_log = new QAction(tr("double log."), this);
+	act_double_log->setCheckable(true);
+	act_double_log->setChecked(true);
+	act_log_x = new QAction(tr("log. х"), this);
+	act_log_x->setCheckable(true);
+	act_log_x->setChecked(true);
+	act_log_y = new QAction(tr("log. у"),this);
+	act_log_y->setCheckable(true);
+	act_log_y->setChecked(true);
+	act_autoscale = new QAction(tr("autoscale"), this);
+	act_hide_window = new QAction(tr("close"), this);
 
-	menuApproximation = new QMenu(tr("approximate"), this);
-	actionLinearApprox = new QAction(tr("linear approximation (LSM)"), this);
-	actionLinearApprox->setCheckable(true);
+	menu_approximation = new QMenu(tr("approximate"), this);
+	act_linear_approx = new QAction(
+		tr("linear approximation (LSM)"),
+		this
+		);
+	act_linear_approx->setCheckable(true);
 
 
-	menuFile->addAction(actionSaveTxt);
-	menuFile->addSeparator();
-	menuFile->addAction(actionHideWindow);
+	menu_file->addAction(act_save_txt);
+	menu_file->addSeparator();
+	menu_file->addAction(act_hide_window);
 
-	menuScale->addAction(actionDoubleLog);
-	menuScale->addAction(actionLogX);
-	menuScale->addAction(actionLogY);
-	menuScale->addAction(actionAutoscale);
+	menu_scale->addAction(act_double_log);
+	menu_scale->addAction(act_log_x);
+	menu_scale->addAction(act_log_y);
+	menu_scale->addAction(act_autoscale);
 
-	menuApproximation->addAction(actionLinearApprox);
+	menu_approximation->addAction(act_linear_approx);
 
-	menuBar->addMenu(menuFile);
-	menuBar->addMenu(menuScale);
-	menuBar->addMenu(menuApproximation);
+	menu_bar->addMenu(menu_file);
+	menu_bar->addMenu(menu_scale);
+	menu_bar->addMenu(menu_approximation);
 
-	this->setMenuBar(menuBar);
+	this->setMenuBar(menu_bar);
 
 	plot = new iQCustomPlot;
 	this->setCentralWidget(plot);
 
-	connect(actionLogX,SIGNAL(toggled(bool)),
-		this,SLOT(slot_logX(bool)));
-	connect(actionLogY,SIGNAL(toggled(bool)),
-		this,SLOT(slot_logY(bool)));
-	connect(actionSaveTxt,SIGNAL(triggered(bool)),
-		this,SLOT(slot_saveTxt()));
-	connect(actionAutoscale,SIGNAL(triggered(bool)),
-		this,SLOT(slot_autoscale()));
-	connect(actionHideWindow,SIGNAL(triggered(bool)),
-		this,SLOT(slot_close()));
-	connect(actionLinearApprox,SIGNAL(toggled(bool)),
-		this,SLOT(slot_linearApprox(bool)));
-	connect(actionDoubleLog,SIGNAL(toggled(bool)),
-		this,SLOT(slot_doubleLog(bool)));
+	connect(act_log_x, SIGNAL(toggled(bool)),
+		this, SLOT(slot_logX(bool)));
+	connect(act_log_y, SIGNAL(toggled(bool)),
+		this, SLOT(slot_logY(bool)));
+	connect(act_save_txt, SIGNAL(triggered(bool)),
+		this, SLOT(slot_saveTxt()));
+	connect(act_autoscale, SIGNAL(triggered(bool)),
+		this, SLOT(slot_autoscale()));
+	connect(act_hide_window, SIGNAL(triggered(bool)),
+		this, SLOT(slot_close()));
+	connect(act_linear_approx, SIGNAL(toggled(bool)),
+		this, SLOT(slot_linearApprox(bool)));
+	connect(act_double_log, SIGNAL(toggled(bool)),
+		this, SLOT(slot_doubleLog(bool)));
 }
 
 
-void windowPlot::slot_plot(WindowPlotValues val){
+void WindowPlot::slot_plot(WindowPlotValues val){
 	global_val = val;
 	plot->clearGraphs();
 	plot->addCurve(val.x, val.y, true, "black", "average");
@@ -106,25 +109,25 @@ void windowPlot::slot_plot(WindowPlotValues val){
 			);
 	}
 
-	slot_logX(actionLogX->isChecked());
-	slot_logY(actionLogY->isChecked());
-	if(actionLinearApprox->isChecked()) approximate();
+	slot_logX(act_log_x->isChecked());
+	slot_logY(act_log_y->isChecked());
+	if(act_linear_approx->isChecked()) approximate();
 	plot->rescaleAxes(true);
 	plot->xAxis->scaleRange(1.2);
 	plot->yAxis->scaleRange(1.2);
 	plot->replot();
 }
 
-void windowPlot::slot_doubleLog(bool val){
-    actionLogX->setChecked(val);
-    actionLogY->setChecked(val);
+void WindowPlot::slot_doubleLog(bool val){
+    act_log_x->setChecked(val);
+    act_log_y->setChecked(val);
     slot_logX(val);
     slot_logY(val);
     slot_autoscale();
     return;
 }
 
-void windowPlot::slot_logX(bool val){
+void WindowPlot::slot_logX(bool val){
 	if(val){
 		plot->xAxis->setScaleType(QCPAxis::stLogarithmic);
 		plot->xAxis2->setScaleType(QCPAxis::stLogarithmic);
@@ -135,7 +138,7 @@ void windowPlot::slot_logX(bool val){
 	plot->replot();
 }
 
-void windowPlot::slot_logY(bool val){
+void WindowPlot::slot_logY(bool val){
 	if(val){
 		plot->yAxis->setScaleType(QCPAxis::stLogarithmic);
 		plot->yAxis2->setScaleType(QCPAxis::stLogarithmic);
@@ -146,7 +149,7 @@ void windowPlot::slot_logY(bool val){
 	plot->replot();
 }
 
-void windowPlot::slot_saveTxt(){
+void WindowPlot::slot_saveTxt(){
 	QString filename = QFileDialog::getSaveFileName(
 		this,
 		tr("Export data to txt"),
@@ -175,14 +178,14 @@ void windowPlot::slot_saveTxt(){
 	f.close();
 }
 
-void windowPlot::slot_autoscale(){
+void WindowPlot::slot_autoscale(){
 	plot->rescaleAxes(true);
 	plot->xAxis->scaleRange(1.2);
 	plot->yAxis->scaleRange(1.2);
 	plot->replot();
 }
 
-void windowPlot::slot_linearApprox(bool val){
+void WindowPlot::slot_linearApprox(bool val){
 	if(!val){
 		plot->clearItems();
 		slot_plot(global_val);
@@ -191,11 +194,11 @@ void windowPlot::slot_linearApprox(bool val){
 	}
 }
 
-void windowPlot::slot_close() {
+void WindowPlot::slot_close() {
 	this->hide();
 }
 
-void windowPlot::approximate() {
+void WindowPlot::approximate() {
 	QVector<double> aX, aY;
 
 	const int POINTS = 30;

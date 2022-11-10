@@ -93,9 +93,9 @@ public:
 
 private:
 	Functions *funcs_;
-	Data2D * data_in_ {nullptr};
-	Data2D * data_out_ {nullptr};
-	Data2D * data_out_phase_ {nullptr};
+	Data2D *data_in_ {nullptr};
+	Data2D *data_out_ {nullptr};
+	Data2D *data_out_phase_ {nullptr};
 	bool data_is_loaded_ {false};
 
 signals:
