@@ -259,6 +259,7 @@ void MainWindow::buildToolBar() {
 	auto tool_bar = new QToolBar();
 	tool_bar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonIconOnly);
 	tool_bar->setIconSize(QSize(24, 24));
+	tool_bar->setMovable(false);
 
 	this->addToolBar(tool_bar);
 	tool_bar->addAction(s_actions_.open_text);
