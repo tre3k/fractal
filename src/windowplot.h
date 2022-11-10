@@ -29,8 +29,8 @@
 
 #include "iqcustomplot.h"
 
-struct windowPlotValues{
-    QVector<double> *x,*y,*err;
+struct WindowPlotValues{
+    QVector<double> *x, *y, *err;
     bool showError;
     bool logScale;
 };
@@ -56,16 +56,14 @@ public:
 
     iQCustomPlot *plot;
 
-    windowPlotValues globalVal;
+    WindowPlotValues global_val;
 
     void approximate();
-    void linear_approx(double *,double *,double *,int,int,int,QVector<double> *,QVector<double> *);
-    double linear_func(double,double,double,double);
 
 signals:
 
 public slots:
-    void slot_plot(windowPlotValues);
+    void slot_plot(WindowPlotValues);
     void slot_saveTxt();
     void slot_doubleLog(bool);
     void slot_logX(bool);

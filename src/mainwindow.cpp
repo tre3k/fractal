@@ -115,8 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
 		this,SLOT(changeSpinBox(double)));
 	connect(dsb_radius_out_, SIGNAL(valueChanged(double)),
 		this,SLOT(changeSpinBox(double)));
-	connect(this,SIGNAL(signal_plot(windowPlotValues)),
-		winPlot,SLOT(slot_plot(windowPlotValues)));
+	connect(this,SIGNAL(signal_plot(WindowPlotValues)),
+		winPlot,SLOT(slot_plot(WindowPlotValues)));
 	connect(cb_size_of_pixel_, SIGNAL(clicked(bool)),
 		this,SLOT(slotChangeRangeFFT()));
 	connect(dsb_size_of_pixel_, SIGNAL(valueChanged(double)),
@@ -516,7 +516,7 @@ void MainWindow::Average()
 		       false,
 		       0);
 
-	windowPlotValues wPlotValues;
+	WindowPlotValues wPlotValues;
 
 	wPlotValues.logScale = true;
 	if(cb_size_of_pixel_->isChecked()){
@@ -526,8 +526,14 @@ void MainWindow::Average()
 	}
 	if(cb_to_log_->isChecked()){
 		for(int i=0;i<averX->size();i++){
-			if(averX->at(i)==0) averX->remove(i);
-			if(averY->at(i)==0) averY->remove(i);
+			if(averX->at(i) == 0){
+				averX->remove(i);
+				averY->remove(i);
+			}
+			if(averY->at(i) == 0){
+				averY->remove(i);
+				averY->remove(i);
+			}
 		}
 		for(int i=0;i<averX->size();i++){
 			(*(averX))[i] = log(averX->at(i));

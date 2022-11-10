@@ -51,7 +51,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 signals:
-    void signal_plot(windowPlotValues);
+    void signal_plot(WindowPlotValues);
 
 public:
 	explicit MainWindow(QWidget *parent = 0);

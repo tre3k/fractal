@@ -37,7 +37,8 @@
         <source>size of object 
 in direct space 
 just physical size (m, cm, mm)</source>
-        <translation>размер объекта в прямом пространстве</translation>
+        <translation>размер объекта
+в прямом пространстве</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="62"/>
@@ -196,8 +197,12 @@ just physical size (m, cm, mm)</source>
     </message>
     <message>
         <location filename="../src/windowplot.cpp" line="43"/>
-        <source>autoscale.</source>
+        <source>autoscale</source>
         <translation>авт. масштаб</translation>
+    </message>
+    <message>
+        <source>autoscale.</source>
+        <translation type="vanished">авт. масштаб</translation>
     </message>
     <message>
         <location filename="../src/windowplot.cpp" line="44"/>
@@ -211,11 +216,11 @@ just physical size (m, cm, mm)</source>
     </message>
     <message>
         <location filename="../src/windowplot.cpp" line="47"/>
-        <source>power approximation</source>
-        <translation type="unfinished"></translation>
+        <source>linear approximation (LSM)</source>
+        <translation>линейная аппроксимация (МНК)</translation>
     </message>
     <message>
-        <location filename="../src/windowplot.cpp" line="145"/>
+        <location filename="../src/windowplot.cpp" line="152"/>
         <source>Export data to txt</source>
         <translation>Экспортироватирование данных</translation>
     </message>
