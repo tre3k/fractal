@@ -510,3 +510,21 @@ void FFT2DThread::run() {
 	data_is_loaded_ = false;
 	emit complete();
 }
+
+
+AverageThread::AverageThread() : QThread() {
+
+}
+
+void AverageThread::run() {
+
+}
+
+void AverageThread::setValues(Data2D *data,
+			      double x0, double y0,
+			      double angle, double oangle,
+			      double offset, double len,
+			      QVector<double> *vX, QVector<double> *vY,
+			      QVector<double> *vErr, bool CKO, int step){
+
+}

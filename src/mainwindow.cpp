@@ -495,8 +495,10 @@ void MainWindow::Average()
 	double px_radius_out = dsb_radius_out_->value();
 
 	if(cb_size_of_pixel_->isChecked()){
-		px_center_x = dsb_center_x_->value()/toImpulse + data_fft_->size_x/2;
-		px_center_y = dsb_center_y_->value()/toImpulse + data_fft_->size_y/2;
+		px_center_x = dsb_center_x_->value()/toImpulse +
+			data_fft_->size_x/2;
+		px_center_y = dsb_center_y_->value()/toImpulse +
+			data_fft_->size_y/2;
 		px_radius_in = dsb_radius_in_->value()/toImpulse;
 		px_radius_out = 2*dsb_radius_out_->value()/toImpulse;
 	}

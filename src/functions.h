@@ -103,5 +103,20 @@ signals:
 	void message(QString message, int timeout = 0);
 };
 
+class AverageThread : public QThread {
+	Q_OBJECT
+public:
+	AverageThread();
+	void setValues(Data2D *, double, double, double, double,
+		       double, double, QVector<double> *,
+		       QVector<double> *, QVector<double> *,
+		       bool, int);
+	void run();
+signals:
+	void complete();
+	void progress(int);
+
+};
+
 
 #endif // FUNCTIONS_H
