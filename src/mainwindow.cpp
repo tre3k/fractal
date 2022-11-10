@@ -21,7 +21,6 @@
 
 
 #include "mainwindow.h"
-#include <qnamespace.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -54,10 +53,10 @@ MainWindow::MainWindow(QWidget *parent) :
 		);
 
 	cb_size_of_pixel_    = new QCheckBox();
-	cb_size_of_pixel_->setText(
+	cb_size_of_pixel_->setText(tr(
 		"size of object \n"
 		"in direct space \n"
-		"just physical size (m, cm, mm)"
+		"just physical size (m, cm, mm)")
 		);
 	cb_to_log_            = new QCheckBox();
 	cb_to_log_->setText("average to log");
@@ -79,19 +78,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	dsb_open_angle_ = new QDoubleSpinBox();
 	dsb_position_angle_ = new QDoubleSpinBox();
 	dsb_open_angle_->setRange(0., 360.);
-	dsb_open_angle_->setSuffix(" deg.");
+	dsb_open_angle_->setSuffix(tr(" deg."));
 	dsb_open_angle_->setValue(10);
 	dsb_position_angle_->setRange(-360., 360.);
-	dsb_position_angle_->setSuffix(" deg.");
+	dsb_position_angle_->setSuffix(tr(" deg."));
 
 	dsb_size_of_pixel_ = new QDoubleSpinBox();
 	dsb_size_of_pixel_->setValue(1.0);
 
-	pb_invert_data_ = new QPushButton("inverse data");
-	pb_invert_fft_ = new QPushButton("inverse Fourier");
-	pb_fft_ = new QPushButton("make FFT");
-	pb_center_of_mass_ = new QPushButton("centr. of mass");
-	pb_average_ = new QPushButton("average");
+	pb_invert_data_ = new QPushButton(tr("inverse data"));
+	pb_invert_fft_ = new QPushButton(tr("inverse Fourier"));
+	pb_fft_ = new QPushButton(tr("make FFT"));
+	pb_center_of_mass_ = new QPushButton(tr("centr. of mass"));
+	pb_average_ = new QPushButton(tr("average"));
 
 	winPlot = new windowPlot;
 
@@ -146,18 +145,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	horizontalLayOutTop->addWidget(pb_fft_);
 	horizontalLayOutTop->addWidget(pb_center_of_mass_);
 
-	QGroupBox *gb_average = new QGroupBox("average");
+	QGroupBox *gb_average = new QGroupBox(tr("average"));
 	auto ltf_sub_average = new QFormLayout();
 	gb_average->setLayout(ltf_sub_average);
-	ltf_sub_average->addRow("sector pos. angle: ", dsb_position_angle_);
-	ltf_sub_average->addRow("sector open angle: ", dsb_open_angle_);
-	ltf_sub_average->addRow("outer radius: ", dsb_radius_out_);
-	ltf_sub_average->addRow("inner radius: ", dsb_radius_in_);
+	ltf_sub_average->addRow(tr("sector pos. angle: "), dsb_position_angle_);
+	ltf_sub_average->addRow(tr("sector open angle: "), dsb_open_angle_);
+	ltf_sub_average->addRow(tr("outer radius: "), dsb_radius_out_);
+	ltf_sub_average->addRow(tr("inner radius: "), dsb_radius_in_);
 
 	auto lth_center_sb = new QHBoxLayout();
 	lth_center_sb->addWidget(dsb_center_x_);
 	lth_center_sb->addWidget(dsb_center_y_);
-	ltf_sub_average->addRow("center: ", lth_center_sb);
+	ltf_sub_average->addRow(tr("center: "), lth_center_sb);
 
 	auto lth_average_button = new QHBoxLayout();
 	lth_average_button->addWidget(cb_to_log_);
@@ -196,7 +195,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initActions() {
-	s_actions_.close = new QAction("close");
+	s_actions_.close = new QAction(tr("close"));
 	connect(s_actions_.close, &QAction::triggered,
 		this, &MainWindow::Close);
 
@@ -206,27 +205,27 @@ void MainWindow::initActions() {
 	connect(s_actions_.open_text, &QAction::triggered,
 		this, &MainWindow::slotOpenText);
 
-	s_actions_.open_image = new QAction("open (&image)");
+	s_actions_.open_image = new QAction(tr("open (&image)"));
 	s_actions_.open_image->setIcon(QIcon(":/icons/open-img"));
 	s_actions_.open_image->setIconVisibleInMenu(true);
 	connect(s_actions_.open_image, &QAction::triggered,
 		this, &MainWindow::slotOpenImage);
 
-	s_actions_.open_fft = new QAction("open &Fourier (text)");
+	s_actions_.open_fft = new QAction(tr("open &Fourier (text)"));
 	connect(s_actions_.open_fft, &QAction::triggered,
 		this, &MainWindow::slotOpenFFT);
 
-	s_actions_.open_image_fft   = new QAction("open Fo&urier (image)");
+	s_actions_.open_image_fft   = new QAction(tr("open Fo&urier (image)"));
 	connect(s_actions_.open_image_fft, &QAction::triggered,
 		this, &MainWindow::slotOpenImageFFT);
 
-	s_actions_.rescale_axis = new QAction("Rescale axis");
+	s_actions_.rescale_axis = new QAction(tr("rescale axis"));
 	s_actions_.rescale_axis->setIcon(QIcon(":/icons/rescale"));
 	s_actions_.rescale_axis->setIconVisibleInMenu(true);
 	connect(s_actions_.rescale_axis, &QAction::triggered,
 		this, &MainWindow::slotRescale);
 
-	s_actions_.show_about = new QAction("&about");
+	s_actions_.show_about = new QAction(tr("&about"));
 	connect(s_actions_.show_about, &QAction::triggered,
 		aboutDialog_, &QDialog::show);
 
@@ -236,11 +235,11 @@ void MainWindow::buildMenuBar() {
 	auto menu_bar = new QMenuBar();
 	this->setMenuBar(menu_bar);
 
-	auto m_file = new QMenu("&file");
+	auto m_file = new QMenu(tr("&file"));
 	menu_bar->addMenu(m_file);
-	auto m_view = new QMenu("&view");
+	auto m_view = new QMenu(tr("&view"));
 	menu_bar->addMenu(m_view);
-	auto m_help = new QMenu("&help");
+	auto m_help = new QMenu(tr("&help"));
 	menu_bar->addMenu(m_help);
 
 	m_file->addAction(s_actions_.open_text);
@@ -433,7 +432,7 @@ void MainWindow::preProcess(){
 	if(imageLoaded != true) return;
 	if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
 
-	status_bar_->showMessage("plotting...");
+	status_bar_->showMessage(tr("plotting..."));
 	plotData(plot_fft, data_fft_);
 	if(data_fft_phase_->size_x!=0 && data_fft_phase_->size_y!=0){
 		plotData(plot_fft_phase,data_fft_phase_);
@@ -475,7 +474,7 @@ void MainWindow::preProcess(){
 		dsb_radius_out_->setValue(ourRadius_default*toImpulse/2);
 	}
 
-	status_bar_->showMessage("Done");
+	status_bar_->showMessage(tr("done."));
 }
 
 void MainWindow::Close()

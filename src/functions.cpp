@@ -504,7 +504,7 @@ void FFT2DThread::run() {
 		emit complete();
 		return;
 	}
-	emit message("doing FFT...", 0);
+	emit message(tr("doing FFT..."), 0);
 	funcs_->makeFFT2D(data_in_, data_out_, data_out_phase_);
 
 	data_is_loaded_ = false;
