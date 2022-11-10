@@ -21,6 +21,9 @@
 
 <RCC>
     <qresource prefix="/icons">
-        <file alias="icon.png">icon.png</file>
+        <file alias="main-icon">icons/icon.png</file>
+	<file alias="open-txt">icons/icons8-view-details-48.png</file>
+	<file alias="open-img">icons/icons8-large-icons-48.png</file>
+	<file alias="rescale">icons/icons8-drag-48.png</file>
     </qresource>
 </RCC>

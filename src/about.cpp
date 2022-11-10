@@ -25,13 +25,13 @@
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 	this->setWindowTitle("About");
 
-	this->setWindowIcon(QIcon(":/icons/icon.png"));
+	this->setWindowIcon(QIcon(":/icons/main-icon"));
 
 	auto buttonClose = new QPushButton("close");
 	auto layoutMain = new QVBoxLayout();
 	auto layoutButtons = new QHBoxLayout();
 	auto labelPixmap = new QLabel();
-	QPixmap logo(":/icons/icon.png");
+	QPixmap logo(":/icons/main-icon");
 	labelPixmap->setPixmap(logo.scaled(70,
 					   70,
 					   Qt::KeepAspectRatio,

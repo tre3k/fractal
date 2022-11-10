@@ -21,12 +21,13 @@
 
 
 #include "mainwindow.h"
+#include <qnamespace.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
 	this->setWindowTitle(APPLICATION_NAME);
-	this->setWindowIcon(QIcon(":/icons/icon.png"));
+	this->setWindowIcon(QIcon(":/icons/main-icon"));
 
 	/* 80 % height of screen */
 	auto WINDOW_SCALE = .8;
@@ -200,10 +201,14 @@ void MainWindow::initActions() {
 		this, &MainWindow::Close);
 
 	s_actions_.open_text = new QAction("&open (text)");
+	s_actions_.open_text->setIcon(QIcon(":/icons/open-txt"));
+	s_actions_.open_text->setIconVisibleInMenu(true);
 	connect(s_actions_.open_text, &QAction::triggered,
 		this, &MainWindow::slotOpenText);
 
 	s_actions_.open_image = new QAction("open (&image)");
+	s_actions_.open_image->setIcon(QIcon(":/icons/open-img"));
+	s_actions_.open_image->setIconVisibleInMenu(true);
 	connect(s_actions_.open_image, &QAction::triggered,
 		this, &MainWindow::slotOpenImage);
 
@@ -216,6 +221,8 @@ void MainWindow::initActions() {
 		this, &MainWindow::slotOpenImageFFT);
 
 	s_actions_.rescale_axis = new QAction("Rescale axis");
+	s_actions_.rescale_axis->setIcon(QIcon(":/icons/rescale"));
+	s_actions_.rescale_axis->setIconVisibleInMenu(true);
 	connect(s_actions_.rescale_axis, &QAction::triggered,
 		this, &MainWindow::slotRescale);
 
@@ -251,6 +258,9 @@ void MainWindow::buildMenuBar() {
 
 void MainWindow::buildToolBar() {
 	auto tool_bar = new QToolBar();
+	tool_bar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonIconOnly);
+	tool_bar->setIconSize(QSize(24, 24));
+
 	this->addToolBar(tool_bar);
 	tool_bar->addAction(s_actions_.open_text);
 	tool_bar->addAction(s_actions_.open_image);
