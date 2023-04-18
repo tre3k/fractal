@@ -26,18 +26,18 @@ project(PROGRAM_NAME)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS PrintSupport REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Svg)
+find_package(Qt6 COMPONENTS Core REQUIRED)
+find_package(Qt6 COMPONENTS Gui REQUIRED)
+find_package(Qt6 COMPONENTS PrintSupport REQUIRED)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Svg)
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/src/external
@@ -76,8 +76,8 @@ add_executable(${PROGRAM_NAME}
   )
 
 target_link_libraries(${PROGRAM_NAME}
-  Qt5::Core
-  Qt5::PrintSupport
-  Qt5::Widgets
-  Qt5::Svg
+  Qt6::Core
+  Qt6::PrintSupport
+  Qt6::Widgets
+  Qt6::Svg
   )
