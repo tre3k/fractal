@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022 Kirill Pshenichnyi <pshcyrill@mail.ru>
+# Copyright (c) 2022-2023 Kirill Pshenichnyi <pshcyrill@mail.ru>
 #
 # This file is part of choppers.
 #

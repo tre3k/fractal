@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018-2022 Kirill Pshenichnyi
+ *  Copyright (c) 2018-2023 Kirill Pshenichnyi
  *
  *  This file is part of fractal.
  *
