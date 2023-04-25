@@ -305,13 +305,66 @@ void Functions::makeFFT2D(Data2D *data_in,
 }
 
 
-void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
-
+void Functions::correlation(double *f, double *g, double *out, int size) {
+	int delta;
+	for(int i = 0; i < size; i++) {
+		out[i] = 0.0;
+		for(int j = 0; j < size; j++) {
+			delta = j - i;
+			if(delta >= 0 && delta < size)
+				out[i] += f[j] * g[delta];
+		}
+	}
 }
 
+void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
+	double *tmp_f, *tmp_g, *tmp_out;
+	int out_size_x {0}, out_size_y {0};
+
+	out_size_x = f->size_x;
+	if(g->size_x < out_size_x) out_size_x = g->size_x;
+	out_size_y = f->size_y;
+	if(g->size_y < out_size_y) out_size_y = g->size_y;
+
+	out->reinit(out_size_x, out_size_y);
+
+	/* копирование строк */
+	tmp_f = new double [f->size_x];
+	tmp_g = new double [g->size_x];
+	tmp_out = new double [out_size_x];
+
+	for(int row = 0; row < out_size_y; row ++) {
+		for(int i = 0; i < f->size_x; i++) tmp_f[i] = f->data[i][row];
+		for(int i = 0; i < g->size_x; i++) tmp_g[i] = g->data[i][row];
+		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_x);
+		for(int i = 0; i < out_size_x; i++)
+			out->data[i][row] = tmp_out[i];
+	}
+	delete [] tmp_f;
+	delete [] tmp_g;
+	delete [] tmp_out;
+
+	/* копирование столбцов */
+	tmp_f = new double [f->size_y];
+	tmp_g = new double [g->size_y];
+	tmp_out = new double [out_size_y];
+
+	for(int col = 0; col < out_size_x; col ++) {
+		for(int i = 0; i < f->size_y; i++)
+			tmp_f[i] = out->data[col][i];
+		for(int i = 0; i < g->size_y; i++)
+			tmp_g[i] = out->data[col][i];
+		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_y);
+		for(int i = 0; i < out_size_y; i++)
+			out->data[col][i] = tmp_out[i];
+	}
+	delete [] tmp_f;
+	delete [] tmp_g;
+	delete [] tmp_out;
+}
 
 int Functions::doubleToInt(double val){
-	return (int)(val+0.5);
+	return (int)(val + 0.5);
 }
 
 void Functions::toCircle(double *x, double *y, double r, double phi){
@@ -533,4 +586,15 @@ void AverageThread::setValues(Data2D *data,
 			      QVector<double> *vX, QVector<double> *vY,
 			      QVector<double> *vErr, bool CKO, int step) {
 
+}
+
+void CorrelationThread::run() {
+	Functions::makeCorrelation(f_, g_, out_);
+	emit complete();
+}
+
+void CorrelationThread::setData(Data2D *f, Data2D *g, Data2D *out) {
+	f_ = f;
+	g_ = g;
+	out_ = out;
 }

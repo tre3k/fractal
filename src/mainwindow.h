@@ -102,7 +102,8 @@ private:
 
 	WindowPlot *win_plot_;
 	Functions *funcs_;
-	FFT2DThread * fft2d_thread_;
+	FFT2DThread *fft2d_thread_;
+	CorrelationThread *correlation_thread_;
 
 	double to_impulse_ = 1;
 
@@ -137,6 +138,8 @@ private slots:
 	void invertFFT();
 	void gotoCenterMass();
 	void buildFFT();
+	void buildCorrelation();
+	void completeCorrelation();
 
 	void Close();
 

@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		);
 
 
-	cb_size_of_pixel_    = new QCheckBox();
+	cb_size_of_pixel_ = new QCheckBox();
 	cb_size_of_pixel_->setText(tr(
                    "size of object \n"
 		   "in direct space \n"
@@ -108,6 +108,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	fft2d_thread_ = new FFT2DThread;
 	connect(fft2d_thread_, &FFT2DThread::complete,
 		this, &MainWindow::preProcess);
+
+	correlation_thread_ = new CorrelationThread();
+	connect(correlation_thread_, &CorrelationThread::complete,
+		this, &MainWindow::completeCorrelation);
 
 	connect(dsb_open_angle_, SIGNAL(valueChanged(double)),
 		this, SLOT(changeSpinBox(double)));
@@ -419,6 +423,8 @@ void MainWindow::slotOpenText()
 	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
 	fft2d_thread_->start();
 
+	buildCorrelation();
+
 	image_loaded_ = true;
 }
 
@@ -466,18 +472,8 @@ void MainWindow::preProcess(){
 	if(image_loaded_ != true) return;
 	if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
 
-	status_bar_->showMessage(tr("plotting..."));
+//	status_bar_->showMessage(tr("plotting..."));
 	plotData(plot_fft_, data_fft_);
-	if(data_fft_phase_->size_x != 0 && data_fft_phase_->size_y != 0){
-		plotData(plot_correlation_,data_fft_phase_);
-	}
-	plot_correlation_->plot2D->ColorScale->axis()->setTicker(
-		QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi)
-		);
-	plot_correlation_->plot2D->ColorScale->setDataRange(
-		QCPRange(-M_PI, M_PI)
-		);
-	plot_correlation_->plot2D->replot();
 
 	double c_x = 0, c_y = 0, S = 0;
 	for(int i = 0; i < data_fft_->size_x; i++){
@@ -602,9 +598,7 @@ void MainWindow::slotRescale()
 	plot_input_->plot2D->replot();
 
 	plot_correlation_->plot2D->rescaleAxes();
-	plot_correlation_->plot2D->ColorScale->setDataRange(
-		QCPRange(-M_PI, M_PI)
-		);
+	plot_correlation_->plot2D->ColorScale->rescaleDataRange(true);
 	plot_correlation_->plot2D->replot();
 }
 
@@ -665,6 +659,8 @@ void MainWindow::slotOpenImage()
 	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
 	fft2d_thread_->start();
 
+	buildCorrelation();
+
 	image_loaded_ = true;
 }
 
@@ -723,6 +719,22 @@ void MainWindow::buildFFT()
 	fft2d_thread_->start();
 }
 
+void MainWindow::buildCorrelation() {
+	if(data_correlation_ != nullptr) data_correlation_ = new Data2D;
+	correlation_thread_->setData(data_input_,
+				     data_input_,
+				     data_correlation_);
+	correlation_thread_->start();
+	status_bar_->showMessage(tr("calculate correlation..."));
+}
+
+void MainWindow::completeCorrelation() {
+	plotData(plot_correlation_, data_correlation_);
+
+	slotChangeRangeFFT();
+	status_bar_->showMessage(tr("done."));
+}
+
 void MainWindow::slotChangeRangeFFT(){
 	if((data_fft_ == NULL) ||
 	   (data_input_ == NULL) ||
@@ -738,20 +750,20 @@ void MainWindow::slotChangeRangeFFT(){
 		plot_fft_->plot2D->rescaleAxes();
 		plot_fft_->plot2D->replot();
 
-		plot_correlation_->plot2D->ColorMap->data()->setRange(
-			QCPRange(0, data_fft_->size_x),
-			QCPRange(0, data_fft_->size_y)
-			);
-		plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
-		plot_correlation_->plot2D->rescaleAxes();
-		plot_correlation_->plot2D->replot();
-
 		plot_input_->plot2D->ColorMap->data()->setRange(
 			QCPRange(0, data_input_->size_x),
 			QCPRange(0, data_input_->size_y));
 		plot_input_->plot2D->ColorMap->rescaleDataRange(true);
 		plot_input_->plot2D->rescaleAxes();
 		plot_input_->plot2D->replot();
+
+		plot_correlation_->plot2D->ColorMap->data()->setRange(
+			QCPRange(0, data_input_->size_x),
+			QCPRange(0, data_input_->size_y));
+		plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
+		plot_correlation_->plot2D->rescaleAxes();
+		plot_correlation_->plot2D->replot();
+
 		to_impulse_ = 1;
 		return;
 	}
@@ -762,6 +774,13 @@ void MainWindow::slotChangeRangeFFT(){
 	plot_input_->plot2D->ColorMap->rescaleDataRange(true);
 	plot_input_->plot2D->rescaleAxes();
 	plot_input_->plot2D->replot();
+
+	plot_correlation_->plot2D->ColorMap->data()->setRange(
+		QCPRange(0,dsb_size_of_pixel_->value()),
+		QCPRange(0,dsb_size_of_pixel_->value()));
+	plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
+	plot_correlation_->plot2D->rescaleAxes();
+	plot_correlation_->plot2D->replot();
 
 	plot_fft_->plot2D->ColorMap->data()->setRange(
 		QCPRange(-0.5 * 2 * M_PI * data_fft_->size_x /
@@ -780,22 +799,6 @@ void MainWindow::slotChangeRangeFFT(){
 	plot_fft_->plot2D->rescaleAxes();
 	plot_fft_->plot2D->replot();
 
-	plot_correlation_->plot2D->ColorMap->data()->setRange(
-		QCPRange(-0.5 * 2 * M_PI * data_fft_phase_->size_x /
-			 dsb_size_of_pixel_->value(),
-			 0.5 * 2 * M_PI * data_fft_phase_->size_x /
-			 dsb_size_of_pixel_->value()
-			),
-		QCPRange(-0.5 * 2 * M_PI * data_fft_phase_->size_y /
-			 dsb_size_of_pixel_->value(),
-			 0.5 * 2 * M_PI * data_fft_phase_->size_y /
-			 dsb_size_of_pixel_->value()
-			)
-		);
-
-	plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
-	plot_correlation_->plot2D->rescaleAxes();
-	plot_correlation_->plot2D->replot();
 	to_impulse_ =
 		4 * M_PI * data_fft_->size_x /
 		dsb_size_of_pixel_->value() /
