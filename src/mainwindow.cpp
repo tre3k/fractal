@@ -45,12 +45,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setCentralWidget(centralWidget);
 
-	plot_input_ = new iCasePlot2D();
-	plot_fft_ = new iCasePlot2D();
-	plot_fft_phase_ = new iCasePlot2D();
+	plot_input_ = new iCasePlot2D(tr("Direct space"));
+	plot_fft_ = new iCasePlot2D(tr("Fourier space"));
+	plot_correlation_ = new iCasePlot2D(tr("Autocorrelation"));
 	plot_input_->plot2D->ColorMap->setGradient(
 		QCPColorGradient::gpGrayscale
 		);
+	plot_correlation_->plot2D->ColorMap->setGradient(
+		QCPColorGradient::gpGrayscale
+		);
+
 
 	cb_size_of_pixel_    = new QCheckBox();
 	cb_size_of_pixel_->setText(tr(
@@ -188,7 +192,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	centralLayout->addWidget(plot_input_, 0, 0);
 	centralLayout->addWidget(plot_fft_, 0, 1);
 	centralLayout->addLayout(ltv_controls, 1, 0);
-	centralLayout->addWidget(plot_fft_phase_, 1, 1);
+	centralLayout->addWidget(plot_correlation_, 1, 1);
 
 	initActions();
 	buildMenuBar();
@@ -201,6 +205,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	data_input_ = new Data2D;
 	data_fft_ = new Data2D;
 	data_fft_phase_ = new Data2D;
+	data_correlation_ = new Data2D;
+
 }
 
 MainWindow::~MainWindow()
@@ -463,15 +469,15 @@ void MainWindow::preProcess(){
 	status_bar_->showMessage(tr("plotting..."));
 	plotData(plot_fft_, data_fft_);
 	if(data_fft_phase_->size_x != 0 && data_fft_phase_->size_y != 0){
-		plotData(plot_fft_phase_,data_fft_phase_);
+		plotData(plot_correlation_,data_fft_phase_);
 	}
-	plot_fft_phase_->plot2D->ColorScale->axis()->setTicker(
+	plot_correlation_->plot2D->ColorScale->axis()->setTicker(
 		QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi)
 		);
-	plot_fft_phase_->plot2D->ColorScale->setDataRange(
+	plot_correlation_->plot2D->ColorScale->setDataRange(
 		QCPRange(-M_PI, M_PI)
 		);
-	plot_fft_phase_->plot2D->replot();
+	plot_correlation_->plot2D->replot();
 
 	double c_x = 0, c_y = 0, S = 0;
 	for(int i = 0; i < data_fft_->size_x; i++){
@@ -595,11 +601,11 @@ void MainWindow::slotRescale()
 	plot_input_->plot2D->ColorScale->rescaleDataRange(true);
 	plot_input_->plot2D->replot();
 
-	plot_fft_phase_->plot2D->rescaleAxes();
-	plot_fft_phase_->plot2D->ColorScale->setDataRange(
+	plot_correlation_->plot2D->rescaleAxes();
+	plot_correlation_->plot2D->ColorScale->setDataRange(
 		QCPRange(-M_PI, M_PI)
 		);
-	plot_fft_phase_->plot2D->replot();
+	plot_correlation_->plot2D->replot();
 }
 
 
@@ -732,13 +738,13 @@ void MainWindow::slotChangeRangeFFT(){
 		plot_fft_->plot2D->rescaleAxes();
 		plot_fft_->plot2D->replot();
 
-		plot_fft_phase_->plot2D->ColorMap->data()->setRange(
+		plot_correlation_->plot2D->ColorMap->data()->setRange(
 			QCPRange(0, data_fft_->size_x),
 			QCPRange(0, data_fft_->size_y)
 			);
-		plot_fft_phase_->plot2D->ColorMap->rescaleDataRange(true);
-		plot_fft_phase_->plot2D->rescaleAxes();
-		plot_fft_phase_->plot2D->replot();
+		plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
+		plot_correlation_->plot2D->rescaleAxes();
+		plot_correlation_->plot2D->replot();
 
 		plot_input_->plot2D->ColorMap->data()->setRange(
 			QCPRange(0, data_input_->size_x),
@@ -774,7 +780,7 @@ void MainWindow::slotChangeRangeFFT(){
 	plot_fft_->plot2D->rescaleAxes();
 	plot_fft_->plot2D->replot();
 
-	plot_fft_phase_->plot2D->ColorMap->data()->setRange(
+	plot_correlation_->plot2D->ColorMap->data()->setRange(
 		QCPRange(-0.5 * 2 * M_PI * data_fft_phase_->size_x /
 			 dsb_size_of_pixel_->value(),
 			 0.5 * 2 * M_PI * data_fft_phase_->size_x /
@@ -787,9 +793,9 @@ void MainWindow::slotChangeRangeFFT(){
 			)
 		);
 
-	plot_fft_phase_->plot2D->ColorMap->rescaleDataRange(true);
-	plot_fft_phase_->plot2D->rescaleAxes();
-	plot_fft_phase_->plot2D->replot();
+	plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
+	plot_correlation_->plot2D->rescaleAxes();
+	plot_correlation_->plot2D->replot();
 	to_impulse_ =
 		4 * M_PI * data_fft_->size_x /
 		dsb_size_of_pixel_->value() /
