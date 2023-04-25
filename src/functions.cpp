@@ -45,7 +45,7 @@ Functions::Functions(){
 
 }
 
-void Functions::fft(double *real,double *imgn,int n){
+void Functions::fft(double *real, double *imgn, int n){
 	int step, start, old_start, i, j, theta=0;
 	double tmp_real, tmp_imgn;
 
@@ -304,6 +304,12 @@ void Functions::makeFFT2D(Data2D *data_in,
 	delete [] imgn;
 }
 
+
+void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
+
+}
+
+
 int Functions::doubleToInt(double val){
 	return (int)(val+0.5);
 }
@@ -512,7 +518,7 @@ void FFT2DThread::run() {
 }
 
 
-AverageThread::AverageThread() : QThread() {
+AverageThread::AverageThread() : GeneralThread() {
 
 }
 
@@ -525,6 +531,6 @@ void AverageThread::setValues(Data2D *data,
 			      double angle, double oangle,
 			      double offset, double len,
 			      QVector<double> *vX, QVector<double> *vY,
-			      QVector<double> *vErr, bool CKO, int step){
+			      QVector<double> *vErr, bool CKO, int step) {
 
 }

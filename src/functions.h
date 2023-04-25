@@ -34,7 +34,7 @@
 
 class Data2D{
 public:
-	int size_x,size_y;
+	int size_x, size_y;
 	double **data;
 	Data2D(int sx=0,int sy=0);
 	void remove();
@@ -48,6 +48,7 @@ public:
 	void fft2d(double **, double **, int, int);
 	void sort(double **, int, int);
 	void makeFFT2D(Data2D *, Data2D *, Data2D *);
+	void makeCorrelation(Data2D *, Data2D *, Data2D *);
 	int doubleToInt(double);
 	void toCircle(double *, double *, double, double);
 	void average(Data2D *, double, double, double, double, double, double,
@@ -83,6 +84,17 @@ signals:
 	void complete();
 };
 
+class GeneralThread : public QThread {
+	Q_OBJECT
+public:
+	virtual void run() = 0;
+
+signals:
+	void complete();
+	void progress(int);
+
+};
+
 class FFT2DThread : public QThread {
 	Q_OBJECT
 public:
@@ -103,7 +115,7 @@ signals:
 	void message(QString message, int timeout = 0);
 };
 
-class AverageThread : public QThread {
+class AverageThread : public GeneralThread {
 	Q_OBJECT
 public:
 	AverageThread();
