@@ -49,6 +49,7 @@ public:
 	void sort(double **, int, int);
 	void makeFFT2D(Data2D *, Data2D *, Data2D *);
 	static void makeCorrelation(Data2D *, Data2D *, Data2D *);
+	static void makeCorrelationFFT(Data2D *, Data2D *, Data2D *);
 	static void correlation(double *f, double *g, double *out, int size);
 	int doubleToInt(double);
 	void toCircle(double *, double *, double, double);

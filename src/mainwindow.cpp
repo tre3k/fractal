@@ -472,7 +472,7 @@ void MainWindow::preProcess(){
 	if(image_loaded_ != true) return;
 	if(data_fft_->size_x == 0 || data_fft_->size_y == 0) return;
 
-//	status_bar_->showMessage(tr("plotting..."));
+	status_bar_->showMessage(tr("plotting..."));
 	plotData(plot_fft_, data_fft_);
 
 	double c_x = 0, c_y = 0, S = 0;
@@ -758,8 +758,8 @@ void MainWindow::slotChangeRangeFFT(){
 		plot_input_->plot2D->replot();
 
 		plot_correlation_->plot2D->ColorMap->data()->setRange(
-			QCPRange(0, data_input_->size_x),
-			QCPRange(0, data_input_->size_y));
+			QCPRange(0, data_correlation_->size_x),
+			QCPRange(0, data_correlation_->size_y));
 		plot_correlation_->plot2D->ColorMap->rescaleDataRange(true);
 		plot_correlation_->plot2D->rescaleAxes();
 		plot_correlation_->plot2D->replot();

@@ -307,14 +307,17 @@ void Functions::makeFFT2D(Data2D *data_in,
 
 void Functions::correlation(double *f, double *g, double *out, int size) {
 	int delta;
-	for(int i = 0; i < size; i++) {
-		out[i] = 0.0;
+	for(int i = -size; i < size; i++) {
+		out[i + size] = 0.0;
 		for(int j = 0; j < size; j++) {
 			delta = j - i;
 			if(delta >= 0 && delta < size)
-				out[i] += f[j] * g[delta];
+				out[i + size] += f[j] * g[delta];
 		}
 	}
+}
+
+void Functions::makeCorrelationFFT(Data2D *f, Data2D *g, Data2D *out) {
 }
 
 void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
@@ -326,19 +329,20 @@ void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
 	out_size_y = f->size_y;
 	if(g->size_y < out_size_y) out_size_y = g->size_y;
 
-	out->reinit(out_size_x, out_size_y);
+	out->reinit(out_size_x * 2, out_size_y * 2);
+	auto mout = new Data2D(out_size_x * 2, out_size_y);
 
 	/* копирование строк */
 	tmp_f = new double [f->size_x];
 	tmp_g = new double [g->size_x];
-	tmp_out = new double [out_size_x];
+	tmp_out = new double [out_size_x * 2];
 
 	for(int row = 0; row < out_size_y; row ++) {
 		for(int i = 0; i < f->size_x; i++) tmp_f[i] = f->data[i][row];
 		for(int i = 0; i < g->size_x; i++) tmp_g[i] = g->data[i][row];
 		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_x);
-		for(int i = 0; i < out_size_x; i++)
-			out->data[i][row] = tmp_out[i];
+		for(int i = 0; i < out_size_x * 2; i++)
+			mout->data[i][row] = tmp_out[i];
 	}
 	delete [] tmp_f;
 	delete [] tmp_g;
@@ -347,20 +351,22 @@ void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
 	/* копирование столбцов */
 	tmp_f = new double [f->size_y];
 	tmp_g = new double [g->size_y];
-	tmp_out = new double [out_size_y];
+	tmp_out = new double [out_size_y * 2];
 
-	for(int col = 0; col < out_size_x; col ++) {
+	for(int col = 0; col < out_size_x * 2; col ++) {
 		for(int i = 0; i < f->size_y; i++)
-			tmp_f[i] = out->data[col][i];
+			tmp_f[i] = mout->data[col][i];
 		for(int i = 0; i < g->size_y; i++)
-			tmp_g[i] = out->data[col][i];
+			tmp_g[i] = mout->data[col][i];
 		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_y);
-		for(int i = 0; i < out_size_y; i++)
+		for(int i = 0; i < out_size_y * 2; i++)
 			out->data[col][i] = tmp_out[i];
 	}
 	delete [] tmp_f;
 	delete [] tmp_g;
 	delete [] tmp_out;
+
+	delete mout;
 }
 
 int Functions::doubleToInt(double val){
