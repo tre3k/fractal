@@ -48,9 +48,7 @@ public:
 	void fft2d(double **, double **, int, int);
 	void sort(double **, int, int);
 	void makeFFT2D(Data2D *, Data2D *, Data2D *);
-	static void makeCorrelation(Data2D *, Data2D *, Data2D *);
 	static void makeCorrelationFFT(Data2D *, Data2D *, Data2D *);
-	static void correlation(double *f, double *g, double *out, int size);
 	int doubleToInt(double);
 	void toCircle(double *, double *, double, double);
 	void average(Data2D *, double, double, double, double, double, double,
@@ -94,7 +92,7 @@ public:
 signals:
 	void complete();
 	void progress(int);
-
+	void message(QString message, int timeout = 0);
 };
 
 class CorrelationThread : public GeneralThread {

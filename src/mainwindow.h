@@ -38,6 +38,7 @@
 #include <QGuiApplication>
 #include <QToolBar>
 #include <QStatusBar>
+#include <QProgressBar>
 
 #include "about.h"
 #include "iqcustomplot.h"
@@ -89,6 +90,9 @@ private:
 	void initActions();
 
 	QStatusBar *status_bar_;
+	struct s_status_bar {
+		QProgressBar *progress_bar;
+	} sbar_;
 	void buildStatusBar();
 
 	Data2D *data_input_;

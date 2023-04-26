@@ -21,6 +21,7 @@
 
 
 #include "mainwindow.h"
+#include "functions.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent)
@@ -205,6 +206,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(fft2d_thread_, &FFT2DThread::message,
 		status_bar_, &QStatusBar::showMessage);
+	connect(correlation_thread_, &CorrelationThread::message,
+		status_bar_, &QStatusBar::showMessage);
+
+	connect(correlation_thread_, &CorrelationThread::progress,
+		sbar_.progress_bar, &QProgressBar::setValue);
+
 
 	data_input_ = new Data2D;
 	data_fft_ = new Data2D;
@@ -292,6 +299,11 @@ void MainWindow::buildToolBar() {
 void MainWindow::buildStatusBar() {
 	status_bar_ = new QStatusBar();
 	this->setStatusBar(status_bar_);
+
+	sbar_.progress_bar = new QProgressBar();
+	sbar_.progress_bar->setMaximum(100);
+	status_bar_->addPermanentWidget(sbar_.progress_bar);
+	sbar_.progress_bar->setMaximumSize(100, 13);
 }
 
 

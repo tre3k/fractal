@@ -305,69 +305,10 @@ void Functions::makeFFT2D(Data2D *data_in,
 }
 
 
-void Functions::correlation(double *f, double *g, double *out, int size) {
-	int delta;
-	for(int i = -size; i < size; i++) {
-		out[i + size] = 0.0;
-		for(int j = 0; j < size; j++) {
-			delta = j - i;
-			if(delta >= 0 && delta < size)
-				out[i + size] += f[j] * g[delta];
-		}
-	}
-}
-
 void Functions::makeCorrelationFFT(Data2D *f, Data2D *g, Data2D *out) {
+
 }
 
-void Functions::makeCorrelation(Data2D *f, Data2D *g, Data2D *out) {
-	double *tmp_f, *tmp_g, *tmp_out;
-	int out_size_x {0}, out_size_y {0};
-
-	out_size_x = f->size_x;
-	if(g->size_x < out_size_x) out_size_x = g->size_x;
-	out_size_y = f->size_y;
-	if(g->size_y < out_size_y) out_size_y = g->size_y;
-
-	out->reinit(out_size_x * 2, out_size_y * 2);
-	auto mout = new Data2D(out_size_x * 2, out_size_y);
-
-	/* копирование строк */
-	tmp_f = new double [f->size_x];
-	tmp_g = new double [g->size_x];
-	tmp_out = new double [out_size_x * 2];
-
-	for(int row = 0; row < out_size_y; row ++) {
-		for(int i = 0; i < f->size_x; i++) tmp_f[i] = f->data[i][row];
-		for(int i = 0; i < g->size_x; i++) tmp_g[i] = g->data[i][row];
-		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_x);
-		for(int i = 0; i < out_size_x * 2; i++)
-			mout->data[i][row] = tmp_out[i];
-	}
-	delete [] tmp_f;
-	delete [] tmp_g;
-	delete [] tmp_out;
-
-	/* копирование столбцов */
-	tmp_f = new double [f->size_y];
-	tmp_g = new double [g->size_y];
-	tmp_out = new double [out_size_y * 2];
-
-	for(int col = 0; col < out_size_x * 2; col ++) {
-		for(int i = 0; i < f->size_y; i++)
-			tmp_f[i] = mout->data[col][i];
-		for(int i = 0; i < g->size_y; i++)
-			tmp_g[i] = mout->data[col][i];
-		Functions::correlation(tmp_f, tmp_g, tmp_out, out_size_y);
-		for(int i = 0; i < out_size_y * 2; i++)
-			out->data[col][i] = tmp_out[i];
-	}
-	delete [] tmp_f;
-	delete [] tmp_g;
-	delete [] tmp_out;
-
-	delete mout;
-}
 
 int Functions::doubleToInt(double val){
 	return (int)(val + 0.5);
@@ -595,7 +536,44 @@ void AverageThread::setValues(Data2D *data,
 }
 
 void CorrelationThread::run() {
-	Functions::makeCorrelation(f_, g_, out_);
+	int out_size_x {0}, out_size_y {0};
+
+	out_size_x = f_->size_x;
+	if(g_->size_x < out_size_x) out_size_x = g_->size_x;
+	out_size_y = f_->size_y;
+	if(g_->size_y < out_size_y) out_size_y = g_->size_y;
+
+	out_->reinit(out_size_x * 2, out_size_y * 2);
+
+	int chi {0}, yps {0};
+	int dchi, dyps;
+
+	double f , g , out;
+	unsigned long int counter {0};
+
+	for(chi = -out_size_x; chi < out_size_x; chi ++) {
+		for(yps = -out_size_y; yps < out_size_y; yps ++) {
+			out = 0.0;
+			for(int i = 0; i < out_size_x; i++) {
+				for(int j = 0; j < out_size_y; j++) {
+					dchi = i - chi;
+					dyps = j - yps;
+					if((dchi >= 0 && dchi < out_size_x) &&
+					   (dyps >= 0 && dyps < out_size_y)) {
+						f = f_->data[i][j];
+						g = g_->data[dchi][dyps];
+						out += f * g;
+					}
+				}
+			}
+			out_->data[chi + out_size_x][yps + out_size_y] = out;
+			counter ++;
+		}
+
+		emit progress((int)(100 * counter/4/out_size_x/out_size_y));
+		emit message(tr("calculate correlation..."));
+	}
+
 	emit complete();
 }
 
