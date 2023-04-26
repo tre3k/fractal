@@ -218,6 +218,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	data_fft_phase_ = new Data2D;
 	data_correlation_ = new Data2D;
 
+	connect(this, SIGNAL(plotCorrelation(WindowPlotValues)),
+		win_plot_correlation_ , SLOT(slot_plot(WindowPlotValues)));
+
 }
 
 MainWindow::~MainWindow()
@@ -337,22 +340,23 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
                               double r_in,
                               double r_our,
                               double openAngle,
-                              double posAngle){
+                              double posAngle,
+			      QColor color){
 	plot->plot2D->clearItems();
 
 	QCPItemEllipse *our = new QCPItemEllipse(plot->plot2D);
-	our->setPen(QPen(Qt::black));
+	our->setPen(QPen(color));
 	our->topLeft->setCoords(x + r_our, y + r_our);
 	our->bottomRight->setCoords(x - r_our,y - r_our);
 
 	QCPItemEllipse *in = new QCPItemEllipse(plot->plot2D);
-	in->setPen(QPen(Qt::black));
+	in->setPen(QPen(color));
 	in->topLeft->setCoords(x + r_in, y + r_in);
 	in->bottomRight->setCoords(x - r_in,y - r_in);
 
 	double xl, yl;
 	auto line1 = new QCPItemLine(plot->plot2D);
-	line1->setPen(QPen(QColor(Qt::black),
+	line1->setPen(QPen(QColor(color),
 			   1,
 			   Qt::SolidLine,
 			   Qt::SquareCap,
@@ -364,7 +368,7 @@ void MainWindow::paintCircles(iCasePlot2D *plot,
 	line1->end->setCoords(xl + x, yl + y);
 
 	auto line2 = new QCPItemLine(plot->plot2D);
-	line2->setPen(QPen(QColor(Qt::black),
+	line2->setPen(QPen(QColor(color),
 			   1,
 			   Qt::SolidLine,
 			   Qt::SquareCap,
@@ -385,7 +389,8 @@ void MainWindow::changeSpinBox(double val){
 		     dsb_radius_in_->value(),
 		     dsb_radius_out_->value(),
 		     dsb_open_angle_->value(),
-		     dsb_position_angle_->value());
+		     dsb_position_angle_->value(),
+		     Qt::black);
 
 	dsb_radius_in_->setMaximum(dsb_radius_out_->value());
 }
@@ -597,7 +602,29 @@ void MainWindow::Average()
 void MainWindow::averageCorrelation() {
 	WindowPlotValues win_plot_values;
 
+	win_plot_values.x = new QVector<double>;
+	win_plot_values.y = new QVector<double>;
+	win_plot_values.err = new QVector<double>;
+
+	double cx {0.0}, cy {0.0};
+	Functions::findCenterMass(data_correlation_, &cx, &cy);
+
+	paintCircles(plot_correlation_, cx, cy,
+		     0, data_correlation_->size_x/2.0,
+		     360, 0, Qt::green);
+
+	funcs_->average(data_correlation_,
+			cx, cy,
+			0, 360,
+			0, data_correlation_->size_x/2.0,
+			win_plot_values.x,
+			win_plot_values.y,
+			win_plot_values.err,
+			false,
+			0);
+
 	emit plotCorrelation(win_plot_values);
+	win_plot_correlation_->show();
 }
 
 void MainWindow::slotRescale()

@@ -124,7 +124,7 @@ private:
 		double phi
 		);
 	void paintCircles(iCasePlot2D *, double, double,
-			  double, double, double, double);
+			  double, double, double, double, QColor);
 
 	AboutDialog *about_dialog_;
 
