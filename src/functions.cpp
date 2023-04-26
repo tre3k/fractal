@@ -45,6 +45,20 @@ Functions::Functions(){
 
 }
 
+void Functions::findCenterMass(Data2D *indata, double *cx, double *cy) {
+	double S {0.0};
+	*cx = 0.0; *cy = 0.0;
+	for(int i = 0; i < indata->size_x; i++){
+		for(int j=0; j<indata->size_y; j++){
+			*cx += indata->data[i][j] * i;
+			*cy += indata->data[i][j] * j;
+			S += indata->data[i][j];
+		}
+	}
+	*cx /= S;
+	*cy /= S;
+}
+
 void Functions::fft(double *real, double *imgn, int n){
 	int step, start, old_start, i, j, theta=0;
 	double tmp_real, tmp_imgn;

@@ -105,6 +105,7 @@ private:
 	iCasePlot2D *plot_correlation_;
 
 	WindowPlot *win_plot_;
+	WindowPlot *win_plot_correlation_;
 	Functions *funcs_;
 	FFT2DThread *fft2d_thread_;
 	CorrelationThread *correlation_thread_;
@@ -133,6 +134,7 @@ private slots:
 
 	void slotOpenText();
 	void Average();
+	void averageCorrelation();
 	void slotOpenFFT();
 	void slotRescale();
 	void openImage(QString filename, Data2D *indata);
@@ -151,6 +153,7 @@ private slots:
 
 signals:
 	void signal_plot(WindowPlotValues);
+	void plotCorrelation(WindowPlotValues);
 
 };
 

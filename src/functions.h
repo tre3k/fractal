@@ -55,6 +55,7 @@ public:
 		     QVector<double> *, QVector<double> *, QVector<double> *,
 		     bool, int);
 	void invertData(Data2D *);
+	static void findCenterMass(Data2D *indata, double *cx, double *cy);
 };
 
 class FFTThread : public QThread {

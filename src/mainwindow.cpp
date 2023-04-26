@@ -21,7 +21,6 @@
 
 
 #include "mainwindow.h"
-#include "functions.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent)
@@ -100,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	pb_average_ = new QPushButton(tr("average"));
 
 	win_plot_ = new WindowPlot;
+	win_plot_correlation_ = new WindowPlot;
 
 	aver_x_ = new QVector<double>;
 	aver_y_ = new QVector<double>;
@@ -488,15 +488,8 @@ void MainWindow::preProcess(){
 	plotData(plot_fft_, data_fft_);
 
 	double c_x = 0, c_y = 0, S = 0;
-	for(int i = 0; i < data_fft_->size_x; i++){
-		for(int j=0; j<data_fft_->size_y; j++){
-			c_x += data_fft_->data[i][j] * i;
-			c_y += data_fft_->data[i][j] * j;
-			S += data_fft_->data[i][j];
-		}
-	}
-	c_x /= S;
-	c_y /= S;
+
+	Functions::findCenterMass(data_fft_, &c_x, &c_y);
 
 	dsb_center_x_->setValue(c_x);
 	dsb_center_y_->setValue(c_y);
@@ -597,6 +590,14 @@ void MainWindow::Average()
 
 	emit signal_plot(wPlotValues);
 	win_plot_->show();
+
+	averageCorrelation();
+}
+
+void MainWindow::averageCorrelation() {
+	WindowPlotValues win_plot_values;
+
+	emit plotCorrelation(win_plot_values);
 }
 
 void MainWindow::slotRescale()
