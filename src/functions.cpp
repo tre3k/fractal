@@ -343,7 +343,7 @@ void Functions::average(Data2D *data,
 			QVector<double> *vErr, bool CKO, int step){
 
 	double x,y;
-	int oldx=0,oldy=0;
+	int oldx=0,oldy = 0;
 	int ix,iy,n = 0;
 	double r = offset,phi;
 	double z = 0.0;
@@ -360,8 +360,8 @@ void Functions::average(Data2D *data,
 	vY->clear();
 	vErr->clear();
 
-	if(step>0){
-		dr = pow(2,step);
+	if(step > 0){
+		dr = pow(2, step);
 		dphi = atan(dr/len);
 		if(step>1) dphi = atan(pow(2, step)/len);
 	}
@@ -369,7 +369,7 @@ void Functions::average(Data2D *data,
 	for(r=offset;r<len;r+=dr){
 		dphi = atan(1.0/r);
 		for(phi=angle-oangle/2;phi<angle+oangle/2;phi+=dphi){
-			toCircle(&x,&y,r,phi);
+			toCircle(&x, &y, r, phi);
 
 			ix = doubleToInt(x+x0);
 			iy = doubleToInt(y+y0);
@@ -397,9 +397,9 @@ void Functions::average(Data2D *data,
 			vErr->append(sqrt(sigma));
 		}
 
-		n=0;
-		z=0.0;
-		z2=0.0;
+		n = 0;
+		z = 0.0;
+		z2 = 0.0;
 	}
 
 	return;
