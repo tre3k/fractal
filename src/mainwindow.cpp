@@ -434,13 +434,15 @@ void MainWindow::slotOpenText()
 
 	plotData(plot_input_, data_input_);
 
+	if(data_fft_ != nullptr) delete data_fft_;
+	if(data_fft_phase_ != nullptr) delete data_fft_phase_;
 	data_fft_ = new Data2D;
 	data_fft_phase_ = new Data2D;
 
 	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
 	fft2d_thread_->start();
 
-	buildCorrelation();
+	// buildCorrelation();
 
 	image_loaded_ = true;
 }
@@ -596,7 +598,7 @@ void MainWindow::Average()
 	emit signal_plot(wPlotValues);
 	win_plot_->show();
 
-	averageCorrelation();
+	//averageCorrelation();
 }
 
 void MainWindow::averageCorrelation() {
@@ -693,13 +695,15 @@ void MainWindow::slotOpenImage()
 	plotData(plot_input_, data_input_);
 
 
+	if(data_fft_ != nullptr) delete data_fft_;
+	if(data_fft_phase_ != nullptr) delete data_fft_phase_;
 	data_fft_ = new Data2D;
 	data_fft_phase_ = new Data2D;
 
 	fft2d_thread_->setData(data_input_, data_fft_, data_fft_phase_);
 	fft2d_thread_->start();
 
-	buildCorrelation();
+	//buildCorrelation();
 
 	image_loaded_ = true;
 }
