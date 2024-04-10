@@ -102,6 +102,7 @@ private:
 
 	iCasePlot2D *plot_input_;
 	iCasePlot2D *plot_fft_;
+	iCasePlot2D *plot_fft_phase_;
 	iCasePlot2D *plot_correlation_;
 
 	WindowPlot *win_plot_;
