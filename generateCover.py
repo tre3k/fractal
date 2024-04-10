@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-X=512
-Y=512
-N = 3
+X=1024
+Y=1024
+N = 5
 
 data = [0]*X
 for i in range(X):
@@ -17,7 +17,7 @@ def printData():
     for i in range(0,X):
         for j in range(0,Y):
             fw.write(str(data[i][j])+'\n')
-    return 
+    return
 
 def paintRect(x1,y1,x2,y2):
     for i in range(int(x1),int(x2)):
