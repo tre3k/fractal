@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018-2023 Kirill Pshenichnyi
+ *  Copyright (c) 2018-2025 Kirill Pshenichnyi
  *
  *  This file is part of fractal.
  *
@@ -55,12 +55,13 @@ MainWindow::MainWindow(QWidget *parent) :
 		QCPColorGradient::gpGrayscale
 		);
 
-
-	cb_size_of_pixel_ = new QCheckBox();
-	cb_size_of_pixel_->setText(tr(
-                   "size of object \n"
-		   "in direct space \n"
-		   "just physical size (m, cm, mm)")
+	cb_size_of_pixel_    = new QCheckBox();
+	cb_size_of_pixel_->setText(
+		tr(
+			"size of object \n"
+			"in direct space \n"
+			"just physical size (m, cm, mm)"
+			)
 		);
 	cb_to_log_ = new QCheckBox();
 	cb_to_log_->setText(tr("average to log"));
@@ -553,16 +554,16 @@ void MainWindow::Average()
 	}
 
 	funcs_->average(data_fft_,
-		       px_center_x,
-		       px_center_y,
-		       dsb_position_angle_->value(),
-		       dsb_open_angle_->value(),
-		       px_radius_in,px_radius_out,
-		       aver_x_,
-		       aver_y_,
-		       aver_err_,
-		       false,
-		       0);
+			px_center_x,
+			px_center_y,
+			dsb_position_angle_->value(),
+			dsb_open_angle_->value(),
+			px_radius_in,px_radius_out,
+			aver_x_,
+			aver_y_,
+			aver_err_,
+			false,
+			0);
 
 	WindowPlotValues wPlotValues;
 
@@ -652,8 +653,7 @@ void MainWindow::openImage(QString filename, Data2D *indata){
 	sy = img->height();
 
 	indata->reinit(sx, sy);
-	int tmp;
-
+	unsigned int tmp;
 	for(int i=0; i < sx; i++){
 		for(int j=0; j < sy; j++){
 			tmp = img->pixel(i, j) & 0x00000000ff;          // B
@@ -677,7 +677,7 @@ void MainWindow::slotOpenImage()
 		"",
 		"All types (*.jpg *.jpeg *.JPG *.JPEG *.bmp *.BMP *.gif "
 		"*.GIF *.png *.PNG *.pbm *.PBM *.pgm *.PGM *.ppm *.PPM "
-		"*.xbm *.XBM *.xpm *.XPM);;"
+		"*.xbm *.XBM *.xpm *.XPM *.tiff *.TIFF *.tif *.TIFF);;"
 		"Jpeg (*.jpg *.jpeg *.JPG *.JPEG);;"
 		"BMP (*.bmp *.BMP);;"
 		"GIF (*.gif *.GIF);;"
@@ -686,7 +686,9 @@ void MainWindow::slotOpenImage()
 		"PGM (*.pgm *.PGM);;"
 		"PPM (*.ppm *.PPM);;"
 		"XBM (*.xbm *.XBM);;"
-		"XPM (*.xpm *.XPM)"
+		"XPM (*.xpm *.XPM);;"
+		"TIFF (*.tiff *.TIFF);;"
+		"TIF (*.tif *.TIF);;"
 		);
 
 	if(filename == "") return;

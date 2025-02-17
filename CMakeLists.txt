@@ -1,20 +1,20 @@
 #
-# Copyright (c) 2022-2023 Kirill Pshenichnyi <pshcyrill@mail.ru>
+# Copyright (c) 2018-2025 Kirill Pshenichnyi <pshcyrill@mail.ru>
 #
-# This file is part of choppers.
+# This file is part of fractal.
 #
-# choppers is free software: you can redistribute it and/or modify
+# fractal is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# choppers is distributed in the hope that it will be useful,
+# fractal is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with choppers.  If not, see <https://www.gnu.org/licenses/>.
+# along with fractal.  If not, see <https://www.gnu.org/licenses/>.
 #
 #    Author: Kirill Pshenichnyi <pshcyrill@mail.ru>
 #
