@@ -38,6 +38,7 @@ find_package(Qt6 COMPONENTS Gui REQUIRED)
 find_package(Qt6 COMPONENTS PrintSupport REQUIRED)
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Svg)
+find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/src/external
@@ -61,7 +62,11 @@ set(COPY_YEAR_TEXT \"${COPY_YEAR}\")
 set(CMAKE_CXX_COMPILER_VERSION_TEXT \"${CMAKE_CXX_COMPILER_VERSION}\")
 set(CMAKE_CXX_COMPILER_ID_TEXT \"${CMAKE_CXX_COMPILER_ID}\")
 
-configure_file(config.h.in ../src/config.h)
+configure_file(config.h.in src/config.h)
+
+file(GLOB TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/langs/*.ts)
+qt6_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(translations DEPENDS ${QM_FILES})
 
 add_executable(${PROGRAM_NAME}
   resources.qrc
@@ -74,6 +79,8 @@ add_executable(${PROGRAM_NAME}
   src/config.h
   src/external/qcustomplot.cpp src/external/qcustomplot.h
   )
+
+target_sources(${PROGRAM_NAME} PRIVATE ${QM_FILES})
 
 target_link_libraries(${PROGRAM_NAME}
   Qt6::Core

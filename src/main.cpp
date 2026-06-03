@@ -19,18 +19,34 @@
  *     Author: Kirill Pshenichnyi <pshcyrill@mail.ru>
  */
 
-#include "mainwindow.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QLocale>
+#include <QVector>
+#include <QDir>
+
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     QTranslator translator;
-    if(translator.load("langs/fractal_" + QLocale::system().name())) {
-	    a.installTranslator(&translator);
+    const QVector<QString> translations_paths = {
+	    "langs/",
+	    "/usr/share/fractal/langs/",
+	    QDir::homePath() + ".fractal/langs/",
+    };
+
+    for(auto path : translations_paths) {
+	    if(translator.load(
+		       QDir(path +
+			    "fractal_" +
+			    QLocale::system().name()).absolutePath())
+		    ) {
+		    a.installTranslator(&translator);
+		    break;
+	    }
     }
 
     MainWindow w;

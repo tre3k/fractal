@@ -25,7 +25,7 @@
 <context>
     <name>CorrelationThread</name>
     <message>
-        <location filename="../src/functions.cpp" line="574"/>
+        <location filename="../src/functions.cpp" line="588"/>
         <source>calculate correlation...</source>
         <translation>расчет корреляции...</translation>
     </message>
@@ -33,7 +33,7 @@
 <context>
     <name>FFT2DThread</name>
     <message>
-        <location filename="../src/functions.cpp" line="513"/>
+        <location filename="../src/functions.cpp" line="527"/>
         <source>doing FFT...</source>
         <translation>делаю БПФ...</translation>
     </message>
@@ -41,14 +41,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="49"/>
+        <location filename="../src/mainwindow.cpp" line="48"/>
         <source>Direct space</source>
         <translation>Прямое пространство</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="50"/>
+        <location filename="../src/mainwindow.cpp" line="49"/>
         <source>Fourier space</source>
         <translation>Фурье пространство</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="50"/>
+        <source>Phase</source>
+        <translation>Фаза</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="51"/>
@@ -96,113 +101,113 @@ just physical size (m, cm, mm)</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="100"/>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>average</source>
         <translation>усреднение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="164"/>
         <source>sector pos. angle: </source>
         <translation>угол позиции сектора: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="167"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>sector open angle: </source>
         <translation>угол раскрытия сектора: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="171"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>outer radius: </source>
         <translation>внешний радиус: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>inner radius: </source>
         <translation>внутренний радиус: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="182"/>
+        <location filename="../src/mainwindow.cpp" line="183"/>
         <source>center: </source>
         <translation>сентр: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="229"/>
+        <location filename="../src/mainwindow.cpp" line="234"/>
         <source>close</source>
         <translation>закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="233"/>
+        <location filename="../src/mainwindow.cpp" line="238"/>
         <source>&amp;open (text)</source>
         <translation>&amp;открыть (текстовый формат)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="239"/>
+        <location filename="../src/mainwindow.cpp" line="244"/>
         <source>open (&amp;image)</source>
         <translation>открыть (&amp;изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="245"/>
+        <location filename="../src/mainwindow.cpp" line="250"/>
         <source>open &amp;Fourier (text)</source>
         <translation>открыть образ &amp;Фурье (текстовый формат)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
+        <location filename="../src/mainwindow.cpp" line="254"/>
         <source>open Fo&amp;urier (image)</source>
         <translation>открыть образ Ф&amp;урье (изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="253"/>
+        <location filename="../src/mainwindow.cpp" line="258"/>
         <source>rescale axis</source>
         <translation>масштабировать графики</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="264"/>
         <source>&amp;about</source>
         <translation>&amp;о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="268"/>
+        <location filename="../src/mainwindow.cpp" line="273"/>
         <source>&amp;file</source>
         <translation>&amp;файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="282"/>
         <source>&amp;view</source>
         <translation>&amp;вид</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="281"/>
+        <location filename="../src/mainwindow.cpp" line="286"/>
         <source>&amp;help</source>
         <translation>&amp;справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="399"/>
+        <location filename="../src/mainwindow.cpp" line="406"/>
         <source>Open fractal (text format)</source>
         <translation>Открыть фрактал (текстовый формат)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="449"/>
+        <location filename="../src/mainwindow.cpp" line="458"/>
         <source>Open Fourier (image format)</source>
         <translation>Открыть Фурье образ (изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="487"/>
+        <location filename="../src/mainwindow.cpp" line="496"/>
         <source>plotting...</source>
         <translation>построение графиков...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="527"/>
-        <location filename="../src/mainwindow.cpp" line="747"/>
+        <location filename="../src/mainwindow.cpp" line="530"/>
+        <location filename="../src/mainwindow.cpp" line="787"/>
         <source>done.</source>
         <translation>готово.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="646"/>
+        <location filename="../src/mainwindow.cpp" line="684"/>
         <source>Open fractal (image format)</source>
         <translation>Открыть фрактал (изображение)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="740"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>calculate correlation...</source>
         <translation>расчет корреляции...</translation>
     </message>
