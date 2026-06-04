@@ -401,6 +401,7 @@ void MainWindow::changeSpinBox(double val){
 void MainWindow::slotOpenText()
 {
 	int input_size_x, input_size_y;
+	int dimension {2};
 	QString tmp;
 	QString filename = QFileDialog::getOpenFileName(
 		this,
@@ -415,9 +416,20 @@ void MainWindow::slotOpenText()
 	QTextStream text_stream(&f);
 
 	text_stream >> tmp;
-	input_size_x = QString(tmp).toInt();
+	dimension = QString(tmp).toInt();
+	if(dimension < 1) return;
 	text_stream >> tmp;
-	input_size_y = QString(tmp).toInt();
+	input_size_x = QString(tmp).toInt();
+	if(dimension > 1) {
+	        text_stream >> tmp;
+	        input_size_y = QString(tmp).toInt();
+	}
+	// skeep other size of big dimension
+	if(dimension > 2) {
+		for(int i = 0; i < dimension - 2; i++) {
+			text_stream >> tmp;
+		}
+	}
 
         data_input_ = new Data2D(input_size_x, input_size_y);
 
